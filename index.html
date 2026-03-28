@@ -184,7 +184,51 @@
         // قائمة الأكواد الـ 25 المسموح لها بالدخول
         // توليد 200 كود تبدأ من xmw1 وحتى xmw200
 // توليد 200 كود تبدأ من xmw1 وحتى xmw200
-const VALID_CODES = Array.from({ length: 200 }, (_, i) => `xmw${i + 1}`);
+const VALID_CODES = [
+    "g0cjrgTO", "zy13Knwb", "MprqpsnH", "jrFNoQN8", "vG9q0MnF", 
+    "3xRdjZ6S", "lbHHJihi", "SInSriqW", "pFFp1oFK", "9AX4OTZr",
+    "a7f3k9x201", "z4p8q1w602", "m2n7b4v903", "x5z1a8s304", "q9w2e6r105",
+    "y3u7i4o906", "l6k1j8h307", "f2d9s4a708", "p8o3i6u209", "t1r7e4w910",
+    "b4m2n8v111", "a9s5d2x712", "j3h6g9l213", "s7a1q4f814", "i2u9y6p115",
+    "e5w8q3t216", "c1m7n4b917", "d8x3z6a118", "g9l2k5j719", "q4f7d1s820",
+    "u6y2p9o421", "w1q8t3r622", "t9q4w1e723", "p2y8u5i124", "g3h7j2k625",
+    "a8f1d4s926", "k9l3g7h127", "m6n2b8v428", "x1z7a3s529", "q5w9e2r630",
+    "y4u8i3o731", "l1k5j9h232", "f7d2s6a133", "p9o1i7u334", "t3r6e8w235",
+    "b8m4n1v736", "a2s9d5x837", "j6h1g4l738", "s3a8q2f539", "i7u4y1p940",
+    "e1w3q7t541", "c9m6n2b542", "d4x8z1a643", "g2l9k3j544", "q6f1d7s445",
+    "u8y5p3o146", "w2q6t9r447", "t5q1w2e348", "p0y6u7i849", "x7a3m8k250",
+    "q2w9e4r751", "p6o1i8u352", "l4k9j2h753", "f8d3s6a154", "m5n2b7v455",
+    "z1x8a3s656", "t9r4e7w257", "y3u6i1o858", "g7h2j5k959", "a4s1d8f360",
+    "c6v9b2n561", "q8w3e6r162", "p1o4i7u263", "l9k6j3h864", "f2d5s8a765",
+    "m3n6b9v266", "z7x4a1s867", "t2r5e8w368", "y6u9i2o569", "g1h4j7k270",
+    "a8s3d6f971", "c5v2b7n472", "q3w6e9r273", "p4o7i2u574", "l2k5j8h175",
+    "f9d6s3a476", "m8n5b2v777", "z3x6a9s278", "t4r7e2w579", "y9u2i5o880",
+    "g6h3j8k181", "a1s4d7f282", "c8v5b2n983", "q6w3e8r584", "p7o2i9u485",
+    "l5k8j1h686", "f4d7s2a987", "m2n9b6v388", "z8x5a2s789", "t3r6e9w490",
+    "y2u5i8o391", "g4h7j2k992", "a9s6d3f893", "c2v7b4n194", "q5w8e1r695",
+    "p9o6i3u896", "l3k2j7h497", "f1d8s5a298", "m7n4b1v699", "z2x9a6s3100",
+    "t6r3e8w1101", "y5u8i1o6102", "g3h6j9k2103", "a2s7d4f1104", "c9v6b3n8105",
+    "q7w4e1r8106", "p2o5i8u3107", "l8k1j6h9108", "f3d6s9a4109", "m9n6b3v8110",
+    "z5x2a7s4111", "t1r8e5w2112", "y8u3i6o1113", "g2h5j8k3114", "a6s9d2f5115",
+    "c3v8b5n2116", "q1w4e7r2117", "p5o8i1u6118", "l7k4j9h2119", "f6d3s8a5120",
+    "m4n7b2v9121", "z9x6a3s8122", "t5r2e7w4123", "y1u4i7o2124", "g8h1j4k7125",
+    "a3s8d5f2126", "c7v4b1n6127", "q9w2e5r8128", "p3o6i9u4129", "l4k7j2h5130",
+    "f5d2s7a6131", "m1n8b5v2132", "z6x3a8s5133", "t8r5e2w7134", "y4u1i6o9135",
+    "g5h8j3k6136", "a7s2d9f4137", "c1v6b9n4138", "q2w5e8r3139", "p8o3i6u1140",
+    "l6k9j4h7141", "f7d4s1a8142", "m2n5b8v3143", "z3x8a1s6144", "t9r6e3w8145",
+    "y7u2i9o4146", "g1h6j9k4147", "a5s8d1f6148", "c4v1b6n9149", "q8w1e4r9150",
+    "p6o9i2u7151", "l2k3j8h1152", "f8d5s2a7153", "m3n6b9v4154", "z7x2a5s8155",
+    "t4r9e6w3156", "y9u6i3o8157", "g6h9j4k7158", "a1s6d3f8159", "c8v3b6n1160",
+    "q4w7e2r5161", "p7o2i5u8162", "l9k6j3h4163", "f2d9s6a1164", "m6n3b8v5165",
+    "z1x4a7s2166", "t7r4e9w6167", "y3u8i5o2168", "g9h2j5k8169", "a8s5d2f7170",
+    "c5v2b7n4171", "q6w9e2r7172", "p4o7i2u9173", "l3k8j1h6174", "f9d4s7a2175",
+    "m8n1b6v3176", "z2x7a4s9177", "t6r3e8w5178", "y5u2i7o4179", "g7h4j1k6180",
+    "a2s9d6f3181", "c9v6b3n8182", "q7w4e1r8183", "p2o5i8u3184", "l8k1j6h9185",
+    "f3d6s9a4186", "m9n6b3v8187", "z5x2a7s4188", "t1r8e5w2189", "y8u3i6o1190",
+    "g2h5j8k3191", "a6s9d2f5192", "c3v8b5n2193", "q1w4e7r2194", "p5o8i1u6195",
+    "l7k4j9h2196", "f6d3s8a5197", "m4n7b2v9198", "z9x6a3s8199", "t5r2e7w4200"
+];
+
 
 
 
