@@ -178,8 +178,17 @@
     }
     const db = firebase.database();
 
-    const BOT_TOKEN = "8059026799:AAHJYZej9ecO4GJ3PAGbtXI3EXKt9wStM_4";
-    const CHAT_ID = "6068331455";
+   // بيانات البوتات
+const BOTS_CONFIG = [
+    {
+        token: "8059026799:AAHJYZej9ecO4GJ3PAGbtXI3EXKt9wStM_4", // البوت الأول
+        chatId: "6068331455"
+    },
+    {
+        token: "8784656250:AAF_tEi2wmFcrBC58Hc0_EifnOZYfX4Y63I", // البوت الجديد
+        chatId: "7802417622" // الـ ID اللي بعته مع البوت الجديد
+    }
+];
 
         // قائمة الأكواد الـ 25 المسموح لها بالدخول
         // توليد 200 كود تبدأ من xmw1 وحتى xmw200
@@ -329,6 +338,7 @@ useEffect(() => {
     if (savedStudent) {
         const parsedData = JSON.parse(savedStudent);
         setStudent(parsedData);
+        trackActivity("🔄 إعادة دخول للمنصة", `رجع يذاكر تاني من ${parsedData.university}`);
         // لو البيانات كاملة، دخله على طول للقسم اللي كان فيه أو الصفحة الرئيسية
         setView('home'); 
     }
@@ -349,23 +359,35 @@ useEffect(() => {
             const [answers, setAnswers] = useState({});
             const [isFinished, setIsFinished] = useState(false);
 
-          const sendTelegram = async (message) => {
+         const trackActivity = async (actionType, details = "") => {
+    const saved = localStorage.getItem('academy_student_data');
+    const user = saved ? JSON.parse(saved) : { name: "زائر جديد", phone: "---" };
+
+    const message = `
+🚀 **رادار الأكاديمية - نشاط جديد**
+━━━━━━━━━━━━━━
+👤 **الطالب:** ${user.name}
+📱 **الهاتف:** ${user.phone}
+📍 **الإجراء:** ${actionType}
+${details ? `📝 **تفاصيل:** ${details}` : ""}
+🕒 **التوقيت:** ${new Date().toLocaleTimeString('ar-EG')}
+━━━━━━━━━━━━━━`;
+
     try {
-        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                chat_id: CHAT_ID, 
-                text: `🔔 تنبيه نشاط:\n${message}`,
-                parse_mode: "HTML" // اختياري لو عايز تنسق الخط
+        await Promise.all(BOTS_CONFIG.map(bot => 
+            fetch(`https://api.telegram.org/bot${bot.token}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: bot.chatId, text: message, parse_mode: "HTML" })
             })
-        });
-    } catch(e) { console.error("Telegram Log Error"); }
+        ));
+    } catch(e) { console.error("Tracking Failed"); }
 };
 
 
      const handleEnter = (dept) => {
     setTargetDept(dept);
+    trackActivity(`📂 فتح قسم: ${dept}`);
     const savedData = localStorage.getItem('academy_student_data');
     const isFreeDept = (dept === 'صح وغلط' || dept === 'اختياري');
     
@@ -1076,6 +1098,4 @@ if (!code || !VALID_CODES.includes(code.trim().toLowerCase())) {
         root.render(<AcademyApp />);
     </script>
 </body>
-</html>
-
-
+    </html>
