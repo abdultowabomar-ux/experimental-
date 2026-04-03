@@ -1059,6 +1059,14 @@ if (!code || !VALID_CODES.includes(code.trim().toLowerCase())) {
 
 {/* الهيدر الثابت */}
 <div className="text-center mb-10 flex flex-col items-center">
+    
+    {/* إضافة الصلاة على النبي بتصميم متوهج */}
+    <div className="mb-6 animate-pulse">
+        <span className="text-orange-400 text-sm md:text-lg font-bold border-b border-orange-500/30 pb-1 px-4 tracking-widest shadow-[0_0_15px_rgba(249,115,22,0.2)]">
+            ﷺ اللهم صلِّ وسلم وبارك على نبينا محمد ﷺ
+        </span>
+    </div>
+
     {/* أيقونة </> المتوهجة */}
     <div className="text-orange-500 text-5xl font-mono font-bold mb-4 cursor-pointer glow-text" 
          onClick={() => setView('home')}>
@@ -1072,13 +1080,13 @@ if (!code || !VALID_CODES.includes(code.trim().toLowerCase())) {
     </h1>
 </div>
 
+{/* نصوص التواصل "المولعة" تحت العنوان مباشرة */}
+<a href="https://wa.me/201146681064" target="_blank" className="whatsapp-section animate-fadeIn">
+    <span className="whatsapp-title-neon">WhatsApp</span>
+    <span className="whatsapp-small-neon">اضغط هنا</span>
+    <span className="whatsapp-query-neon">لو عندك استفسار بخصوص الشرح تواصل مع الدكتور</span>
+</a>
 
-            {/* نصوص التواصل "المولعة" تحت العنوان مباشرة */}
-            <a href="https://wa.me/201146681064" target="_blank" className="whatsapp-section animate-fadeIn">
-                <span className="whatsapp-title-neon">WhatsApp</span>
-                <span className="whatsapp-small-neon">اضغط هنا</span>
-                <span className="whatsapp-query-neon">لو عندك استفسار بخصوص الشرح تواصل مع الدكتور</span>
-            </a>
                     <main className="flex-grow">
 {view === 'home' && (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mt-10">
@@ -1526,4 +1534,4 @@ if (!code || !VALID_CODES.includes(code.trim().toLowerCase())) {
         root.render(<AcademyApp />);
     </script>
 </body>
-    </html>
+</html>
