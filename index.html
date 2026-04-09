@@ -311,9 +311,8 @@ const BOTS_CONFIG = [
         // قائمة الأكواد الـ 25 المسموح لها بالدخول
         // توليد 200 كود تبدأ من xmw1 وحتى xmw200
 // توليد 200 كود تبدأ من xmw1 وحتى xmw200
-const VALID_CODES = [];
-    ​
-
+// توليد 200 كود تبدأ من xmw1 وحتى xmw200
+const VALID_CODES = Array.from({ length: 200 }, (_, i) => `xmw${i + 1}`);
 
 
         const questionsDB = {
