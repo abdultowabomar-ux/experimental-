@@ -715,10 +715,13 @@ const VALID_CODES = ["1a7f3k9x1",
             const [showLogin, setShowLogin] = useState(false);
             const [targetDept, setTargetDept] = useState('');
             const [showNewExamModal, setShowNewExamModal] = useState(false);
+            const [kickReason, setKickReason] = useState('');
+            
 
        const [isLoading, setIsLoading] = useState(true);
 const [loadingPhase, setLoadingPhase] = useState('encrypting');
 const [isFreeMode, setIsFreeMode] = useState(false);
+
 
 
 const [student, setStudent] = useState({ name: '', level: '', phone: '', code: '', university: '' });
@@ -726,7 +729,6 @@ const [showAppModal, setShowAppModal] = useState(false);
 
 const [showDevCard, setShowDevCard] = useState(false);
 useEffect(() => {
-    // 1. محاولة استعادة بيانات الطالب من ذاكرة المتصفح
     const savedStudent = localStorage.getItem('academy_student_data');
     
     if (savedStudent) {
@@ -734,24 +736,24 @@ useEffect(() => {
         setStudent(parsedData);
         trackActivity("🔄 إعادة دخول للمنصة", `رجع يذاكر تاني من ${parsedData.university}`);
         
-        // 2. نظام المراقبة والطرد اللحظي (Real-time Protection)
         if (parsedData.code) {
             const userStatusRef = db.ref('academy_codes/' + parsedData.code);
             
-            // استخدام .on لضمان مراقبة التغيير في اللحظة التي تضغط فيها "حظر" من لوحة التحكم
+            // مراقبة الحظر اللحظي
             userStatusRef.on('value', (snapshot) => {
                 const data = snapshot.val();
                 if (data && data.status === 'kicked') {
-                    alert(`⚠️ تم تعليق حسابك!\nالسبب: ${data.kickReason || "مخالفة الشروط"}`);
+                    setKickReason(data.kickReason || "مخالفة الشروط");
                     localStorage.removeItem('academy_student_data');
-                    window.location.reload(); // طرد وتصفير الصفحة فوراً
+                    setView('banned'); // الانتقال لصفحة الحظر بدلاً من alert و reload
                 }
             });
         }
-
-        // توجيه الطالب للرئيسية طالما بياناته موجودة
-        setView('home'); 
+        
+        setView('home');
     }
+    
+    // ... باقي الكود (مراحل التحميل، إلخ)
 
     // 3. مراحل التحميل (Loading Phases)
     setTimeout(() => setLoadingPhase('logo-entry'), 3000);
@@ -850,26 +852,32 @@ const startNewPdfQuiz = (type) => {
          
         // ... الحالات (States) الموجودة مسبقاً ...
 const finalizeLogin = async () => {
-    const { name, level, phone, code, university } = student;
+    // 1. استخراج وتنظيف البيانات الأساسية
+    const name = student.name?.trim();
+    const level = student.level;
+    const phone = student.phone?.trim();
+    const code = student.code?.trim().toLowerCase();
+    const university = student.university;
+    
 
-    // 1. التحقق من البيانات الأساسية (إلزامية للجميع)
-    if (!name.trim() || !level || !phone || !university) {
+    // التحقق من الحقول الإلزامية
+    if (!name || !level || !phone || !university) {
         alert("⚠️ فضلاً يا بطل.. أكمل جميع البيانات للمتابعة!");
         return;
     }
 
     // 2. منطق التحقق (كود التفعيل vs الدخول المجاني)
     if (!isFreeMode) {
-        // تعديل بسيط داخل finalizeLogin لزيادة الدقة
-        if (!code || !VALID_CODES.includes(code.trim().toLowerCase())) { 
+        // التحقق من وجود الكود وصحته مبدئياً
+        if (!code || !VALID_CODES.includes(code)) { 
             alert("❌ كود التفعيل غير صحيح أو مطلوب للوصول لهذا القسم!");
             return;
         }
         
-        // بروتوكول حماية الجهاز وربطه بالكود في Firebase
+        // بروتوكول معرف الجهاز (Device Fingerprint)
         let deviceIdentifier = localStorage.getItem('academy_device_id');
         if (!deviceIdentifier) {
-            deviceIdentifier = 'dev_' + Math.random().toString(36).substr(2, 9);
+            deviceIdentifier = 'dev_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
             localStorage.setItem('academy_device_id', deviceIdentifier);
         }
         
@@ -878,20 +886,20 @@ const finalizeLogin = async () => {
             const snapshot = await codeRef.once('value');
             const data = snapshot.val();
 
-            // --- التعديل الجديد: التحقق من حالة الطرد (Kicked) ---
-            if (data && data.status === 'kicked') {
-                alert(`🚫 تم حظر دخولك!\nالسبب: ${data.kickReason || "مخالفة شروط الأكاديمية"}\n\nيرجى التواصل مع الدعم الفني.`);
-                return;
-            }
+            if (data) {
+                // أ- التحقق من حالة الطرد (Kicked)
+                if (data.status === 'kicked') {
+                    alert(`🚫 تم حظر دخولك!\nالسبب: ${data.kickReason || "مخالفة شروط الأكاديمية"}\n\nيرجى التواصل مع الدعم الفني.`);
+                    return;
+                }
 
-            // منع استخدام الكود على أكثر من جهاز
-            if (data && data.deviceId !== deviceIdentifier) {
-                alert("⚠️ هذا الكود مفعل بالفعل على جهاز آخر!");
-                return;
-            }
-
-            // إذا كان الكود مستخدماً لأول مرة، نسجله في قاعدة البيانات
-            if (!data) {
+                // ب- منع استخدام الكود على أكثر من جهاز
+                if (data.deviceId && data.deviceId !== deviceIdentifier) {
+                    alert("⚠️ هذا الكود مفعل بالفعل على جهاز آخر!");
+                    return;
+                }
+            } else {
+                // ج- إذا كان الكود جديداً تماماً (تفعيل لأول مرة)
                 await codeRef.set({
                     isUsed: true,
                     deviceId: deviceIdentifier,
@@ -900,18 +908,19 @@ const finalizeLogin = async () => {
                     level: level,
                     university: university,
                     useDate: new Date().toLocaleString('ar-EG'),
-                    status: 'active' // الحالة الافتراضية عند التفعيل لأول مرة
+                    status: 'active'
                 });
             }
         } catch (error) {
             console.error("Firebase Error:", error);
-            alert("⚠️ عذراً، حدث خطأ في الاتصال بالخادم. حاول مجدداً.");
+            alert("⚠️ عذراً، حدث خطأ في الاتصال بالسيرفر. تأكد من الإنترنت وحاول مجدداً.");
             return;
         }
     }
 
-    // 3. حفظ جلسة الطالب محلياً
-    localStorage.setItem('academy_student_data', JSON.stringify(student));
+    // 3. حفظ جلسة الطالب محلياً لضمان بقاء الدخول
+    const sessionData = { ...student, loginDate: new Date().getTime() };
+    localStorage.setItem('academy_student_data', JSON.stringify(sessionData));
     
     // 4. إرسال تقرير الدخول إلى تليجرام (Log)
     const accessType = isFreeMode ? "🆓 دخول مجاني" : "🔑 دخول بكود تفعيل";
@@ -924,17 +933,18 @@ const finalizeLogin = async () => {
 🏛️ **الجامعة:** ${university}
 🎓 **الفرقة:** ${level}
 🔑 **الكود:** ${isFreeMode ? "بدون كود" : code}
-📍 **القسم المستهدف:** ${targetDept}
+📍 **القسم:** ${targetDept}
+📱 **الجهاز:** \`${localStorage.getItem('academy_device_id')}\`
 ━━━━━━━━━━━━`;
 
     sendTelegram(logMessage);
 
-    // 5. التوجيه النهائي
+    // 5. التوجيه النهائي وتحديث الواجهة
     alert(isFreeMode ? "✅ استمتع بالاختبار يا بطل!" : "✅ تم تفعيل الكود بنجاح.. نورت الأكاديمية");
     
     setShowLogin(false);
     
-    // التوجيه بناءً على القسم
+    // التوجيه الديناميكي
     if (targetDept === 'شرح') {
         setView('lessons');
     } else {
@@ -943,7 +953,7 @@ const finalizeLogin = async () => {
 };
 
 
-        // 2. استبدل دالة finalizeLogin القديمة بهذه النسخة المحدثة
+   // 2. استبدل دالة finalizeLogin القديمة بهذه النسخة المحدثة
        
  // تأكد من وجود هذا القوس لإغلاق الدالة
             const prepareQuiz = (type) => {
@@ -1277,6 +1287,7 @@ const finalizeLogin = async () => {
                     <main className="flex-grow">
 {view === 'home' && (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mt-10">
+   
         
 {/* البطاقة المحدثة - للعرض فقط (بدون ضغط) */}
 <div className="md:col-span-3 group">
@@ -1490,6 +1501,35 @@ const finalizeLogin = async () => {
         </button>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+         {view === 'banned' && (
+    <div className="h-screen flex items-center justify-center p-4 bg-[#050a14]">
+        <div className="glass p-8 rounded-[40px] border-2 border-red-500/50 max-w-md w-full text-center shadow-[0_0_50px_rgba(239,68,68,0.2)]">
+            <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-red-500/30">
+                <i className="fas fa-user-slash text-3xl text-red-500 animate-pulse"></i>
+            </div>
+            
+            <h2 className="text-2xl font-black text-white mb-2">تم تعليق حسابك!</h2>
+            <p className="text-gray-400 text-sm mb-6">لقد تم رصد مخالفة أدت إلى حظر وصولك للمنصة.</p>
+            
+            <div className="bg-red-500/5 border border-red-500/20 p-4 rounded-2xl mb-8">
+                <p className="text-[10px] text-red-400 font-bold uppercase tracking-widest mb-1">سبب الحظر المرسل:</p>
+                <p className="text-white font-bold">{kickReason}</p>
+            </div>
+
+            <button 
+                onClick={() => window.location.reload()} 
+                className="w-full bg-white text-black py-4 rounded-2xl font-black hover:bg-gray-200 transition"
+            >
+                العودة لصفحة تسجيل الدخول
+            </button>
+            
+            <p className="mt-6 text-[10px] text-gray-500">
+                إذا كنت تعتقد أن هذا خطأ، يرجى التواصل مع الدعم الفني للأكاديمية.
+            </p>
+        </div>
+    </div>
+)}
+
             
             {/* --- المحاضرة الأولى (بتنسيق الحماية الجديد) --- */}
             <div className="glass p-4 rounded-3xl relative overflow-hidden group">
@@ -1725,4 +1765,4 @@ const finalizeLogin = async () => {
         root.render(<AcademyApp />);
     </script>
 </body>
-</html>
+        </html>
