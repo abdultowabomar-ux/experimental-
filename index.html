@@ -1501,35 +1501,7 @@ const finalizeLogin = async () => {
         </button>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
-         {view === 'banned' && (
-    <div className="h-screen flex items-center justify-center p-4 bg-[#050a14]">
-        <div className="glass p-8 rounded-[40px] border-2 border-red-500/50 max-w-md w-full text-center shadow-[0_0_50px_rgba(239,68,68,0.2)]">
-            <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-red-500/30">
-                <i className="fas fa-user-slash text-3xl text-red-500 animate-pulse"></i>
-            </div>
-            
-            <h2 className="text-2xl font-black text-white mb-2">تم تعليق حسابك!</h2>
-            <p className="text-gray-400 text-sm mb-6">لقد تم رصد مخالفة أدت إلى حظر وصولك للمنصة.</p>
-            
-            <div className="bg-red-500/5 border border-red-500/20 p-4 rounded-2xl mb-8">
-                <p className="text-[10px] text-red-400 font-bold uppercase tracking-widest mb-1">سبب الحظر المرسل:</p>
-                <p className="text-white font-bold">{kickReason}</p>
-            </div>
-
-            <button 
-                onClick={() => window.location.reload()} 
-                className="w-full bg-white text-black py-4 rounded-2xl font-black hover:bg-gray-200 transition"
-            >
-                العودة لصفحة تسجيل الدخول
-            </button>
-            
-            <p className="mt-6 text-[10px] text-gray-500">
-                إذا كنت تعتقد أن هذا خطأ، يرجى التواصل مع الدعم الفني للأكاديمية.
-            </p>
-        </div>
-    </div>
-)}
-
+        
             
             {/* --- المحاضرة الأولى (بتنسيق الحماية الجديد) --- */}
             <div className="glass p-4 rounded-3xl relative overflow-hidden group">
@@ -1672,6 +1644,34 @@ const finalizeLogin = async () => {
         </div>
     </div>
 )}
+ {view === 'banned' && (
+    <div className="h-screen flex items-center justify-center p-4 bg-[#050a14]">
+        <div className="glass p-8 rounded-[40px] border-2 border-red-500/50 max-w-md w-full text-center shadow-[0_0_50px_rgba(239,68,68,0.2)]">
+            <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-red-500/30">
+                <i className="fas fa-user-slash text-3xl text-red-500 animate-pulse"></i>
+            </div>
+            
+            <h2 className="text-2xl font-black text-white mb-2">تم تعليق حسابك!</h2>
+            <p className="text-gray-400 text-sm mb-6">لقد تم رصد مخالفة أدت إلى حظر وصولك للمنصة.</p>
+            
+            <div className="bg-red-500/5 border border-red-500/20 p-4 rounded-2xl mb-8">
+                <p className="text-[10px] text-red-400 font-bold uppercase tracking-widest mb-1">سبب الحظر المرسل:</p>
+                <p className="text-white font-bold">{kickReason}</p>
+            </div>
+
+            <button 
+                onClick={() => window.location.reload()} 
+                className="w-full bg-white text-black py-4 rounded-2xl font-black hover:bg-gray-200 transition"
+            >
+                العودة لصفحة تسجيل الدخول
+            </button>
+            
+            <p className="mt-6 text-[10px] text-gray-500">
+                إذا كنت تعتقد أن هذا خطأ، يرجى التواصل مع الدعم الفني للأكاديمية.
+            </p>
+        </div>
+    </div>
+)}
 
 
                     
@@ -1765,4 +1765,4 @@ const finalizeLogin = async () => {
         root.render(<AcademyApp />);
     </script>
 </body>
-        </html>
+    </html>
