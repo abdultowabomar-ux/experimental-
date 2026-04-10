@@ -1644,35 +1644,75 @@ const finalizeLogin = async () => {
         </div>
     </div>
 )}
- {view === 'banned' && (
-    <div className="h-screen flex items-center justify-center p-4 bg-[#050a14]">
-        <div className="glass p-8 rounded-[40px] border-2 border-red-500/50 max-w-md w-full text-center shadow-[0_0_50px_rgba(239,68,68,0.2)]">
-            <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-red-500/30">
-                <i className="fas fa-user-slash text-3xl text-red-500 animate-pulse"></i>
+{view === 'banned' && (
+    <div className="fixed inset-0 z-[9999] h-screen w-screen flex items-center justify-center p-4 bg-[#050a14] overflow-hidden select-none">
+        
+        {/* الحاوية الرئيسية بتأثير الزجاج والفخامة */}
+        <div className="glass p-10 rounded-[50px] border-2 border-red-900/20 max-w-md w-full text-center shadow-[0_0_150px_rgba(239,68,68,0.1)] relative overflow-hidden">
+            
+            {/* تأثير إضاءة خلفي خافت جداً */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 bg-red-500/5 blur-[60px] rounded-full"></div>
+
+            {/* --- بداية تصميم الأيقونة الجذاب --- */}
+            <div className="relative mb-10 mt-2 flex items-center justify-center">
+                {/* 1. الحافة الخارجية العريضة والمتدرجة (Neumorphic Glow) */}
+                <div className="absolute w-28 h-28 rounded-full bg-gradient-to-r from-red-600/30 to-red-900/40 p-1 blur-sm shadow-[inset_0_0_15px_rgba(239,68,68,0.3)]"></div>
+                
+                {/* 2. الحاوية الداخلية (العمق) */}
+                <div className="relative w-24 h-24 rounded-full bg-[#070e1b] flex items-center justify-center border-4 border-red-950 shadow-[5px_5px_20px_rgba(0,0,0,0.8),-5px,-5px,-20px,rgba(255,255,255,0.01)]">
+                    
+                    {/* 3. تأثير الإضاءة العلوي (Highlight) */}
+                    <div className="absolute top-0 left-0 w-full h-full rounded-full bg-gradient-to-b from-white/10 to-transparent opacity-60"></div>
+                    
+                    {/* 4. الأيقونة الأساسية: مستخدم عليه قفل (تصميم جذاب) */}
+                    <div className="relative text-red-500 flex items-center justify-center">
+                        <i className="fas fa-user-circle text-5xl"></i>
+                        <div className="absolute -bottom-1 -right-1 bg-red-600 w-8 h-8 rounded-full border-4 border-[#070e1b] flex items-center justify-center shadow-lg">
+                            <i className="fas fa-lock text-white text-xs"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
+            {/* --- نهاية تصميم الأيقونة الجذاب --- */}
             
-            <h2 className="text-2xl font-black text-white mb-2">تم تعليق حسابك!</h2>
-            <p className="text-gray-400 text-sm mb-6">لقد تم رصد مخالفة أدت إلى حظر وصولك للمنصة.</p>
+            <h2 className="text-3xl font-black text-white mb-2 tracking-tighter glow-text">الوصول مقيد</h2>
+            <p className="text-gray-500 text-sm mb-8 leading-relaxed">
+                تم تعليق صلاحية دخول هذا الجهاز إلى المنصة بشكل نهائي بسبب مخالفة بنود الاستخدام.
+            </p>
             
-            <div className="bg-red-500/5 border border-red-500/20 p-4 rounded-2xl mb-8">
-                <p className="text-[10px] text-red-400 font-bold uppercase tracking-widest mb-1">سبب الحظر المرسل:</p>
-                <p className="text-white font-bold">{kickReason}</p>
+            {/* صندوق سبب الحظر */}
+            <div className="bg-black/40 border border-red-500/20 p-5 rounded-3xl mb-7 relative overflow-hidden">
+                {/* خط حركة بسيط فوق الصندوق */}
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-red-500 to-transparent opacity-40"></div>
+                <p className="text-[10px] text-red-500 font-black uppercase tracking-[0.2em] mb-2">إشعار الإدارة:</p>
+                <p className="text-gray-200 font-bold text-sm italic">" {kickReason || "مخالفة سياسات الاستخدام" } "</p>
             </div>
 
-            <button 
-                onClick={() => window.location.reload()} 
-                className="w-full bg-white text-black py-4 rounded-2xl font-black hover:bg-gray-200 transition"
-            >
-                العودة لصفحة تسجيل الدخول
-            </button>
+            {/* قسم التواصل في حال الخطأ */}
+            <div className="pt-6 border-t border-white/5 relative">
+                <p className="text-gray-400 text-[12px] mb-5">
+                    إذا كنت تعتقد أن هذا الحظر تم عن طريق الخطأ، تواصل معنا:
+                </p>
+                
+                <a 
+                    href="https://wa.me/201202763155" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-3 w-full bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#25D366] py-4 rounded-full font-bold transition-all border border-[#25D366]/30 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(37,211,102,0.2)]"
+                >
+                    <i className="fab fa-whatsapp text-2xl"></i>
+                    <span>مراسلة الدعم الفني</span>
+                </a>
+            </div>
             
-            <p className="mt-6 text-[10px] text-gray-500">
-                إذا كنت تعتقد أن هذا خطأ، يرجى التواصل مع الدعم الفني للأكاديمية.
-            </p>
+            <div className="mt-8">
+                <p className="text-[9px] text-gray-700 uppercase font-bold tracking-[0.3em]">
+                    System ID: {Math.random().toString(36).substr(2, 9).toUpperCase()}
+                </p>
+            </div>
         </div>
     </div>
 )}
-
 
                     
 
