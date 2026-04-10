@@ -726,24 +726,49 @@ const [showAppModal, setShowAppModal] = useState(false);
 
 const [showDevCard, setShowDevCard] = useState(false);
 useEffect(() => {
-    // محاولة استعادة بيانات الطالب من ذاكرة المتصفح
+    // 1. محاولة استعادة بيانات الطالب من ذاكرة المتصفح
     const savedStudent = localStorage.getItem('academy_student_data');
+    
     if (savedStudent) {
         const parsedData = JSON.parse(savedStudent);
         setStudent(parsedData);
         trackActivity("🔄 إعادة دخول للمنصة", `رجع يذاكر تاني من ${parsedData.university}`);
-        // لو البيانات كاملة، دخله على طول للقسم اللي كان فيه أو الصفحة الرئيسية
+        
+        // 2. نظام المراقبة والطرد اللحظي (Real-time Protection)
+        if (parsedData.code) {
+            const userStatusRef = db.ref('academy_codes/' + parsedData.code);
+            
+            // استخدام .on لضمان مراقبة التغيير في اللحظة التي تضغط فيها "حظر" من لوحة التحكم
+            userStatusRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data && data.status === 'kicked') {
+                    alert(`⚠️ تم تعليق حسابك!\nالسبب: ${data.kickReason || "مخالفة الشروط"}`);
+                    localStorage.removeItem('academy_student_data');
+                    window.location.reload(); // طرد وتصفير الصفحة فوراً
+                }
+            });
+        }
+
+        // توجيه الطالب للرئيسية طالما بياناته موجودة
         setView('home'); 
     }
 
-    // الـ Loading Phases القديمة بتاعتك
+    // 3. مراحل التحميل (Loading Phases)
     setTimeout(() => setLoadingPhase('logo-entry'), 3000);
     setTimeout(() => setLoadingPhase('logo-exit'), 6000);
     setTimeout(() => {
         setIsLoading(false);
-        // لو الطالب مسجل دخول فعلاً، مش لازم نظهر كارت المطور كل مرة
+        // إظهار كارت المطور فقط لو الطالب غير مسجل دخول
         if(!savedStudent) setShowDevCard(true);
     }, 7500);
+
+    // تنظيف المراقبة عند إغلاق المكون (Clean up)
+    return () => {
+        if (savedStudent) {
+            const parsedData = JSON.parse(savedStudent);
+            if (parsedData.code) db.ref('academy_codes/' + parsedData.code).off();
+        }
+    };
 }, []);
 
 
@@ -835,12 +860,8 @@ const finalizeLogin = async () => {
 
     // 2. منطق التحقق (كود التفعيل vs الدخول المجاني)
     if (!isFreeMode) {
-        // التحقق من وجود الكود وصحته في القائمة المحلية
-      // تعديل بسيط داخل finalizeLogin لزيادة الدقة
-if (!code || !VALID_CODES.includes(code.trim().toLowerCase())) { 
-    // ... 
-
-
+        // تعديل بسيط داخل finalizeLogin لزيادة الدقة
+        if (!code || !VALID_CODES.includes(code.trim().toLowerCase())) { 
             alert("❌ كود التفعيل غير صحيح أو مطلوب للوصول لهذا القسم!");
             return;
         }
@@ -857,6 +878,12 @@ if (!code || !VALID_CODES.includes(code.trim().toLowerCase())) {
             const snapshot = await codeRef.once('value');
             const data = snapshot.val();
 
+            // --- التعديل الجديد: التحقق من حالة الطرد (Kicked) ---
+            if (data && data.status === 'kicked') {
+                alert(`🚫 تم حظر دخولك!\nالسبب: ${data.kickReason || "مخالفة شروط الأكاديمية"}\n\nيرجى التواصل مع الدعم الفني.`);
+                return;
+            }
+
             // منع استخدام الكود على أكثر من جهاز
             if (data && data.deviceId !== deviceIdentifier) {
                 alert("⚠️ هذا الكود مفعل بالفعل على جهاز آخر!");
@@ -872,7 +899,8 @@ if (!code || !VALID_CODES.includes(code.trim().toLowerCase())) {
                     studentPhone: phone,
                     level: level,
                     university: university,
-                    useDate: new Date().toLocaleString('ar-EG')
+                    useDate: new Date().toLocaleString('ar-EG'),
+                    status: 'active' // الحالة الافتراضية عند التفعيل لأول مرة
                 });
             }
         } catch (error) {
@@ -882,7 +910,7 @@ if (!code || !VALID_CODES.includes(code.trim().toLowerCase())) {
         }
     }
 
-    // 3. حفظ جلسة الطالب محلياً (لو تم مسح الكاش سيطلب البيانات مرة أخرى)
+    // 3. حفظ جلسة الطالب محلياً
     localStorage.setItem('academy_student_data', JSON.stringify(student));
     
     // 4. إرسال تقرير الدخول إلى تليجرام (Log)
@@ -913,6 +941,7 @@ if (!code || !VALID_CODES.includes(code.trim().toLowerCase())) {
         setView('exams');
     }
 };
+
 
         // 2. استبدل دالة finalizeLogin القديمة بهذه النسخة المحدثة
        
@@ -1696,4 +1725,4 @@ if (!code || !VALID_CODES.includes(code.trim().toLowerCase())) {
         root.render(<AcademyApp />);
     </script>
 </body>
-    </html>
+</html>
