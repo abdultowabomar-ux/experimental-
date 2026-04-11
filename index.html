@@ -920,8 +920,24 @@ const finalizeLogin = async () => {
 
     // 3. حفظ جلسة الطالب محلياً لضمان بقاء الدخول
     const sessionData = { ...student, loginDate: new Date().getTime() };
-    localStorage.setItem('academy_student_data', JSON.stringify(sessionData));
-    
+
+localStorage.setItem('academy_student_data', JSON.stringify(sessionData));
+
+// ⭐ الحل الرئيسي
+setStudent(sessionData);
+
+// ⭐ تأخير بسيط لتثبيت الحالة
+setTimeout(() => {
+
+    setShowLogin(false);
+
+    if (targetDept === 'شرح') {
+        setView('lessons');
+    } else {
+        setView('exams');
+    }
+
+}, 100);
     // 4. إرسال تقرير الدخول إلى تليجرام (Log)
     const accessType = isFreeMode ? "🆓 دخول مجاني" : "🔑 دخول بكود تفعيل";
     const logMessage = `
@@ -1805,4 +1821,4 @@ const finalizeLogin = async () => {
         root.render(<AcademyApp />);
     </script>
 </body>
-    </html>
+</html>
