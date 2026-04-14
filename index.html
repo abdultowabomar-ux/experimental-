@@ -515,7 +515,8 @@ const VALID_CODES = ["1a7f3k9x1",
 "198m4n7b2v198",
 "199z9x6a3s199",
 "200t5r2e7w200",
-"marwa1234"
+"marwa1234",
+"5555"
     
 ];
 
@@ -1516,29 +1517,28 @@ setTimeout(() => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
         
             
-{/* --- المحاضرة الأولى (تنسيق إخفاء ضغوطات يوتيوب) --- */}
+{/* --- المحاضرة الأولى (بتنسيق الحماية المتقدم) --- */}
 <div className="glass p-4 rounded-3xl relative overflow-hidden group">
     <div className="absolute top-0 right-0 w-1 h-full bg-blue-500"></div>
     <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
         <i className="fas fa-video ml-2 text-blue-500"></i> المحاضرة الأولى (تأسيس)
     </h4>
     
-    {/* حاوية الفيديو مع إخفاء الحواف */}
-    <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
+    <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black"
+         onContextMenu={(e) => e.preventDefault()}>
         
-        {/* طبقة حماية تمنع الضغط على الروابط العلوية في يوتيوب */}
-        <div className="absolute top-0 left-0 w-full h-[60px] z-20 bg-transparent cursor-default"></div>
-
-        {/* الطبقة الجديدة: حماية الزاوية السفلية اليسرى (شعار يوتيوب) */}
-        <div className="absolute bottom-0 left-0 w-[100px] h-[50px] z-20 bg-transparent cursor-default"></div>
+        {/* طبقات حماية ديناميكية (تغطي 15% من الأعلى والأسفل لضمان الحجب في Fullscreen) */}
+        <div className="absolute top-0 left-0 w-full h-[15%] z-30 bg-transparent cursor-default"></div>
+        <div className="absolute bottom-0 left-0 w-full h-[15%] z-30 bg-transparent cursor-default"></div>
 
         <iframe 
             className="absolute top-0 left-0 w-full h-full z-10"
-            src="https://www.youtube.com/embed/bS6I0aQnTRA?modestbranding=1&rel=0&showinfo=0&controls=1" 
+            /* إضافة disablekb=1 لتعطيل اختصارات لوحة المفاتيح */
+            src="https://www.youtube.com/embed/bS6I0aQnTRA?modestbranding=1&rel=0&showinfo=0&controls=1&disablekb=1" 
             title="YouTube video player" 
             frameBorder="0" 
             style={{ 
-                transform: 'scale(1.15)', /* تكبير الفيديو لإخفاء العلامات التجارية */
+                transform: 'scale(1.20)', 
                 transformOrigin: 'center' 
             }}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -1550,31 +1550,27 @@ setTimeout(() => {
 
 {/* --- المحاضرة الثانية (بتنسيق الحماية المتقدم) --- */}
 <div className="glass p-4 rounded-3xl relative overflow-hidden group">
-    {/* الخط الجانبي بلون برتقالي لتمييز المحاضرة */}
     <div className="absolute top-0 right-0 w-1 h-full bg-orange-500"></div>
     
     <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
         <i className="fas fa-video ml-2 text-orange-500"></i> المحاضرة الثانية (جديد 🆕)
     </h4>
 
-    <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
+    <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black"
+         onContextMenu={(e) => e.preventDefault()}>
         
-        {/* 1. حماية الجزء العلوي (العنوان والمشاركة) */}
-        <div className="absolute top-0 left-0 w-full h-[60px] z-20 bg-transparent cursor-default"></div>
-
-        {/* 2. حماية الجزء السفلي الأيسر (منع الضغط على شعار YouTube تماماً) */}
-        <div className="absolute bottom-0 left-0 w-[140px] h-[65px] z-20 bg-transparent cursor-default"></div>
-
-        {/* 3. حماية الجزء السفلي الأيمن (أيقونة YouTube المصغرة) */}
-        <div className="absolute bottom-0 right-0 w-[60px] h-[65px] z-20 bg-transparent cursor-default"></div>
+        {/* طبقات حماية ديناميكية (تغطي 15% من الأعلى والأسفل لضمان الحجب في Fullscreen) */}
+        <div className="absolute top-0 left-0 w-full h-[15%] z-30 bg-transparent cursor-default"></div>
+        <div className="absolute bottom-0 left-0 w-full h-[15%] z-30 bg-transparent cursor-default"></div>
 
         <iframe 
             className="absolute top-0 left-0 w-full h-full z-10"
-            src="https://www.youtube.com/embed/OkQ76g96J4w?modestbranding=1&rel=0&showinfo=0&controls=1" 
+            /* إضافة disablekb=1 لتعطيل اختصارات لوحة المفاتيح */
+            src="https://www.youtube.com/embed/OkQ76g96J4w?modestbranding=1&rel=0&showinfo=0&controls=1&disablekb=1" 
             title="YouTube video player" 
             frameBorder="0" 
             style={{ 
-                transform: 'scale(1.18)', /* تكبير لإزاحة الأزرار الأصلية خارج الإطار المرئي */
+                transform: 'scale(1.20)', 
                 transformOrigin: 'center' 
             }}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -1582,40 +1578,51 @@ setTimeout(() => {
         </iframe>
     </div>
 </div>
+
 
             
-            {/* --- فيديوهات حل الأسئلة --- */}
-            <div className="glass p-4 rounded-3xl relative overflow-hidden group md:col-span-2">
-                <div className="absolute top-0 right-0 w-1 h-full bg-green-500"></div>
-                <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
-                    <i className="fas fa-graduation-cap ml-2 text-green-500"></i> فيديوهات حل أسئلة الامتحانات السابقة  📚✍️
-             يتم التحديث باستمرار 😁😍
-                </h4>
-              <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
+{/* --- فيديوهات حل الأسئلة --- */}
+<div className="glass p-4 rounded-3xl relative overflow-hidden group md:col-span-2">
+    <div className="absolute top-0 right-0 w-1 h-full bg-green-500"></div>
+    <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
+        <i className="fas fa-graduation-cap ml-2 text-green-500"></i> فيديوهات حل أسئلة الامتحانات السابقة 📚✍️
+        يتم التحديث باستمرار 😁😍
+    </h4>
+
+    <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black" 
+         onContextMenu={(e) => e.preventDefault()} /* منع القائمة المنسدلة لنسخ الرابط */>
         
-        {/* 1. حماية الجزء العلوي (العنوان والمشاركة) */}
-        <div className="absolute top-0 left-0 w-full h-[60px] z-20 bg-transparent cursor-default"></div>
+        {/* 1. طبقة حماية علوية شفافة: تحجب اسم الفيديو وزر المشاركة */}
+        <div className="absolute top-0 left-0 w-full h-[15%] z-30 bg-transparent cursor-default" 
+             style={{ pointerEvents: 'auto' }}></div>
 
-        {/* 2. حماية الجزء السفلي الأيسر (منع الضغط على شعار YouTube تماماً) */}
-        <div className="absolute bottom-0 left-0 w-[140px] h-[65px] z-20 bg-transparent cursor-default"></div>
+        {/* 2. طبقة حماية سفلية شفافة: تحجب شعار يوتيوب وزر الفتح الخارجي (Watch on YouTube) */}
+        <div className="absolute bottom-0 left-0 w-full h-[15%] z-30 bg-transparent cursor-default" 
+             style={{ pointerEvents: 'auto' }}></div>
 
-        {/* 3. حماية الجزء السفلي الأيمن (أيقونة YouTube المصغرة) */}
-        <div className="absolute bottom-0 right-0 w-[60px] h-[65px] z-20 bg-transparent cursor-default"></div>
+        {/* 3. العلامة المائية الديناميكية (اختياري لكنه رادع قوي) */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40 opacity-20">
+            <span className="text-white text-xs md:text-sm font-bold rotate-12 select-none">
+                محمي بموجب حقوق الملكية
+            </span>
+        </div>
 
         <iframe 
             className="absolute top-0 left-0 w-full h-full z-10"
-            src="https://www.youtube.com/embed/XJWWoht908M?modestbranding=1&rel=0&showinfo=0&controls=1" 
+            src="https://www.youtube.com/embed/XJWWoht908M?modestbranding=1&rel=0&showinfo=0&controls=1&disablekb=1" 
             title="YouTube video player" 
             frameBorder="0" 
             style={{ 
-                transform: 'scale(1.18)', /* تكبير لإزاحة الأزرار الأصلية خارج الإطار المرئي */
+                transform: 'scale(1.20)', /* زيادة التكبير قليلاً لضمان خروج الأزرار تماماً خارج الإطار */
                 transformOrigin: 'center' 
             }}
+            /* ملاحظة: disablekb=1 يمنع استخدام اختصارات لوحة المفاتيح لفتح الفيديو في نافذة جديدة */
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
             allowFullScreen>
         </iframe>
     </div>
 </div>
+
 
 
             {/* قسم الملازم PDF (زي ما هو) */}
@@ -1914,4 +1921,4 @@ setTimeout(() => {
         root.render(<AcademyApp />);
     </script>
 </body>
-</html>
+    </html>
