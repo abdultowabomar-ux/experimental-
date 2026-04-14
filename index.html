@@ -96,7 +96,10 @@ body {
     text-decoration: none;
     transition: transform 0.3s ease;
 }
-
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 .header-contact-link:hover {
     transform: scale(1.05);
 }
@@ -716,6 +719,7 @@ const VALID_CODES = ["1a7f3k9x1",
             const [targetDept, setTargetDept] = useState('');
             const [showNewExamModal, setShowNewExamModal] = useState(false);
             const [kickReason, setKickReason] = useState('');
+            const [isChecking, setIsChecking] = React.useState(false);
             
 
        const [isLoading, setIsLoading] = useState(true);
@@ -852,6 +856,7 @@ const startNewPdfQuiz = (type) => {
          
         // ... الحالات (States) الموجودة مسبقاً ...
 const finalizeLogin = async () => {
+    setIsChecking(true);
     // 1. استخراج وتنظيف البيانات الأساسية
     const name = student.name?.trim();
     const level = student.level;
@@ -925,6 +930,7 @@ localStorage.setItem('academy_student_data', JSON.stringify(sessionData));
 
 // ⭐ الحل الرئيسي
 setStudent(sessionData);
+setIsChecking(false);
 
 // ⭐ تأخير بسيط لتثبيت الحالة
 setTimeout(() => {
@@ -1354,53 +1360,44 @@ setTimeout(() => {
 </div>
 
 {/* كارت الشرح الرئيسي الموحد */}
-        <div className="glass p-6 md:p-10 rounded-[40px] relative overflow-hidden border border-white/5 shadow-2xl">
-            {/* خط الحركة العلوي */}
-            <div className="absolute top-0 left-0 w-full h-1.5 moving-line"></div>
-            
-            {/* 1. قسم النصوص (تصغير الأحجام) */}
-            <div className="text-center mb-8">
-                <h3 className="text-2xl md:text-3xl font-black text-white mb-4 leading-tight">
-                    📚 كل ما تحتاجه معرفته عن <br/>
-                    <span className="bg-gradient-to-r from-orange-500 to-yellow-300 bg-clip-text text-transparent">المعادلة الفرنسية</span>
-                </h3>
-                
-                <p className="text-gray-400 text-base md:text-lg font-bold leading-relaxed max-w-2xl mx-auto">
-                    التكميلية (الفرنسية) لطلبة كلية الحقوق مجلس الأعلى للجامعات.. 📝 <br/>
-                    <span className="text-blue-400/80 text-sm md:text-base">كل تفاصيل الاشتراك سواء أونلاين أو سنتر.</span>
-                </p>
-            </div>
-
-{/* 2. قسم الفيديو (تعديل الحماية وتفعيل الفل سكرين) */}
-<div className="relative w-full max-w-3xl mx-auto aspect-video rounded-[30px] overflow-hidden border-2 border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] bg-black group">
+<div className="glass p-6 md:p-10 rounded-[40px] relative overflow-hidden border border-white/5 shadow-2xl">
+    {/* خط الحركة العلوي */}
+    <div className="absolute top-0 left-0 w-full h-1.5 moving-line"></div>
     
-    {/* طبقة حماية علوية (تمنع الضغط على أيقونة فتح الرابط الخارجي) */}
-    {/* قمنا بزيادة الـ z-index واستخدام pointer-events: auto لضمان حجب النقرات */}
-    <div className="absolute top-0 right-0 w-full h-[60px] z-[30] bg-transparent cursor-default" 
-         style={{ pointerEvents: 'auto' }}
-         onClick={(e) => e.stopPropagation()}>
+    {/* 1. قسم النصوص (تصغير الأحجام) */}
+    <div className="text-center mb-8">
+        <h3 className="text-2xl md:text-3xl font-black text-white mb-4 leading-tight">
+            📚 كل ما تحتاجه معرفته عن <br/>
+            <span className="bg-gradient-to-r from-orange-500 to-yellow-300 bg-clip-text text-transparent">المعادلة الفرنسية</span>
+        </h3>
+        
+        <p className="text-gray-400 text-base md:text-lg font-bold leading-relaxed max-w-2xl mx-auto">
+            التكميلية (الفرنسية) لطلبة كلية الحقوق مجلس الأعلى للجامعات.. 📝 <br/>
+            <span className="text-blue-400/80 text-sm md:text-base">كل تفاصيل الاشتراك سواء أونلاين أو سنتر.</span>
+        </p>
     </div>
 
-    <iframe 
-        src="https://drive.google.com/file/d/15hUdnYDJEevJI74ywloS3YhncwZWEc-i/preview" 
-        className="w-full h-full border-none relative z-10"
-        style={{ 
-            transform: 'scale(1.06)', // زيادة التكبير قليلاً لإخفاء الحواف الأصلية
-            transformOrigin: 'center' 
-        }}
-        /* الخصائص الجوهرية لتفعيل العرض الكامل */
-        allow="autoplay; fullscreen"
-        allowFullScreen={true}
-        webkitallowfullscreen="true" 
-        mozallowfullscreen="true">
-    </iframe>
-    
-    
-    
-    {/* لمسة جمالية: ظل داخلي بسيط ليعطي عمق للكارت */}
-    <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_20px_rgba(0,0,0,0.4)] z-10"></div>
+    {/* 2. قسم الفيديو (تم إلغاء الحماية وتفعيل اليوتيوب المفتوح) */}
+    <div className="relative w-full max-w-3xl mx-auto aspect-video rounded-[30px] overflow-hidden border-2 border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] bg-black group">
+        
+        {/* تم حذف طبقة الحماية العلوية (الـ div الشفاف) للسماح بفتح الفيديو خارجياً */}
+
+        <iframe 
+            src="https://www.youtube.com/embed/VIowisEPIuo?rel=0&modestbranding=0" 
+            className="w-full h-full border-none relative z-10"
+            style={{ 
+                transform: 'scale(1)', // عرض طبيعي بدون تكبير لتظهر أزرار اليوتيوب
+                transformOrigin: 'center' 
+            }}
+            /* تفعيل كافة الصلاحيات للعرض الكامل والتفاعل الحر */
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowFullScreen={true}>
+        </iframe>
+        
+        {/* لمسة جمالية: ظل داخلي بسيط ليعطي عمق للكارت */}
+        <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_20px_rgba(0,0,0,0.4)] z-10"></div>
+    </div>
 </div>
-            </div>
 
                             
   <Card 
@@ -1519,39 +1516,73 @@ setTimeout(() => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
         
             
-            {/* --- المحاضرة الأولى (بتنسيق الحماية الجديد) --- */}
-            <div className="glass p-4 rounded-3xl relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-1 h-full bg-blue-500"></div>
-                <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
-                    <i className="fas fa-video ml-2 text-blue-500"></i> المحاضرة الأولى (تأسيس)
-                </h4>
-                {/* حاوية الفيديو المقصوصة */}
-                <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
-                    <iframe 
-                        src="https://drive.google.com/file/d/1VXQEdkFRK5RL_pyr0PtPyAvv1C_rj4yd/preview" 
-                        style={{ width: '100%', height: '100%', border: 'none', transform: 'scale(1.15)', transformOrigin: 'center' }}
-                        allowFullScreen>
-                    </iframe>
-                    {/* طبقة حماية تمنع الضغط على الأزرار العلوية */}
-                    <div className="absolute top-0 left-0 w-full h-[60px] z-50 bg-transparent"></div>
-                </div>
-            </div>
+{/* --- المحاضرة الأولى (تنسيق إخفاء ضغوطات يوتيوب) --- */}
+<div className="glass p-4 rounded-3xl relative overflow-hidden group">
+    <div className="absolute top-0 right-0 w-1 h-full bg-blue-500"></div>
+    <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
+        <i className="fas fa-video ml-2 text-blue-500"></i> المحاضرة الأولى (تأسيس)
+    </h4>
+    
+    {/* حاوية الفيديو مع إخفاء الحواف */}
+    <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
+        
+        {/* طبقة حماية تمنع الضغط على الروابط العلوية في يوتيوب */}
+        <div className="absolute top-0 left-0 w-full h-[60px] z-20 bg-transparent cursor-default"></div>
 
-            {/* --- المحاضرة الثانية (بتنسيق الحماية الجديد) --- */}
-            <div className="glass p-4 rounded-3xl relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-1 h-full bg-orange-500"></div>
-                <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
-                    <i className="fas fa-video ml-2 text-orange-500"></i> المحاضرة الثانية (جديد 🆕)
-                </h4>
-                <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
-                    <iframe 
-                        src="https://drive.google.com/file/d/1sxWK5mPJAnyFhWOYwd_f1gIGnWS7ZBTb/preview" 
-                        style={{ width: '100%', height: '100%', border: 'none', transform: 'scale(1.15)', transformOrigin: 'center' }}
-                        allowFullScreen>
-                    </iframe>
-                    <div className="absolute top-0 left-0 w-full h-[60px] z-50 bg-transparent"></div>
-                </div>
-            </div>
+        {/* الطبقة الجديدة: حماية الزاوية السفلية اليسرى (شعار يوتيوب) */}
+        <div className="absolute bottom-0 left-0 w-[100px] h-[50px] z-20 bg-transparent cursor-default"></div>
+
+        <iframe 
+            className="absolute top-0 left-0 w-full h-full z-10"
+            src="https://www.youtube.com/embed/bS6I0aQnTRA?modestbranding=1&rel=0&showinfo=0&controls=1" 
+            title="YouTube video player" 
+            frameBorder="0" 
+            style={{ 
+                transform: 'scale(1.15)', /* تكبير الفيديو لإخفاء العلامات التجارية */
+                transformOrigin: 'center' 
+            }}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowFullScreen>
+        </iframe>
+    </div>
+</div>
+
+
+{/* --- المحاضرة الثانية (بتنسيق الحماية المتقدم) --- */}
+<div className="glass p-4 rounded-3xl relative overflow-hidden group">
+    {/* الخط الجانبي بلون برتقالي لتمييز المحاضرة */}
+    <div className="absolute top-0 right-0 w-1 h-full bg-orange-500"></div>
+    
+    <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
+        <i className="fas fa-video ml-2 text-orange-500"></i> المحاضرة الثانية (جديد 🆕)
+    </h4>
+
+    <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
+        
+        {/* 1. حماية الجزء العلوي (العنوان والمشاركة) */}
+        <div className="absolute top-0 left-0 w-full h-[60px] z-20 bg-transparent cursor-default"></div>
+
+        {/* 2. حماية الجزء السفلي الأيسر (منع الضغط على شعار YouTube تماماً) */}
+        <div className="absolute bottom-0 left-0 w-[140px] h-[65px] z-20 bg-transparent cursor-default"></div>
+
+        {/* 3. حماية الجزء السفلي الأيمن (أيقونة YouTube المصغرة) */}
+        <div className="absolute bottom-0 right-0 w-[60px] h-[65px] z-20 bg-transparent cursor-default"></div>
+
+        <iframe 
+            className="absolute top-0 left-0 w-full h-full z-10"
+            src="https://www.youtube.com/embed/XJWWoht908M?modestbranding=1&rel=0&showinfo=0&controls=1" 
+            title="YouTube video player" 
+            frameBorder="0" 
+            style={{ 
+                transform: 'scale(1.18)', /* تكبير لإزاحة الأزرار الأصلية خارج الإطار المرئي */
+                transformOrigin: 'center' 
+            }}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowFullScreen>
+        </iframe>
+    </div>
+</div>
+
             
             {/* --- فيديوهات حل الأسئلة --- */}
             <div className="glass p-4 rounded-3xl relative overflow-hidden group md:col-span-2">
@@ -1560,15 +1591,32 @@ setTimeout(() => {
                     <i className="fas fa-graduation-cap ml-2 text-green-500"></i> فيديوهات حل أسئلة الامتحانات السابقة  📚✍️
              يتم التحديث باستمرار 😁😍
                 </h4>
-                <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
-                    <iframe 
-                        src="https://drive.google.com/file/d/1AUIg14J3YECom-sPkuZ83aZpYsglXAsT/preview" 
-                        style={{ width: '100%', height: '100%', border: 'none', transform: 'scale(1.15)', transformOrigin: 'center' }}
-                        allowFullScreen>
-                    </iframe>
-                    <div className="absolute top-0 left-0 w-full h-[60px] z-50 bg-transparent"></div>
-                </div>
-            </div>
+              <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
+        
+        {/* 1. حماية الجزء العلوي (العنوان والمشاركة) */}
+        <div className="absolute top-0 left-0 w-full h-[60px] z-20 bg-transparent cursor-default"></div>
+
+        {/* 2. حماية الجزء السفلي الأيسر (منع الضغط على شعار YouTube تماماً) */}
+        <div className="absolute bottom-0 left-0 w-[140px] h-[65px] z-20 bg-transparent cursor-default"></div>
+
+        {/* 3. حماية الجزء السفلي الأيمن (أيقونة YouTube المصغرة) */}
+        <div className="absolute bottom-0 right-0 w-[60px] h-[65px] z-20 bg-transparent cursor-default"></div>
+
+        <iframe 
+            className="absolute top-0 left-0 w-full h-full z-10"
+            src="https://www.youtube.com/embed/XJWWoht908M?modestbranding=1&rel=0&showinfo=0&controls=1" 
+            title="YouTube video player" 
+            frameBorder="0" 
+            style={{ 
+                transform: 'scale(1.18)', /* تكبير لإزاحة الأزرار الأصلية خارج الإطار المرئي */
+                transformOrigin: 'center' 
+            }}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowFullScreen>
+        </iframe>
+    </div>
+</div>
+
 
             {/* قسم الملازم PDF (زي ما هو) */}
             <div className="glass p-6 rounded-3xl flex items-center justify-between border border-green-500/20 group">
@@ -1728,6 +1776,51 @@ setTimeout(() => {
             </div>
         </div>
     </div>
+)}
+{isChecking && (
+<div style={{
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backdropFilter: "blur(8px)",
+    background: "rgba(0,0,0,0.4)",
+    zIndex: 9999,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+    color: "white",
+    textAlign: "center",
+    fontFamily: "Cairo, sans-serif"
+}}>
+
+    {/* دائرة تحميل */}
+    <div style={{
+        width: "60px",
+        height: "60px",
+        border: "5px solid rgba(255,255,255,0.3)",
+        borderTop: "5px solid #00d4ff",
+        borderRadius: "50%",
+        animation: "spin 1s linear infinite",
+        marginBottom: "20px"
+    }} />
+
+    {/* النص */}
+    <h2 style={{marginBottom:"10px"}}>
+        مرحباً بك 👋
+    </h2>
+
+    <p style={{fontSize:"18px"}}>
+        جاري التحقق من قاعدة البيانات...
+    </p>
+
+    <p style={{opacity:0.8}}>
+        يرجى الانتظار قليلاً
+    </p>
+
+</div>
 )}
 
                     
