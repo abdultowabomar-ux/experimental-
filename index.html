@@ -1644,8 +1644,7 @@ ${userFeedback}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
         
             
-{/* --- المحاضرة الأولى (تأسيس) --- */}
-{/* --- كارت المحاضرة مع حماية فائقة --- */}
+{/* --- كارت المحاضرة مع حماية فائقة وإزاحة لليمين --- */}
 <div className="glass p-4 rounded-3xl relative overflow-hidden group">
     {/* الخط الجانبي الجمالي */}
     <div className="absolute top-0 right-0 w-1 h-full bg-blue-500"></div>
@@ -1657,17 +1656,17 @@ ${userFeedback}
     <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black"
          onContextMenu={(e) => e.preventDefault()}>
         
-        {/* 1. طبقة حماية الثلث العلوي (30%) - تمنع الوصول للعنوان وأي أزرار علوية */}
+        {/* 1. طبقة حماية الثلث العلوي (30%) */}
         <div 
             className="absolute top-0 left-0 w-full h-[30%] z-[100] bg-black/0 touch-none pointer-events-auto"
             style={{ 
-                backgroundColor: 'rgba(0,0,0,0.01)', // خلفية وهمية لتنشيط اللمس في أندرويد
+                backgroundColor: 'rgba(0,0,0,0.01)', 
                 touchAction: 'none' 
             }}
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
         ></div>
 
-        {/* 2. طبقة حماية الثلث السفلي (30%) - تمنع الوصول لشريط التقدم وأيقونة يوتيوب */}
+        {/* 2. طبقة حماية الثلث السفلي (30%) */}
         <div 
             className="absolute bottom-0 left-0 w-full h-[30%] z-[100] bg-black/0 touch-none pointer-events-auto"
             style={{ 
@@ -1677,7 +1676,7 @@ ${userFeedback}
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
         ></div>
 
-        {/* 3. حاوية الفيديو مع خاصية القَص (Overflow Hidden) */}
+        {/* 3. حاوية الفيديو مع خاصية القَص والإزاحة */}
         <div className="absolute inset-0 z-10 overflow-hidden pointer-events-none">
             <iframe 
                 className="absolute top-0 left-0 w-full h-full pointer-events-auto"
@@ -1685,9 +1684,12 @@ ${userFeedback}
                 title="YouTube video player" 
                 frameBorder="0" 
                 style={{ 
-                    /* تكبير بنسبة 1.7 لضمان خروج الأيقونات الجانبية (مشاركة، شعار) خارج حدود الرؤية واللمس */
-                    transform: 'scale(1.7)', 
-                    WebkitTransform: 'scale(1.7)',
+                    /* scale(1.7): للتكبير وطرد الأزرار.
+                       translateX(15%): إزاحة الفيديو لليمين بنسبة 15% لإظهار الجانب الأيسر.
+                       يمكنك تعديل الـ 15% (زيادة أو نقصان) حتى يظهر الزرار بالضبط.
+                    */
+                    transform: 'scale(1.7) translateX(15%)', 
+                    WebkitTransform: 'scale(1.7) translateX(15%)',
                     transformOrigin: 'center' 
                 }}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
