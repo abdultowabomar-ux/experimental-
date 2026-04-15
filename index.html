@@ -1653,9 +1653,17 @@ ${userFeedback}
     <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black"
          onContextMenu={(e) => e.preventDefault()}>
         
-        {/* طبقات حماية فائقة (Z-Index 50) تقتل اللمس تماماً في مناطق الأزرار */}
-        <div className="absolute top-0 left-0 w-full h-[22%] z-[50] bg-transparent touch-none pointer-events-auto"></div>
-        <div className="absolute bottom-0 left-0 w-full h-[22%] z-[50] bg-transparent touch-none pointer-events-auto"></div>
+        {/* طبقة حماية الثلث العلوي (33%) */}
+        <div 
+            className="absolute top-0 left-0 w-full h-[33.33%] z-[50] bg-transparent touch-none pointer-events-auto"
+            onClick={(e) => e.stopPropagation()}
+        ></div>
+
+        {/* طبقة حماية الثلث السفلي (33%) */}
+        <div 
+            className="absolute bottom-0 left-0 w-full h-[33.33%] z-[50] bg-transparent touch-none pointer-events-auto"
+            onClick={(e) => e.stopPropagation()}
+        ></div>
 
         <div className="absolute inset-0 z-10 overflow-hidden">
             <iframe 
@@ -1664,7 +1672,7 @@ ${userFeedback}
                 title="YouTube video player" 
                 frameBorder="0" 
                 style={{ 
-                    transform: 'scale(1.35)', /* تكبير قوي لطرد العنوان والشعار خارج حدود الرؤية */
+                    transform: 'scale(1.35)', 
                     transformOrigin: 'center' 
                 }}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -1673,6 +1681,7 @@ ${userFeedback}
         </div>
     </div>
 </div>
+
 
 {/* --- المحاضرة الثانية (جديد 🆕) --- */}
 <div className="glass p-4 rounded-3xl relative overflow-hidden group">
