@@ -517,7 +517,8 @@ const VALID_CODES = ["1a7f3k9x1",
 "199z9x6a3s199",
 "200t5r2e7w200",
 "marwa1234",
-"5555"
+"5555","2000"
+                     
     
 ];
 
@@ -1653,16 +1654,18 @@ ${userFeedback}
     <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black"
          onContextMenu={(e) => e.preventDefault()}>
         
-        {/* طبقة حماية الثلث العلوي (33%) */}
+        {/* طبقة حماية الثلث العلوي - تستخدم vh لضمان الثبات في Full Screen */}
         <div 
-            className="absolute top-0 left-0 w-full h-[33.33%] z-[50] bg-transparent touch-none pointer-events-auto"
-            onClick={(e) => e.stopPropagation()}
+            className="absolute top-0 left-0 w-full h-[35vh] z-[99999] bg-transparent touch-none pointer-events-auto"
+            style={{ touchAction: 'none', WebkitUserSelect: 'none' }}
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
         ></div>
 
-        {/* طبقة حماية الثلث السفلي (33%) */}
+        {/* طبقة حماية الثلث السفلي - تستخدم vh لضمان الثبات في Full Screen */}
         <div 
-            className="absolute bottom-0 left-0 w-full h-[33.33%] z-[50] bg-transparent touch-none pointer-events-auto"
-            onClick={(e) => e.stopPropagation()}
+            className="absolute bottom-0 left-0 w-full h-[35vh] z-[99999] bg-transparent touch-none pointer-events-auto"
+            style={{ touchAction: 'none', WebkitUserSelect: 'none' }}
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
         ></div>
 
         <div className="absolute inset-0 z-10 overflow-hidden">
@@ -1672,7 +1675,7 @@ ${userFeedback}
                 title="YouTube video player" 
                 frameBorder="0" 
                 style={{ 
-                    transform: 'scale(1.35)', 
+                    transform: 'scale(1.4)', /* زيادة بسيطة في التكبير لضمان خروج الأزرار */
                     transformOrigin: 'center' 
                 }}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
