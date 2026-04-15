@@ -1654,17 +1654,23 @@ ${userFeedback}
     <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black"
          onContextMenu={(e) => e.preventDefault()}>
         
-        {/* طبقة حماية الثلث العلوي (30%) - تمنع الوصول للعنوان */}
+        {/* الحماية العلوية - أضفنا opacity-01 و pointer-events-all */}
         <div 
-            className="absolute top-0 left-0 w-full h-[10%] z-[50] bg-transparent touch-none pointer-events-auto"
-            style={{ touchAction: 'none' }}
+            className="absolute top-0 left-0 w-full h-[30%] z-[2147483647] bg-black/0 pointer-events-all touch-none"
+            style={{ 
+                backgroundColor: 'rgba(0,0,0,0.01)', // خلفية وهمية لا تُرى لكنها تُلمس
+                touchAction: 'none'
+            }}
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
         ></div>
 
-        {/* طبقة حماية الثلث السفلي (30%) - تمنع الوصول لشريط التقدم */}
+        {/* الحماية السفلية - أضفنا أعلى z-index ممكن في المتصفحات */}
         <div 
-            className="absolute bottom-0 left-0 w-full h-[30%] z-[50] bg-transparent touch-none pointer-events-auto"
-            style={{ touchAction: 'none' }}
+            className="absolute bottom-0 left-0 w-full h-[30%] z-[2147483647] bg-black/0 pointer-events-all touch-none"
+            style={{ 
+                backgroundColor: 'rgba(0,0,0,0.01)', 
+                touchAction: 'none'
+            }}
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
         ></div>
 
@@ -1675,8 +1681,9 @@ ${userFeedback}
                 title="YouTube video player" 
                 frameBorder="0" 
                 style={{ 
-                    transform: 'scale(1.35)', 
-                    transformOrigin: 'center' 
+                    transform: 'scale(1.4)', 
+                    transformOrigin: 'center',
+                    pointerEvents: 'auto' // تأكد أن الفيديو نفسه يستقبل اللمس فقط في المنتصف
                 }}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                 allowFullScreen>
