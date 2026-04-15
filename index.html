@@ -1654,17 +1654,17 @@ ${userFeedback}
     <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black"
          onContextMenu={(e) => e.preventDefault()}>
         
-        {/* طبقة حماية الثلث العلوي - تستخدم vh لضمان الثبات في Full Screen */}
+        {/* طبقة حماية الثلث العلوي (30%) - تمنع الوصول للعنوان */}
         <div 
-            className="absolute top-0 left-0 w-full h-[35vh] z-[99999] bg-transparent touch-none pointer-events-auto"
-            style={{ touchAction: 'none', WebkitUserSelect: 'none' }}
+            className="absolute top-0 left-0 w-full h-[30%] z-[50] bg-transparent touch-none pointer-events-auto"
+            style={{ touchAction: 'none' }}
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
         ></div>
 
-        {/* طبقة حماية الثلث السفلي - تستخدم vh لضمان الثبات في Full Screen */}
+        {/* طبقة حماية الثلث السفلي (30%) - تمنع الوصول لشريط التقدم */}
         <div 
-            className="absolute bottom-0 left-0 w-full h-[35vh] z-[99999] bg-transparent touch-none pointer-events-auto"
-            style={{ touchAction: 'none', WebkitUserSelect: 'none' }}
+            className="absolute bottom-0 left-0 w-full h-[30%] z-[50] bg-transparent touch-none pointer-events-auto"
+            style={{ touchAction: 'none' }}
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
         ></div>
 
@@ -1675,7 +1675,7 @@ ${userFeedback}
                 title="YouTube video player" 
                 frameBorder="0" 
                 style={{ 
-                    transform: 'scale(1.4)', /* زيادة بسيطة في التكبير لضمان خروج الأزرار */
+                    transform: 'scale(1.35)', 
                     transformOrigin: 'center' 
                 }}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -1684,6 +1684,7 @@ ${userFeedback}
         </div>
     </div>
 </div>
+
 
 
 {/* --- المحاضرة الثانية (جديد 🆕) --- */}
