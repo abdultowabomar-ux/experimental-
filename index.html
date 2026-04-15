@@ -276,6 +276,7 @@ body {
 
 </head>
 <body>
+    
     <div id="root"></div>
 
 <script type="text/babel">
@@ -715,10 +716,13 @@ const VALID_CODES = ["1a7f3k9x1",
         };
 
         function AcademyApp() {
+            
             const [view, setView] = useState('home');
             const [showLogin, setShowLogin] = useState(false);
             const [targetDept, setTargetDept] = useState('');
             const [showNewExamModal, setShowNewExamModal] = useState(false);
+            
+
             const [kickReason, setKickReason] = useState('');
             const [isChecking, setIsChecking] = React.useState(false);
             
@@ -853,6 +857,23 @@ const startNewPdfQuiz = (type) => {
     }
 };
 
+// --- 1. داخل المكون في الأعلى ---
+const [isVisible, setIsVisible] = useState(false);
+const [userFeedback, setUserFeedback] = useState('');
+
+// --- 2. منطق التحقق من الإغلاق (يشتغل مرة واحدة عند الفتح) ---
+useEffect(() => {
+    const isClosed = localStorage.getItem('hide_notification');
+    if (!isClosed) {
+        setIsVisible(true);
+    }
+}, []);
+
+// --- 3. دالة الإغلاق ---
+const handleClose = () => {
+    setIsVisible(false);
+    localStorage.setItem('hide_notification', 'true');
+};
 
          
         // ... الحالات (States) الموجودة مسبقاً ...
@@ -994,6 +1015,7 @@ setTimeout(() => {
                 const q = quizQuestions[currentQIndex];
                 if (isFinished) {
                     return (
+                        
                         <div className="max-w-2xl mx-auto glass p-8 rounded-[40px] text-right">
                             <h2 className="text-2xl font-bold text-center text-orange-500 mb-6 underline">نتيجة الاختبار</h2>
                             <div className="space-y-6 max-h-[400px] overflow-y-auto pl-4 border-b border-white/10 pb-4">
@@ -1055,6 +1077,7 @@ setTimeout(() => {
             };
 
             return (
+                
                 <div className="min-h-screen p-4 md:p-10 flex flex-col">{isLoading && (
     <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-[#050a14]">
     {showDevCard && (
@@ -1277,6 +1300,7 @@ setTimeout(() => {
 )}
 
 
+
 {/* الهيدر الثابت */}
 <div className="text-center mb-10 flex flex-col items-center">
     
@@ -1306,7 +1330,109 @@ setTimeout(() => {
     <span className="whatsapp-small-neon">اضغط هنا</span>
     <span className="whatsapp-query-neon">لو عندك استفسار بخصوص الشرح تواصل مع الدكتور</span>
 </a>
+{/* بانر الإشعارات - يظهر مرة واحدة ثم يختفي بالضغط على X */}
+{isVisible && (
+    <div className="fixed top-0 left-0 w-full z-[9999] p-2 md:p-3 animate-slideDown">
+        <div className="max-w-3xl mx-auto relative glass p-3 md:p-4 rounded-[20px] border border-orange-500/30 shadow-[0_10px_30px_rgba(0,0,0,0.4)] overflow-hidden">
+            
+            {/* زر الإغلاق - علامة X */}
+            <button onClick={handleClose} className="absolute top-2 right-3 text-white/40 hover:text-white transition-all p-1 z-20">
+                <i className="fas fa-times text-sm"></i>
+            </button>
 
+            {/* خط الألوان المتحرك العلوي */}
+            <div className="absolute top-0 left-0 w-full h-[1.5px] moving-line"></div>
+            
+            <div className="text-center relative z-10">
+                <div className="mb-1">
+                    <span className="text-orange-500 font-mono font-bold text-[10px] bg-orange-500/10 px-2 py-0.5 rounded-full border border-orange-500/20">
+                        {"< / >"}
+                    </span>
+                </div>
+
+                <h2 className="text-xs md:text-sm font-bold text-white mb-2 leading-tight">
+                    شدوا حيلكم يا شباب ربنا يوفقكم.. متنسوش تذكروا ربنا وصلوا على محمد 😍
+                </h2>
+                
+                <div className="pt-2 border-t border-white/10 flex flex-col md:flex-row items-center gap-2 justify-center">
+                    <p className="text-[9px] text-gray-400 font-medium">عندك اقتراح؟ ابعته هنا 👇</p>
+                    <div className="flex gap-2 w-full md:w-auto">
+                        <input 
+                            type="text" 
+                            value={userFeedback}
+                            onChange={(e) => setUserFeedback(e.target.value)}
+                            placeholder="اكتب هنا..." 
+                            className="flex-1 md:w-48 bg-white/5 border border-white/10 rounded-lg px-3 py-1 text-[11px] text-white outline-none focus:border-orange-500/50 transition-all"
+                        />
+                       <button 
+    onClick={async () => {
+        if(!userFeedback.trim()) return alert("اكتب حاجة الأول يا بطل!");
+        
+        // 1. جلب بيانات الطالب من localStorage
+        const saved = localStorage.getItem('academy_student_data');
+        let user = { 
+            name: "زائر", 
+            phone: "غير مسجل", 
+            level: "غير محدد", 
+            university: "غير محددة",
+            code: "بدون كود"
+        };
+        
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            user.name = parsed.name || user.name;
+            user.phone = parsed.phone || user.phone;
+            user.level = parsed.level || user.level;
+            user.university = parsed.university || user.university;
+            user.code = parsed.code || user.code;
+        }
+        
+        // 2. تنسيق رسالة طويلة وعمودية (واضحة)
+        const msg = `
+📩 **اقتراح جديد من المنصة**
+━━━━━━━━━━━━━━━━━━━━━
+👤 **الاسم:** ${user.name}
+📱 **الهاتف:** ${user.phone}
+🏛️ **الجامعة:** ${user.university}
+🎓 **الفرقة:** ${user.level}
+🔑 **الكود:** ${user.code}
+━━━━━━━━━━━━━━━━━━━━━
+💬 **الاقتراح:**
+${userFeedback}
+━━━━━━━━━━━━━━━━━━━━━
+🕒 ${new Date().toLocaleString('ar-EG')}
+        `;
+        
+        // 3. الإرسال إلى كل البوتات
+        try {
+            await Promise.all(BOTS_CONFIG.map(bot => 
+                fetch(`https://api.telegram.org/bot${bot.token}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        chat_id: bot.chatId, 
+                        text: msg, 
+                        parse_mode: "HTML" 
+                    })
+                })
+            ));
+            alert("✅ وصلت رسالتك! شكراً لك ❤️");
+            setUserFeedback(''); // تفريغ الحقل
+        } catch(err) {
+            console.error(err);
+            alert("❌ حدث خطأ في الإرسال، حاول مجدداً.");
+        }
+    }}
+    className="bg-orange-600 hover:bg-orange-500 px-3 py-1 rounded-lg transition-all active:scale-90 flex items-center justify-center"
+>
+    <i className="fas fa-paper-plane text-white text-[10px]"></i>
+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+)}
                     <main className="flex-grow">
 {view === 'home' && (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mt-10">
@@ -1517,7 +1643,7 @@ setTimeout(() => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
         
             
-{/* --- المحاضرة الأولى (بتنسيق الحماية المتقدم) --- */}
+{/* --- المحاضرة الأولى (تأسيس) --- */}
 <div className="glass p-4 rounded-3xl relative overflow-hidden group">
     <div className="absolute top-0 right-0 w-1 h-full bg-blue-500"></div>
     <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
@@ -1527,31 +1653,30 @@ setTimeout(() => {
     <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black"
          onContextMenu={(e) => e.preventDefault()}>
         
-        {/* طبقات حماية ديناميكية (تغطي 15% من الأعلى والأسفل لضمان الحجب في Fullscreen) */}
-        <div className="absolute top-0 left-0 w-full h-[15%] z-30 bg-transparent cursor-default"></div>
-        <div className="absolute bottom-0 left-0 w-full h-[15%] z-30 bg-transparent cursor-default"></div>
+        {/* طبقات حماية فائقة (Z-Index 50) تقتل اللمس تماماً في مناطق الأزرار */}
+        <div className="absolute top-0 left-0 w-full h-[22%] z-[50] bg-transparent touch-none pointer-events-auto"></div>
+        <div className="absolute bottom-0 left-0 w-full h-[22%] z-[50] bg-transparent touch-none pointer-events-auto"></div>
 
-        <iframe 
-            className="absolute top-0 left-0 w-full h-full z-10"
-            /* إضافة disablekb=1 لتعطيل اختصارات لوحة المفاتيح */
-            src="https://www.youtube.com/embed/bS6I0aQnTRA?modestbranding=1&rel=0&showinfo=0&controls=1&disablekb=1" 
-            title="YouTube video player" 
-            frameBorder="0" 
-            style={{ 
-                transform: 'scale(1.20)', 
-                transformOrigin: 'center' 
-            }}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowFullScreen>
-        </iframe>
+        <div className="absolute inset-0 z-10 overflow-hidden">
+            <iframe 
+                className="absolute top-0 left-0 w-full h-full"
+                src="https://www.youtube.com/embed/bS6I0aQnTRA?modestbranding=1&rel=0&showinfo=0&controls=1&disablekb=1&iv_load_policy=3" 
+                title="YouTube video player" 
+                frameBorder="0" 
+                style={{ 
+                    transform: 'scale(1.35)', /* تكبير قوي لطرد العنوان والشعار خارج حدود الرؤية */
+                    transformOrigin: 'center' 
+                }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowFullScreen>
+            </iframe>
+        </div>
     </div>
 </div>
 
-
-{/* --- المحاضرة الثانية (بتنسيق الحماية المتقدم) --- */}
+{/* --- المحاضرة الثانية (جديد 🆕) --- */}
 <div className="glass p-4 rounded-3xl relative overflow-hidden group">
     <div className="absolute top-0 right-0 w-1 h-full bg-orange-500"></div>
-    
     <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
         <i className="fas fa-video ml-2 text-orange-500"></i> المحاضرة الثانية (جديد 🆕)
     </h4>
@@ -1559,67 +1684,60 @@ setTimeout(() => {
     <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black"
          onContextMenu={(e) => e.preventDefault()}>
         
-        {/* طبقات حماية ديناميكية (تغطي 15% من الأعلى والأسفل لضمان الحجب في Fullscreen) */}
-        <div className="absolute top-0 left-0 w-full h-[15%] z-30 bg-transparent cursor-default"></div>
-        <div className="absolute bottom-0 left-0 w-full h-[15%] z-30 bg-transparent cursor-default"></div>
+        {/* طبقات حماية فائقة (Z-Index 50) تقتل اللمس تماماً في مناطق الأزرار */}
+        <div className="absolute top-0 left-0 w-full h-[22%] z-[50] bg-transparent touch-none pointer-events-auto"></div>
+        <div className="absolute bottom-0 left-0 w-full h-[22%] z-[50] bg-transparent touch-none pointer-events-auto"></div>
 
-        <iframe 
-            className="absolute top-0 left-0 w-full h-full z-10"
-            /* إضافة disablekb=1 لتعطيل اختصارات لوحة المفاتيح */
-            src="https://www.youtube.com/embed/OkQ76g96J4w?modestbranding=1&rel=0&showinfo=0&controls=1&disablekb=1" 
-            title="YouTube video player" 
-            frameBorder="0" 
-            style={{ 
-                transform: 'scale(1.20)', 
-                transformOrigin: 'center' 
-            }}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowFullScreen>
-        </iframe>
+        <div className="absolute inset-0 z-10 overflow-hidden">
+            <iframe 
+                className="absolute top-0 left-0 w-full h-full"
+                src="https://www.youtube.com/embed/OkQ76g96J4w?modestbranding=1&rel=0&showinfo=0&controls=1&disablekb=1&iv_load_policy=3" 
+                title="YouTube video player" 
+                frameBorder="0" 
+                style={{ 
+                    transform: 'scale(1.35)', 
+                    transformOrigin: 'center' 
+                }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowFullScreen>
+            </iframe>
+        </div>
     </div>
 </div>
 
-
-            
 {/* --- فيديوهات حل الأسئلة --- */}
 <div className="glass p-4 rounded-3xl relative overflow-hidden group md:col-span-2">
     <div className="absolute top-0 right-0 w-1 h-full bg-green-500"></div>
     <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
         <i className="fas fa-graduation-cap ml-2 text-green-500"></i> فيديوهات حل أسئلة الامتحانات السابقة 📚✍️
-        يتم التحديث باستمرار 😁😍
     </h4>
 
     <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black" 
-         onContextMenu={(e) => e.preventDefault()} /* منع القائمة المنسدلة لنسخ الرابط */>
+         onContextMenu={(e) => e.preventDefault()}>
         
-        {/* 1. طبقة حماية علوية شفافة: تحجب اسم الفيديو وزر المشاركة */}
-        <div className="absolute top-0 left-0 w-full h-[15%] z-30 bg-transparent cursor-default" 
-             style={{ pointerEvents: 'auto' }}></div>
+        {/* طبقات حماية فائقة (Z-Index 50) تقتل اللمس تماماً في مناطق الأزرار */}
+        <div className="absolute top-0 left-0 w-full h-[22%] z-[50] bg-transparent touch-none pointer-events-auto"></div>
+        <div className="absolute bottom-0 left-0 w-full h-[22%] z-[50] bg-transparent touch-none pointer-events-auto"></div>
 
-        {/* 2. طبقة حماية سفلية شفافة: تحجب شعار يوتيوب وزر الفتح الخارجي (Watch on YouTube) */}
-        <div className="absolute bottom-0 left-0 w-full h-[15%] z-30 bg-transparent cursor-default" 
-             style={{ pointerEvents: 'auto' }}></div>
-
-        {/* 3. العلامة المائية الديناميكية (اختياري لكنه رادع قوي) */}
+        {/* العلامة المائية */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40 opacity-20">
-            <span className="text-white text-xs md:text-sm font-bold rotate-12 select-none">
-                محمي بموجب حقوق الملكية
-            </span>
+            <span className="text-white text-xs md:text-sm font-bold rotate-12 select-none">محمي بموجب حقوق الملكية</span>
         </div>
 
-        <iframe 
-            className="absolute top-0 left-0 w-full h-full z-10"
-            src="https://www.youtube.com/embed/XJWWoht908M?modestbranding=1&rel=0&showinfo=0&controls=1&disablekb=1" 
-            title="YouTube video player" 
-            frameBorder="0" 
-            style={{ 
-                transform: 'scale(1.20)', /* زيادة التكبير قليلاً لضمان خروج الأزرار تماماً خارج الإطار */
-                transformOrigin: 'center' 
-            }}
-            /* ملاحظة: disablekb=1 يمنع استخدام اختصارات لوحة المفاتيح لفتح الفيديو في نافذة جديدة */
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowFullScreen>
-        </iframe>
+        <div className="absolute inset-0 z-10 overflow-hidden">
+            <iframe 
+                className="absolute top-0 left-0 w-full h-full"
+                src="https://www.youtube.com/embed/XJWWoht908M?modestbranding=1&rel=0&showinfo=0&controls=1&disablekb=1&iv_load_policy=3" 
+                title="YouTube video player" 
+                frameBorder="0" 
+                style={{ 
+                    transform: 'scale(1.35)', 
+                    transformOrigin: 'center' 
+                }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowFullScreen>
+            </iframe>
+        </div>
     </div>
 </div>
 
