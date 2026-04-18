@@ -316,7 +316,7 @@ const BOTS_CONFIG = [
         // توليد 200 كود تبدأ من xmw1 وحتى xmw200
 // توليد 200 كود تبدأ من xmw1 وحتى xmw200
 // توليد 200 كود تبدأ من xmw1 وحتى xmw200
-const VALID_CODES = ["1a7f3k9x1","6666",
+const VALID_CODES = ["1a7f3k9x1",
 "2z4p8q1w2",
 "3m2n7b4v3",
 "4x5z1a8s4",
@@ -518,6 +518,7 @@ const VALID_CODES = ["1a7f3k9x1","6666",
 "200t5r2e7w200",
 "marwa1234",
 "5555","2000"
+"Mohammed"
                      
     
 ];
@@ -879,97 +880,136 @@ const handleClose = () => {
          
         // ... الحالات (States) الموجودة مسبقاً ...
 const finalizeLogin = async () => {
-    setIsChecking(true);
-    // 1. استخراج وتنظيف البيانات الأساسية
-    const name = student.name?.trim();
-    const level = student.level;
-    const phone = student.phone?.trim();
-    const code = student.code?.trim().toLowerCase();
-    const university = student.university;
     
-
-    // التحقق من الحقول الإلزامية
-    if (!name || !level || !phone || !university) {
-        alert("⚠️ فضلاً يا بطل.. أكمل جميع البيانات للمتابعة!");
-        return;
-    }
-
-    // 2. منطق التحقق (كود التفعيل vs الدخول المجاني)
-    if (!isFreeMode) {
-        // التحقق من وجود الكود وصحته مبدئياً
-        if (!code || !VALID_CODES.includes(code)) { 
-            alert("❌ كود التفعيل غير صحيح أو مطلوب للوصول لهذا القسم!");
+    // ⭐ تشغيل شاشة التحميل
+    setIsChecking(true);
+    
+    try {
+        
+        // 1. استخراج وتنظيف البيانات الأساسية
+        const name = student.name?.trim();
+        const level = student.level;
+        const phone = student.phone?.trim();
+        const code = student.code?.trim().toLowerCase();
+        const university = student.university;
+        
+        // التحقق من الحقول الإلزامية
+        if (!name || !level || !phone || !university) {
+            alert("⚠️ فضلاً يا بطل.. أكمل جميع البيانات للمتابعة!");
             return;
         }
         
-        // بروتوكول معرف الجهاز (Device Fingerprint)
-        let deviceIdentifier = localStorage.getItem('academy_device_id');
-        if (!deviceIdentifier) {
-            deviceIdentifier = 'dev_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
-            localStorage.setItem('academy_device_id', deviceIdentifier);
-        }
-        
-        try {
-            const codeRef = db.ref('academy_codes/' + code);
-            const snapshot = await codeRef.once('value');
-            const data = snapshot.val();
-
-            if (data) {
-                // أ- التحقق من حالة الطرد (Kicked)
-                if (data.status === 'kicked') {
-                    alert(`🚫 تم حظر دخولك!\nالسبب: ${data.kickReason || "مخالفة شروط الأكاديمية"}\n\nيرجى التواصل مع الدعم الفني.`);
-                    return;
-                }
-
-                // ب- منع استخدام الكود على أكثر من جهاز
-                if (data.deviceId && data.deviceId !== deviceIdentifier) {
-                    alert("⚠️ هذا الكود مفعل بالفعل على جهاز آخر!");
-                    return;
-                }
-            } else {
-                // ج- إذا كان الكود جديداً تماماً (تفعيل لأول مرة)
-                await codeRef.set({
-                    isUsed: true,
-                    deviceId: deviceIdentifier,
-                    studentName: name,
-                    studentPhone: phone,
-                    level: level,
-                    university: university,
-                    useDate: new Date().toLocaleString('ar-EG'),
-                    status: 'active'
-                });
+        // 2. منطق التحقق (كود التفعيل vs الدخول المجاني)
+        if (!isFreeMode) {
+            
+            // التحقق من وجود الكود وصحته
+            if (!code || !VALID_CODES.includes(code)) {
+                alert("❌ كود التفعيل غير صحيح أو مطلوب للوصول لهذا القسم!");
+                return;
             }
-        } catch (error) {
-            console.error("Firebase Error:", error);
-            alert("⚠️ عذراً، حدث خطأ في الاتصال بالسيرفر. تأكد من الإنترنت وحاول مجدداً.");
-            return;
+            
+            // إنشاء معرف الجهاز
+            let deviceIdentifier = localStorage.getItem('academy_device_id');
+            
+            if (!deviceIdentifier) {
+                deviceIdentifier =
+                    'dev_' +
+                    Math.random().toString(36).substr(2, 9) +
+                    Date.now().toString(36);
+                
+                localStorage.setItem(
+                    'academy_device_id',
+                    deviceIdentifier
+                );
+            }
+            
+            try {
+                
+                const codeRef =
+                    db.ref('academy_codes/' + code);
+                
+                const snapshot =
+                    await codeRef.once('value');
+                
+                const data = snapshot.val();
+                
+                if (data) {
+                    
+                    // أ- حالة الطرد
+                    if (data.status === 'kicked') {
+                        
+                        alert(
+                            `🚫 تم حظر دخولك!\nالسبب: ${data.kickReason || "مخالفة شروط الأكاديمية"}\n\nيرجى التواصل مع الدعم الفني.`
+                        );
+                        
+                        return;
+                    }
+                    
+                    // ب- جهاز آخر
+                    if (
+                        data.deviceId &&
+                        data.deviceId !== deviceIdentifier
+                    ) {
+                        
+                        alert("⚠️ هذا الكود مفعل بالفعل على جهاز آخر!");
+                        
+                        return;
+                    }
+                    
+                } else {
+                    
+                    // ج- تفعيل لأول مرة
+                    await codeRef.set({
+                        
+                        isUsed: true,
+                        deviceId: deviceIdentifier,
+                        studentName: name,
+                        studentPhone: phone,
+                        level: level,
+                        university: university,
+                        useDate: new Date().toLocaleString('ar-EG'),
+                        status: 'active'
+                        
+                    });
+                    
+                }
+                
+            } catch (error) {
+                
+                console.error("Firebase Error:", error);
+                
+                alert(
+                    "⚠️ عذراً، حدث خطأ في الاتصال بالسيرفر. تأكد من الإنترنت وحاول مجدداً."
+                );
+                
+                return;
+            }
         }
-    }
-
-    // 3. حفظ جلسة الطالب محلياً لضمان بقاء الدخول
-    const sessionData = { ...student, loginDate: new Date().getTime() };
-
-localStorage.setItem('academy_student_data', JSON.stringify(sessionData));
-
-// ⭐ الحل الرئيسي
-setStudent(sessionData);
-setIsChecking(false);
-
-// ⭐ تأخير بسيط لتثبيت الحالة
-setTimeout(() => {
-
-    setShowLogin(false);
-
-    if (targetDept === 'شرح') {
-        setView('lessons');
-    } else {
-        setView('exams');
-    }
-
-}, 100);
-    // 4. إرسال تقرير الدخول إلى تليجرام (Log)
-    const accessType = isFreeMode ? "🆓 دخول مجاني" : "🔑 دخول بكود تفعيل";
-    const logMessage = `
+        
+        // 3. حفظ الجلسة
+        
+        const sessionData = {
+            
+            ...student,
+            loginDate: new Date().getTime()
+            
+        };
+        
+        localStorage.setItem(
+            'academy_student_data',
+            JSON.stringify(sessionData)
+        );
+        
+        setStudent(sessionData);
+        
+        // 4. إرسال تقرير تليجرام (في الخلفية)
+        
+        const accessType =
+            isFreeMode ?
+            "🆓 دخول مجاني" :
+            "🔑 دخول بكود تفعيل";
+        
+        const logMessage = `
 🔔 **تنبيه دخول جديد**
 ━━━━━━━━━━━━
 🎯 **النوع:** ${accessType}
@@ -981,22 +1021,38 @@ setTimeout(() => {
 📍 **القسم:** ${targetDept}
 📱 **الجهاز:** \`${localStorage.getItem('academy_device_id')}\`
 ━━━━━━━━━━━━`;
-
-    sendTelegram(logMessage);
-
-    // 5. التوجيه النهائي وتحديث الواجهة
-    alert(isFreeMode ? "✅ استمتع بالاختبار يا بطل!" : "✅ تم تفعيل الكود بنجاح.. نورت الأكاديمية");
-    
-    setShowLogin(false);
-    
-    // التوجيه الديناميكي
-    if (targetDept === 'شرح') {
-        setView('lessons');
-    } else {
-        setView('exams');
+        
+        // ⭐ تشغيله في الخلفية بدون تعطيل
+        setTimeout(() => {
+            sendTelegram(logMessage);
+        }, 0);
+        
+        // 5. رسالة نجاح
+        
+        alert(
+            isFreeMode ?
+            "✅ استمتع بالاختبار يا بطل!" :
+            "✅ تم تفعيل الكود بنجاح.. نورت الأكاديمية"
+        );
+        
+        // 6. الانتقال
+        
+        setShowLogin(false);
+        
+        if (targetDept === 'شرح') {
+            setView('lessons');
+        } else {
+            setView('exams');
+        }
+        
+    } finally {
+        
+        // ⭐ أهم سطر — يمنع التعليق نهائي
+        setIsChecking(false);
+        
     }
+    
 };
-
 
    // 2. استبدل دالة finalizeLogin القديمة بهذه النسخة المحدثة
        
