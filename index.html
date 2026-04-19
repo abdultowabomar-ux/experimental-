@@ -1700,53 +1700,21 @@ ${userFeedback}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
         
             
-{/* --- كارت المحاضرة مع حماية فائقة وإزاحة لليمين --- */}
+{/* --- المحاضرة الأولى (بتنسيق الحماية الجديد) --- */}
 <div className="glass p-4 rounded-3xl relative overflow-hidden group">
-    {/* الخط الجانبي الجمالي */}
     <div className="absolute top-0 right-0 w-1 h-full bg-blue-500"></div>
-    
     <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
         <i className="fas fa-video ml-2 text-blue-500"></i> المحاضرة الأولى (تأسيس)
     </h4>
-    
-    <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black"
-         onContextMenu={(e) => e.preventDefault()}>
-        
-        {/* 1. طبقة حماية الثلث العلوي (30%) */}
-        <div 
-            className="absolute top-0 left-0 w-full h-[30%] z-[100] bg-black/0 touch-none pointer-events-auto"
-            style={{ 
-                backgroundColor: 'rgba(0,0,0,0.01)', 
-                touchAction: 'none' 
-            }}
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-        ></div>
-
-        {/* 2. طبقة حماية الثلث السفلي (30%) */}
-        <div 
-            className="absolute bottom-0 left-0 w-full h-[30%] z-[100] bg-black/0 touch-none pointer-events-auto"
-            style={{ 
-                backgroundColor: 'rgba(0,0,0,0.01)', 
-                touchAction: 'none' 
-            }}
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-        ></div>
-
-        {/* 3. حاوية الفيديو مع خاصية القَص والإزاحة */}
-        <div className="absolute inset-0 z-10 overflow-hidden pointer-events-none">
-            <iframe 
-                className="absolute top-0 left-0 w-full h-full pointer-events-auto"
-                src="https://www.youtube.com/embed/bS6I0aQnTRA?modestbranding=1&rel=0&showinfo=0&controls=1&disablekb=1&iv_load_policy=3" 
-                title="YouTube video player" 
-                frameBorder="0" 
-                style={{ 
-                    transform: 'scale(1.35)', 
-                    transformOrigin: 'center' 
-                }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowFullScreen>
-            </iframe>
-        </div>
+    {/* حاوية الفيديو المقصوصة */}
+    <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
+        <iframe 
+            src="https://drive.google.com/file/d/1VXQEdkFRK5RL_pyr0PtPyAvv1C_rj4yd/preview" 
+            style={{ width: '100%', height: '100%', border: 'none', transform: 'scale(1.15)', transformOrigin: 'center' }}
+            allowFullScreen>
+        </iframe>
+        {/* طبقة حماية تمنع الضغط على الأزرار العلوية */}
+        <div className="absolute top-0 left-0 w-full h-[60px] z-50 bg-transparent"></div>
     </div>
 </div>
 
