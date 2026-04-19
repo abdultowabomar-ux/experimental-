@@ -1721,34 +1721,19 @@ ${userFeedback}
 
 
 
-{/* --- المحاضرة الثانية (جديد 🆕) --- */}
+{/* --- المحاضرة الثانية (بتنسيق الحماية الجديد) --- */}
 <div className="glass p-4 rounded-3xl relative overflow-hidden group">
     <div className="absolute top-0 right-0 w-1 h-full bg-orange-500"></div>
     <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
         <i className="fas fa-video ml-2 text-orange-500"></i> المحاضرة الثانية (جديد 🆕)
     </h4>
-
-    <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black"
-         onContextMenu={(e) => e.preventDefault()}>
-        
-        {/* طبقات حماية فائقة (Z-Index 50) تقتل اللمس تماماً في مناطق الأزرار */}
-        <div className="absolute top-0 left-0 w-full h-[22%] z-[50] bg-transparent touch-none pointer-events-auto"></div>
-        <div className="absolute bottom-0 left-0 w-full h-[22%] z-[50] bg-transparent touch-none pointer-events-auto"></div>
-
-        <div className="absolute inset-0 z-10 overflow-hidden">
-            <iframe 
-                className="absolute top-0 left-0 w-full h-full"
-                src="https://www.youtube.com/embed/OkQ76g96J4w?modestbranding=1&rel=0&showinfo=0&controls=1&disablekb=1&iv_load_policy=3" 
-                title="YouTube video player" 
-                frameBorder="0" 
-                style={{ 
-                    transform: 'scale(1.35)', 
-                    transformOrigin: 'center' 
-                }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowFullScreen>
-            </iframe>
-        </div>
+    <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
+        <iframe 
+            src="https://drive.google.com/file/d/1uhmhGqlOCLzrccjw_XRNTWjnduK0qFbc/preview" 
+            style={{ width: '100%', height: '100%', border: 'none', transform: 'scale(1.15)', transformOrigin: 'center' }}
+            allowFullScreen>
+        </iframe>
+        <div className="absolute top-0 left-0 w-full h-[60px] z-50 bg-transparent"></div>
     </div>
 </div>
 
