@@ -1700,23 +1700,25 @@ ${userFeedback}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
         
             
-{/* --- المحاضرة الأولى (بتنسيق الحماية الجديد) --- */}
 <div className="glass p-4 rounded-3xl relative overflow-hidden group">
     <div className="absolute top-0 right-0 w-1 h-full bg-blue-500"></div>
     <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
-        <i className="fas fa-video ml-2 text-blue-500"></i> المحاضرة الأولى (تأسيس)
-    </h4>
-    {/* حاوية الفيديو المقصوصة */}
+        <i className="fas fa-video ml-2 text-blue-500"></i>  المحاضرة الأولى (تأسيس)
+   شد حيلك 🥰 </h4>
+    
+    {/* حاوية الفيديو - تم إزالة القيود وتعديل الرابط */}
     <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
         <iframe 
-            src="https://drive.google.com/file/d/1VXQEdkFRK5RL_pyr0PtPyAvv1C_rj4yd/preview" 
-            style={{ width: '100%', height: '100%', border: 'none', transform: 'scale(1.15)', transformOrigin: 'center' }}
+            src="https://www.youtube.com/embed/bS6I0aQnTRA" 
+            style={{ width: '100%', height: '100%', border: 'none' }}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
             allowFullScreen>
         </iframe>
-        {/* طبقة حماية تمنع الضغط على الأزرار العلوية */}
-        <div className="absolute top-0 left-0 w-full h-[60px] z-50 bg-transparent"></div>
+        
+        {/* تم حذف طبقة الحماية (div) التي كانت تمنع التفاعل مع الفيديو */}
     </div>
 </div>
+
 
 
 
