@@ -1723,21 +1723,25 @@ ${userFeedback}
 
 
 
-{/* --- المحاضرة الثانية (بتنسيق الحماية الجديد) --- */}
+{/* --- المحاضرة الثانية (تنسيق يوتيوب الطبيعي) --- */}
 <div className="glass p-4 rounded-3xl relative overflow-hidden group">
     <div className="absolute top-0 right-0 w-1 h-full bg-orange-500"></div>
     <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
         <i className="fas fa-video ml-2 text-orange-500"></i> المحاضرة الثانية (جديد 🆕)
     </h4>
+    
     <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
         <iframe 
-            src="https://drive.google.com/file/d/1uhmhGqlOCLzrccjw_XRNTWjnduK0qFbc/preview" 
-            style={{ width: '100%', height: '100%', border: 'none', transform: 'scale(1.15)', transformOrigin: 'center' }}
+            src="https://www.youtube.com/embed/OkQ76g96J4w" 
+            style={{ width: '100%', height: '100%', border: 'none' }}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
             allowFullScreen>
         </iframe>
-        <div className="absolute top-0 left-0 w-full h-[60px] z-50 bg-transparent"></div>
+        
+        {/* تم حذف طبقة الحماية الشفافة تماماً للسماح بالتحكم الطبيعي */}
     </div>
 </div>
+
 
 {/* --- فيديوهات حل الأسئلة --- */}
 <div className="glass p-4 rounded-3xl relative overflow-hidden group md:col-span-2">
