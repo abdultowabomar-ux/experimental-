@@ -96,10 +96,7 @@ body {
     text-decoration: none;
     transition: transform 0.3s ease;
 }
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+
 .header-contact-link:hover {
     transform: scale(1.05);
 }
@@ -273,10 +270,8 @@ body {
 
 </style>
 
-
 </head>
 <body>
-    
     <div id="root"></div>
 
 <script type="text/babel">
@@ -300,245 +295,518 @@ body {
     }
     const db = firebase.database();
 
-   // بيانات البوتات
-const BOTS_CONFIG = [
-    {
-        token: "8059026799:AAHJYZej9ecO4GJ3PAGbtXI3EXKt9wStM_4", // البوت الأول
-        chatId: "6068331455"
-    },
-    {
-        token: "8784656250:AAF_tEi2wmFcrBC58Hc0_EifnOZYfX4Y63I", // البوت الجديد
-        chatId: "7802417622" // الـ ID اللي بعته مع البوت الجديد
-    }
-];
+    const BOT_TOKEN = "8059026799:AAHJYZej9ecO4GJ3PAGbtXI3EXKt9wStM_4";
+    const CHAT_ID = "6068331455";
 
         // قائمة الأكواد الـ 25 المسموح لها بالدخول
         // توليد 200 كود تبدأ من xmw1 وحتى xmw200
 // توليد 200 كود تبدأ من xmw1 وحتى xmw200
-// توليد 200 كود تبدأ من xmw1 وحتى xmw200
-const VALID_CODES = ["1a7f3k9x1",
-"201a1s4d7f201",
-"202c8v5b2n202",
-"203q6w3e8r203",
-"204p7o2i9u204",
-"205l5k8j1h205",
-"206f4d7s2a206",
-"207m2n9b6v207",
-"208z8x5a2s208",
-"209t3r6e9w209",
-"210y2u5i8o210",
-"211g4h7j2k211",
-"212a9s6d3f212",
-"213c2v7b4n213",
-"214q5w8e1r214",
-"215p9o6i3u215",
-"216l3k2j7h216",
-"217f1d8s5a217",
-"218m7n4b1v218",
-"219z2x9a6s219",
-"220t6r3e8w220",
-"221y5u8i1o221",
-"222g3h6j9k222",
-"223a2s7d4f223",
-"224c9v6b3n224",
-"225q7w4e1r225",
-"226p2o5i8u226",
-"227l8k1j6h227",
-"228f3d6s9a228",
-"229m9n6b3v229",
-"230z5x2a7s230",
-"231t1r8e5w231",
-"232y8u3i6o232",
-"233g2h5j8k233",
-"234a6s9d2f234",
-"235c3v8b5n235",
-"236q1w4e7r236",
-"237p5o8i1u237",
-"238l7k4j9h238",
-"239f6d3s8a239",
-"240m4n7b2v240",
-"241z9x6a3s241",
-"242t5r2e7w242",
-"243y1u4i7o243",
-"244g8h1j4k244",
-"245a3s8d5f245",
-"246c7v4b1n246",
-"247q9w2e5r247",
-"248p3o6i9u248",
-"249l4k7j2h249",
-"250f5d2s7a250",
-"251m1n8b5v251",
-"252z6x3a8s252",
-"253t8r5e2w253",
-"254y4u1i6o254",
-"255g5h8j3k255",
-"256a7s2d9f256",
-"257c1v6b9n257",
-"258q2w5e8r258",
-"259p8o3i6u259",
-"260l6k9j4h260",
-"261f7d4s1a261",
-"262m2n5b8v262",
-"263z3x8a1s263",
-"264t9r6e3w264",
-"265y7u2i9o265",
-"266g1h6j9k266",
-"267a5s8d1f267",
-"268c4v1b6n268",
-"269q8w1e4r269",
-"270p6o9i2u270",
-"271l2k3j8h271",
-"272f8d5s2a272",
-"273m3n6b9v273",
-"274z7x2a5s274",
-"275t4r9e6w275",
-"276y9u6i3o276",
-"277g6h9j4k277",
-"278a1s6d3f278",
-"279c8v3b6n279",
-"280q4w7e2r280",
-"281p7o2i5u281",
-"282l9k6j3h282",
-"283f2d9s6a283",
-"284m6n3b8v284",
-"285z1x4a7s285",
-"286t7r4e9w286",
-"287y3u8i5o287",
-"288g9h2j5k288",
-"289a8s5d2f289",
-"290c5v2b7n290",
-"291q6w9e2r291",
-"292p4o7i2u292",
-"293l3k8j1h293",
-"294f9d4s7a294",
-"295m8n1b6v295",
-"296z2x7a4s296",
-"297t6r3e8w297",
-"298y5u2i7o298",
-"299g7h4j1k299",
-"300a2s9d6f300",
-"301c9v6b3n301",
-"302q7w4e1r302",
-"303p2o5i8u303",
-"304l8k1j6h304",
-"305f3d6s9a305",
-"306m9n6b3v306",
-"307z5x2a7s307",
-"308t1r8e5w308",
-"309y8u3i6o309",
-"310g2h5j8k310",
-"311a6s9d2f311",
-"312c3v8b5n312",
-"313q1w4e7r313",
-"314p5o8i1u314",
-"315l7k4j9h315",
-"316f6d3s8a316",
-"317m4n7b2v317",
-"318z9x6a3s318",
-"319t5r2e7w319",
-"320y1u4i7o320",
-"321g8h1j4k321",
-"322a3s8d5f322",
-"323c7v4b1n323",
-"324q9w2e5r324",
-"325p3o6i9u325",
-"326l4k7j2h326",
-"327f5d2s7a327",
-"328m1n8b5v328",
-"329z6x3a8s329",
-"330t8r5e2w330",
-"331y4u1i6o331",
-"332g5h8j3k332",
-"333a7s2d9f333",
-"334c1v6b9n334",
-"335q2w5e8r335",
-"336p8o3i6u336",
-"337l6k9j4h337",
-"338f7d4s1a338",
-"339m2n5b8v339",
-"340z3x8a1s340",
-"341t9r6e3w341",
-"342y7u2i9o342",
-"343g1h6j9k343",
-"344a5s8d1f344",
-"345c4v1b6n345",
-"346q8w1e4r346",
-"347p6o9i2u347",
-"348l2k3j8h348",
-"349f8d5s2a349",
-"350m3n6b9v350",
-"351z7x2a5s351",
-"352t4r9e6w352",
-"353y9u6i3o353",
-"354g6h9j4k354",
-"355a1s6d3f355",
-"356c8v3b6n356",
-"357q4w7e2r357",
-"358p7o2i5u358",
-"359l9k6j3h359",
-"360f2d9s6a360",
-"361m6n3b8v361",
-"362z1x4a7s362",
-"363t7r4e9w363",
-"364y3u8i5o364",
-"365g9h2j5k365",
-"366a8s5d2f366",
-"367c5v2b7n367",
-"368q6w9e2r368",
-"369p4o7i2u369",
-"370l3k8j1h370",
-"371f9d4s7a371",
-"372m8n1b6v372",
-"373z2x7a4s373",
-"374t6r3e8w374",
-"375y5u2i7o375",
-"376g7h4j1k376",
-"377a2s9d6f377",
-"378c9v6b3n378",
-"379q7w4e1r379",
-"380p2o5i8u380",
-"381l8k1j6h381",
-"382f3d6s9a382",
-"383m9n6b3v383",
-"384z5x2a7s384",
-"385t1r8e5w385",
-"386y8u3i6o386",
-"387g2h5j8k387",
-"388a6s9d2f388",
-"389c3v8b5n389",
-"390q1w4e7r390",
-"391p5o8i1u391",
-"392l7k4j9h392",
-"393f6d3s8a393",
-"394m4n7b2v394",
-"395z9x6a3s395",
-"396t5r2e7w396",
-"397y1u4i7o397",
-"398g8h1j4k398",
-"399a3s8d5f399",
-"400c7v4b1n400",
-"197f6d3s8a197",
-"198m4n7b2v198",
-"199z9x6a3s199",
-"200t5r2e7w200",
-"marwa1234",
-"5555","2000",
-"Mohammed","1","2","3","4","5",
-                     
-    
+
+// إنشاء مصفوفة تحتوي على 200 كود عشوائي فريد
+    const VALID_CODES = [
+    "DR101", "DR102", "DR103", "DR104", "DR105", "DR106", "DR107", "DR108", "DR109", "DR110",
+    "DR111", "DR112", "DR113", "DR114", "DR115", "DR116", "DR117", "DR118", "DR119", "DR120",
+    "DR121", "DR122", "DR123", "DR124", "DR125", "DR126", "DR127", "DR128", "DR129", "DR130",
+    "DR131", "DR132", "DR133", "DR134", "DR135", "DR136", "DR137", "DR138", "DR139", "DR140",
+    "DR141", "DR142", "DR143", "DR144", "DR145", "DR146", "DR147", "DR148", "DR149", "DR150",
+    "DR151", "DR152", "DR153", "DR154", "DR155", "DR156", "DR157", "DR158", "DR159", "DR160",
+    "DR161", "DR162", "DR163", "DR164", "DR165", "DR166", "DR167", "DR168", "DR169", "DR170",
+    "DR171", "DR172", "DR173", "DR174", "DR175", "DR176", "DR177", "DR178", "DR179", "DR180",
+    "DR181", "DR182", "DR183", "DR184", "DR185", "DR186", "DR187", "DR188", "DR189", "DR190",
+    "DR191", "DR192", "DR193", "DR194", "DR195", "DR196", "DR197", "DR198", "DR199", "DR200"
 ];
+const frenchQuestions = [
+
+{
+question: "Droit public = ؟",
+options: ["قانون عام", "قانون خاص", "قانون جنائي", "قانون إداري"],
+correct: 0
+},
+
+{
+question: "Droit privé = ؟",
+options: ["قانون خاص", "قانون عام", "قانون دولي", "قانون إداري"],
+correct: 0
+},
+
+{
+question: "Droit constitutionnel = ؟",
+options: ["القانون الدستوري", "القانون المدني", "القانون الجنائي", "القانون الإداري"],
+correct: 0
+},
+
+{
+question: "Droit administratif = ؟",
+options: ["القانون الإداري", "القانون الجنائي", "القانون المدني", "القانون الدولي"],
+correct: 0
+},
+
+{
+question: "Droit pénal = ؟",
+options: ["القانون الجنائي", "القانون المدني", "القانون الإداري", "القانون العام"],
+correct: 0
+},
+
+{
+question: "Droit civil = ؟",
+options: ["القانون المدني", "القانون الجنائي", "القانون الإداري", "القانون العام"],
+correct: 0
+},
+
+{
+question: "Obligatoire = ؟",
+options: ["ملزم", "اختياري", "مباح", "مرفوض"],
+correct: 0
+},
+
+{
+question: "Force obligatoire = ؟",
+options: ["قوة ملزمة", "قوة عسكرية", "قوة سياسية", "قوة اقتصادية"],
+correct: 0
+},
+
+{
+question: "Sanction = ؟",
+options: ["جزاء", "مكافأة", "قانون", "دعوى"],
+correct: 0
+},
+
+{
+question: "État = ؟",
+options: ["دولة", "شعب", "حكومة", "إقليم"],
+correct: 0
+},
+
+{
+question: "Territoire déterminé = ؟",
+options: ["إقليم محدد", "شعب", "دولة", "سلطة"],
+correct: 0
+},
+
+{
+question: "Groupement humain = ؟",
+options: ["تجمع بشري", "حكومة", "دولة", "سلطة"],
+correct: 0
+},
+
+{
+question: "Gouvernement = ؟",
+options: ["حكومة", "شعب", "قانون", "محكمة"],
+correct: 0
+},
+
+{
+question: "Président de la République = ؟",
+options: ["رئيس الجمهورية", "رئيس الوزراء", "قاضي", "محامي"],
+correct: 0
+},
+
+{
+question: "Système parlementaire = ؟",
+options: ["نظام برلماني", "نظام رئاسي", "نظام إداري", "نظام قضائي"],
+correct: 0
+},
+
+{
+question: "Monarchie = ؟",
+options: ["ملكية", "جمهورية", "ديمقراطية", "انتخاب"],
+correct: 0
+},
+
+{
+question: "République = ؟",
+options: ["جمهورية", "ملكية", "دولة", "حكومة"],
+correct: 0
+},
+
+{
+question: "Services publics = ؟",
+options: ["مرافق عامة", "قانون عام", "سلطة", "دولة"],
+correct: 0
+},
+
+{
+question: "Responsabilité administrative = ؟",
+options: ["المسؤولية الإدارية", "المسؤولية الجنائية", "المسؤولية المدنية", "المسؤولية الدولية"],
+correct: 0
+},
+
+{
+question: "Conseil d'État = ؟",
+options: ["مجلس الدولة", "مجلس الشعب", "مجلس الوزراء", "مجلس القضاء"],
+correct: 0
+},
+
+{
+question: "Tribunaux administratifs = ؟",
+options: ["محاكم إدارية", "محاكم مدنية", "محاكم جنائية", "محاكم دولية"],
+correct: 0
+},
+
+{
+question: "Référendum = ؟",
+options: ["استفتاء", "انتخاب", "قانون", "دعوى"],
+correct: 0
+},
+
+{
+question: "Pouvoir législatif = ؟",
+options: ["سلطة تشريعية", "سلطة تنفيذية", "سلطة قضائية", "سلطة إدارية"],
+correct: 0
+},
+
+{
+question: "Élection = ؟",
+options: ["انتخاب", "استفتاء", "قانون", "دعوى"],
+correct: 0
+},
+
+{
+question: "Révision = ؟",
+options: ["تعديل", "إلغاء", "تصديق", "تطبيق"],
+correct: 0
+},
+
+{
+question: "L'escroquerie = ؟",
+options: ["النصب", "السرقة", "القتل", "الاختلاس"],
+correct: 0
+},
+
+{
+question: "L'abus de confiance = ؟",
+options: ["خيانة الأمانة", "النصب", "السرقة", "القتل"],
+correct: 0
+},
+
+{
+question: "Le vol = ؟",
+options: ["السرقة", "النصب", "القتل", "خيانة الأمانة"],
+correct: 0
+},
+
+{
+question: "Le meurtre = ؟",
+options: ["القتل", "السرقة", "النصب", "الدعوى"],
+correct: 0
+},
+
+{
+question: "Contrats = ؟",
+options: ["عقود", "قوانين", "دعوى", "اتفاق"],
+correct: 0
+},
+
+{
+question: "Rapports de famille = ؟",
+options: ["علاقات أسرية", "علاقات مالية", "علاقات دولية", "علاقات سياسية"],
+correct: 0
+},
+
+{
+question: "Rapports pécuniaires = ؟",
+options: ["علاقات مالية", "علاقات أسرية", "علاقات سياسية", "علاقات قانونية"],
+correct: 0
+},
+
+{
+question: "Intérêts personnels = ؟",
+options: ["مصالح شخصية", "مصالح عامة", "مصالح مالية", "مصالح دولية"],
+correct: 0
+},
+
+{
+question: "Égalité = ؟",
+options: ["مساواة", "حرية", "قانون", "حكم"],
+correct: 0
+},
+
+{
+question: "Contrainte = ؟",
+options: ["إكراه", "حرية", "قانون", "اتفاق"],
+correct: 0
+},
+
+{
+question: "Acceptation = ؟",
+options: ["قبول", "رفض", "إلغاء", "موافقة"],
+correct: 0
+},
+
+{
+question: "Gravité = ؟",
+options: ["خطورة", "أمان", "حرية", "قانون"],
+correct: 0
+},
+
+{
+question: "Succession = ؟",
+options: ["ميراث", "عقد", "دعوى", "قانون"],
+correct: 0
+},
+
+{
+question: "Individuel = ؟",
+options: ["فردي", "جماعي", "قانوني", "إداري"],
+correct: 0
+},
+
+{
+question: "Tout ce qui précède = ؟",
+options: ["كل ما سبق", "لا شيء", "جزء", "اختيار"],
+correct: 0
+}
+
+];
+const englishQuestions = [
+
+{
+question: "Law = ؟",
+options: ["قانون", "حكومة", "دستور", "معاهدة"],
+correct: 0
+},
+
+{
+question: "Legislation = ؟",
+options: ["تشريع", "محكمة", "قضية", "استئناف"],
+correct: 0
+},
+
+{
+question: "Legal System = ؟",
+options: ["نظام قانوني", "نظام إداري", "دولة", "منظمة"],
+correct: 0
+},
+
+{
+question: "Right = ؟",
+options: ["حق", "واجب", "جريمة", "عقوبة"],
+correct: 0
+},
+
+{
+question: "Obligation = ؟",
+options: ["التزام", "حرية", "محكمة", "اتفاق"],
+correct: 0
+},
+
+{
+question: "Contract = ؟",
+options: ["عقد", "دستور", "انتخاب", "حكم"],
+correct: 0
+},
+
+{
+question: "Liability = ؟",
+options: ["مسؤولية", "براءة", "قانون", "دعوى"],
+correct: 0
+},
+
+{
+question: "Sanction = ؟",
+options: ["جزاء", "دولة", "قاضي", "مدعي"],
+correct: 0
+},
+
+{
+question: "Constitution = ؟",
+options: ["دستور", "قانون جنائي", "محكمة", "شهادة"],
+correct: 0
+},
+
+{
+question: "State = ؟",
+options: ["دولة", "حكومة", "محكمة", "شعب"],
+correct: 0
+},
+
+{
+question: "Government = ؟",
+options: ["حكومة", "شعب", "إقليم", "قانون"],
+correct: 0
+},
+
+{
+question: "Citizen = ؟",
+options: ["مواطن", "محامي", "قاضي", "مدعى"],
+correct: 0
+},
+
+{
+question: "Nationality = ؟",
+options: ["جنسية", "سيادة", "قانون", "محكمة"],
+correct: 0
+},
+
+{
+question: "Parliament = ؟",
+options: ["برلمان", "حكومة", "دولة", "قاضي"],
+correct: 0
+},
+
+{
+question: "President = ؟",
+options: ["رئيس", "قاضي", "محامي", "سفير"],
+correct: 0
+},
+
+{
+question: "Democracy = ؟",
+options: ["ديمقراطية", "ملكية", "جمهورية", "استفتاء"],
+correct: 0
+},
+
+{
+question: "Election = ؟",
+options: ["انتخاب", "استفتاء", "قانون", "دعوى"],
+correct: 0
+},
+
+{
+question: "Judicial Power = ؟",
+options: ["السلطة القضائية", "السلطة التنفيذية", "السلطة التشريعية", "القانون الدولي"],
+correct: 0
+},
+
+{
+question: "International Law = ؟",
+options: ["قانون دولي", "قانون خاص", "قانون عام", "قانون جنائي"],
+correct: 0
+},
+
+{
+question: "Treaty = ؟",
+options: ["معاهدة", "اتفاق", "قانون", "قرار"],
+correct: 0
+},
+
+{
+question: "United Nations = ؟",
+options: ["الأمم المتحدة", "مجلس الأمن", "الجمعية العامة", "المحكمة"],
+correct: 0
+},
+
+{
+question: "Security Council = ؟",
+options: ["مجلس الأمن", "المحكمة", "الدولة", "المنظمة"],
+correct: 0
+},
+
+{
+question: "Diplomatic Immunity = ؟",
+options: ["حصانة دبلوماسية", "سيادة", "جنسية", "حكم"],
+correct: 0
+},
+
+{
+question: "Ambassador = ؟",
+options: ["سفير", "محامي", "قاضي", "مدعى"],
+correct: 0
+},
+
+{
+question: "Criminal Law = ؟",
+options: ["قانون جنائي", "قانون مدني", "قانون دولي", "قانون عام"],
+correct: 0
+},
+
+{
+question: "Crime = ؟",
+options: ["جريمة", "دعوى", "قانون", "مذكرة"],
+correct: 0
+},
+
+{
+question: "Punishment = ؟",
+options: ["عقوبة", "دعوى", "اتفاق", "استئناف"],
+correct: 0
+},
+
+{
+question: "Imprisonment = ؟",
+options: ["حبس", "غرامة", "إعدام", "دعوى"],
+correct: 0
+},
+
+{
+question: "Accused = ؟",
+options: ["متهم", "مجني عليه", "شاهد", "محامي"],
+correct: 0
+},
+
+{
+question: "Victim = ؟",
+options: ["مجني عليه", "متهم", "قاضي", "شاهد"],
+correct: 0
+},
+
+{
+question: "Judge = ؟",
+options: ["قاضي", "محامي", "مدعي", "متهم"],
+correct: 0
+},
+
+{
+question: "Lawyer = ؟",
+options: ["محامي", "قاضي", "شاهد", "مدعى"],
+correct: 0
+},
+
+{
+question: "Evidence = ؟",
+options: ["دليل", "دعوى", "قرار", "اتفاق"],
+correct: 0
+},
+
+{
+question: "Witness = ؟",
+options: ["شاهد", "قاضي", "محامي", "متهم"],
+correct: 0
+},
+
+{
+question: "Verdict = ؟",
+options: ["حكم", "دعوى", "استئناف", "مذكرة"],
+correct: 0
+},
+
+{
+question: "Appeal = ؟",
+options: ["استئناف", "دعوى", "اتفاق", "حكم"],
+correct: 0
+},
+
+{
+question: "Agreement = ؟",
+options: ["اتفاق", "جريمة", "عقوبة", "دستور"],
+correct: 0
+},
+
+{
+question: "Dispute = ؟",
+options: ["نزاع", "اتفاق", "قانون", "دعوى"],
+correct: 0
+},
+
+{
+question: "Violation = ؟",
+options: ["مخالفة", "قانون", "حكم", "دعوى"],
+correct: 0
+},
+
+{
+question: "Court Order = ؟",
+options: ["أمر قضائي", "حكم", "دعوى", "قانون"],
+correct: 0
+}
+
+];
+
+
 
 
         const questionsDB = {
             "صح وغلط": [
-                
-    { id: "pdf_v1", q: "Agathe va au stade pour jouer au foot.", options: ["صح", "غلط"], correct: "صح" },
-    { id: "pdf_v2", q: "كلمة 'montagnes russes' تعني جبال روسية.", options: ["صح", "غلط"], correct: "صح" },
-    { id: "pdf_v3", q: "Lucas ne sait pas danser.", options: ["صح", "غلط"], correct: "صح" },
-    { id: "pdf_v4", q: "Chloé déteste le poisson, elle n'en mange jamais.", options: ["صح", "غلط"], correct: "صح" },
-    { id: "pdf_v5", q: "Enzo et Yann prennent le métro.", options: ["صح", "غلط"], correct: "صح" },
-    { id: "pdf_v6", q: "كلمة 'sandwich' هي كلمة مذكرة في الفرنسية.", options: ["صح", "غلط"], correct: "صح" },
-
                 { id: 701, q: "كلمة 'cinéma' مذكر وتأخذ أداة الإشارة 'au'.", options: ["صح", "غلط"], correct: "صح" },
     { id: 702, q: "الآلات الموسيقية مع فعل 'jouer' تأخذ أدوات التجزئة (du/de la).", options: ["صح", "غلط"], correct: "صح" },
     { id: 703, q: "نستخدم الضمير 'en' للتعويض عن اسم مسبوق بأداة تجزئة مثل السكر.", options: ["صح", "غلط"], correct: "صح" },
@@ -573,113 +841,6 @@ const VALID_CODES = ["1a7f3k9x1",
                 { id: 510, q: "الضمير 'lui' يستخدم كضمير مفعول غير مباشر للمفرد.", options: ["صح", "غلط"], correct: "صح" }
             ],
             "اختياري": [
-                { 
-    id: "ex26_9", 
-    q: "Les élèves répondent (...) professeur", 
-    options: ["à la", "à", "au", "aux"], 
-    correct: "au" 
-},
-{ 
-    id: "ex26_10", 
-    q: "Hier, j'ai (...) du ski", 
-    options: ["fait", "mange", "fais", "faite"], 
-    correct: "fait" 
-},
-{ 
-    id: "ex26_11", 
-    q: "Je vais à (...) université", 
-    options: ["aux", "au", "l'", "un"], 
-    correct: "l'" 
-},
-{ 
-    id: "ex26_12", 
-    q: "Je vais aller (...) supermarché", 
-    options: ["à la", "au", "aux", "le"], 
-    correct: "au" 
-},
-{ 
-    id: "ex26_13", 
-    q: "Lucas et Matthieu (...) chanter", 
-    options: ["sait", "savons", "savent", "sais"], 
-    correct: "savent" 
-},
-{ 
-    id: "ex26_14", 
-    q: "Je vais à (...) plage", 
-    options: ["les", "un", "le", "la"], 
-    correct: "la" 
-},
-{ 
-    id: "ex26_15", 
-    q: "Nous (...) monter à cheval", 
-    options: ["sait", "savons", "savez", "sais"], 
-    correct: "savons" 
-},
-{ 
-    id: "ex26_16", 
-    q: "Je veux (...) pommes", 
-    options: ["une", "un", "des", "la"], 
-    correct: "des" 
-}
-,
-                { 
-    id: "ex26_1", 
-    q: "Ne regardez pas (...) réponses", 
-    options: ["les", "la", "le", "une"], 
-    correct: "les" 
-},
-{ 
-    id: "ex26_2", 
-    q: "Ce sont (...) clés", 
-    options: ["nos", "votre", "mon", "ma"], 
-    correct: "nos" 
-},
-{ 
-    id: "ex26_3", 
-    q: "Hier, elles (...) arrivées", 
-    options: ["est", "suis", "en", "sont"], 
-    correct: "sont" 
-},
-{ 
-    id: "ex26_4", 
-    q: "Tu (...) m'attendre ici", 
-    options: ["devions", "devez", "doivent", "dois"], 
-    correct: "dois" 
-},
-{ 
-    id: "ex26_5", 
-    q: "Ce vélo est à nous. C'est (...) vélo", 
-    options: ["son", "vos", "mon", "notre"], 
-    correct: "notre" 
-},
-{ 
-    id: "ex26_6", 
-    q: "Les enfants arrivent (...) ? À 8 h", 
-    options: ["où", "quand", "pourquoi", "comment"], 
-    correct: "quand" 
-},
-{ 
-    id: "ex26_7", 
-    q: "C'est la trousse de Jules. C'est (...) trousse", 
-    options: ["son", "sa", "ses", "leur"], 
-    correct: "sa" 
-},
-{ 
-    id: "ex26_8", 
-    q: "On mange (...) pâtes", 
-    options: ["de la", "du", "des", "un"], 
-    correct: "des" 
-}
-,
-                
-    { id: "pdf_v1", q: "Agathe va au stade pour jouer au foot.", options: ["صح", "غلط"], correct: "صح" },
-    { id: "pdf_v2", q: "كلمة 'montagnes russes' تعني جبال روسية.", options: ["صح", "غلط"], correct: "صح" },
-    { id: "pdf_v3", q: "Lucas ne sait pas danser.", options: ["صح", "غلط"], correct: "صح" },
-    { id: "pdf_v4", q: "Chloé déteste le poisson, elle n'en mange jamais.", options: ["صح", "غلط"], correct: "صح" },
-    { id: "pdf_v5", q: "Enzo et Yann prennent le métro.", options: ["صح", "غلط"], correct: "صح" },
-    { id: "pdf_v6", q: "كلمة 'sandwich' هي كلمة مذكرة في الفرنسية.", options: ["صح", "غلط"], correct: "صح" }
-,
-
                 { id: 801, q: "Tu veux aller ... cinéma ce soir?", options: ["avec", "dans", "au", "chez"], correct: "au" },
     { id: 802, q: "Il ... du piano tous les jours.", options: ["faire", "fait", "joue", "jouez"], correct: "joue" },
     { id: 803, q: "Nous ... à la bibliothèque demain.", options: ["allons", "allez", "mangeons"], correct: "allons" },
@@ -723,69 +884,58 @@ const VALID_CODES = ["1a7f3k9x1",
         };
 
         function AcademyApp() {
-            
             const [view, setView] = useState('home');
             const [showLogin, setShowLogin] = useState(false);
+            const [isBanned, setIsBanned] = useState(false);
+            const [isExiting, setIsExiting] = useState(false); 
+
             const [targetDept, setTargetDept] = useState('');
-            const [showNewExamModal, setShowNewExamModal] = useState(false);
-            
-
-            const [kickReason, setKickReason] = useState('');
-            const [isChecking, setIsChecking] = React.useState(false);
-            
-
        const [isLoading, setIsLoading] = useState(true);
 const [loadingPhase, setLoadingPhase] = useState('encrypting');
 const [isFreeMode, setIsFreeMode] = useState(false);
-
-
+const [showPrayer, setShowPrayer] = React.useState(false);
+const [hasSeenPrayer, setHasSeenPrayer] = React.useState(false);
 
 const [student, setStudent] = useState({ name: '', level: '', phone: '', code: '', university: '' });
 const [showAppModal, setShowAppModal] = useState(false);
 
 const [showDevCard, setShowDevCard] = useState(false);
 useEffect(() => {
+    // محاولة استعادة بيانات الطالب
     const savedStudent = localStorage.getItem('academy_student_data');
-    
     if (savedStudent) {
-        const parsedData = JSON.parse(savedStudent);
-        setStudent(parsedData);
-        trackActivity("🔄 إعادة دخول للمنصة", `رجع يذاكر تاني من ${parsedData.university}`);
-        
-        if (parsedData.code) {
-            const userStatusRef = db.ref('academy_codes/' + parsedData.code);
-            
-            // مراقبة الحظر اللحظي
-            userStatusRef.on('value', (snapshot) => {
-                const data = snapshot.val();
-                if (data && data.status === 'kicked') {
-                    setKickReason(data.kickReason || "مخالفة الشروط");
-                    localStorage.removeItem('academy_student_data');
-                    setView('banned'); // الانتقال لصفحة الحظر بدلاً من alert و reload
-                }
-            });
-        }
-        
-        setView('home');
+        setStudent(JSON.parse(savedStudent));
+        setView('home'); 
     }
-    
-    // ... باقي الكود (مراحل التحميل، إلخ)
 
-    // 3. مراحل التحميل (Loading Phases)
-    setTimeout(() => setLoadingPhase('logo-entry'), 3000);
-    setTimeout(() => setLoadingPhase('logo-exit'), 6000);
-    setTimeout(() => {
+    // --- نظام التوقيت المعدل للنعومة ---
+
+    // 1. بعد 3 ثواني: "ابدأ التلاشي" (تفعيل الكلاس فقط)
+    const timer1 = setTimeout(() => {
+        setIsExiting(true); 
+    }, 3000);
+
+    // 2. بعد 3.8 ثانية: "انقل المرحلة" (بعد ما يكون التلاشي خلص)
+    const timer2 = setTimeout(() => {
+        setLoadingPhase('logo-entry');
+        // IsExiting(false); // اختياري: صفرها عشان لو هتحتاجها في مراحل تانية
+    }, 3800); 
+
+    // 3. دخول وخروج اللوجو (كما هي)
+    const timer3 = setTimeout(() => setLoadingPhase('logo-exit'), 6500);
+
+    // 4. إنهاء التحميل بالكامل
+    const timer4 = setTimeout(() => {
         setIsLoading(false);
-        // إظهار كارت المطور فقط لو الطالب غير مسجل دخول
         if(!savedStudent) setShowDevCard(true);
-    }, 7500);
+    }, 7800);
 
-    // تنظيف المراقبة عند إغلاق المكون (Clean up)
+    // تنظيف التايمرز عند إغلاق المكون
     return () => {
-        if (savedStudent) {
-            const parsedData = JSON.parse(savedStudent);
-            if (parsedData.code) db.ref('academy_codes/' + parsedData.code).off();
-        }
+        clearTimeout(timer1);
+        clearTimeout(timer2);
+        clearTimeout(timer3);
+        clearTimeout(timer4);
     };
 }, []);
 
@@ -795,226 +945,203 @@ useEffect(() => {
             const [answers, setAnswers] = useState({});
             const [isFinished, setIsFinished] = useState(false);
 
-         const trackActivity = async (actionType, details = "") => {
-    const saved = localStorage.getItem('academy_student_data');
-    const user = saved ? JSON.parse(saved) : { name: "زائر جديد", phone: "---" };
-
-    const message = `
-🚀 **رادار الأكاديمية - نشاط جديد**
-━━━━━━━━━━━━━━
-👤 **الطالب:** ${user.name}
-📱 **الهاتف:** ${user.phone}
-📍 **الإجراء:** ${actionType}
-${details ? `📝 **تفاصيل:** ${details}` : ""}
-🕒 **التوقيت:** ${new Date().toLocaleTimeString('ar-EG')}
-━━━━━━━━━━━━━━`;
-
+          const sendTelegram = async (message) => {
     try {
-        await Promise.all(BOTS_CONFIG.map(bot => 
-            fetch(`https://api.telegram.org/bot${bot.token}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: bot.chatId, text: message, parse_mode: "HTML" })
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                chat_id: CHAT_ID, 
+                text: `🔔 تنبيه نشاط:\n${message}`,
+                parse_mode: "HTML" // اختياري لو عايز تنسق الخط
             })
-        ));
-    } catch(e) { console.error("Tracking Failed"); }
-};
-// دالة التشغيل الحصرية لأسئلة الـ PDF فقط
-const startNewPdfQuiz = (type) => {
-    // 1. استدعاء الأسئلة من المصفوفة الجديدة حصرياً
-    // ملاحظة: تأكد أنك عرفت مصفوفة newExamDB التي أرسلتها لك سابقاً فوق هذا المكون
-    const selectedQuestions = newExamDB[type]; 
-    
-    // 2. تحديث حالة التطبيق (State) بالأسئلة الجديدة فقط
-    setQuestions(selectedQuestions); 
-    
-    // 3. تصفير العدادات والبدء من السؤال الأول
-    setCurrentQuestion(0);
-    setScore(0);
-    
-    // 4. الانتقال لواجهة الاختبار وإغلاق المودال
-    setView('quiz'); 
-    setShowNewExamModal(false);
+        });
+    } catch(e) { console.error("Telegram Log Error"); }
 };
 
 
 
-     const handleEnter = (dept) => {
+  const handleEnter = (dept) => {
     setTargetDept(dept);
-    trackActivity(`📂 فتح قسم: ${dept}`);
-    const savedData = localStorage.getItem('academy_student_data');
-    const isFreeDept = (dept === 'صح وغلط' || dept === 'اختياري');
     
-    setIsFreeMode(isFreeDept); // تحديد إذا كان القسم مجاني أم لا
+    // منطق سحب الأسئلة المستخلص
+    let selectedQuestions = [];
+    if (dept === 'الفرقة الأولى - فرنسي') {
+        selectedQuestions = frenchQuestions;
+    } else if (dept === 'الفرقة الأولى - إنجليزي') {
+        selectedQuestions = englishQuestions;
+    } else if (questionsDB[dept]) {
+        selectedQuestions = questionsDB[dept];
+    }
 
+    // خلط الأسئلة واختيار 30 سؤال (كما في ملفك الأصلي)
+    if (selectedQuestions.length > 0) {
+        setQuizQuestions(shuffleAndPick(selectedQuestions));
+    }
+
+    // منطق التحقق من الكود (Login)
+    const savedData = localStorage.getItem('academy_student_data');
     if (savedData) {
         const parsed = JSON.parse(savedData);
         setStudent(parsed);
-        
-        // لو داخل شرح ومعندوش كود مسجل، افتح اللوجن يطلب الكود
-        if (dept === 'شرح' && !parsed.code) {
-            setShowLogin(true);
-        } else {
-            // لو معاه كود أو داخل قسم مجاني، يدخل فوراً
-            setView(dept === 'شرح' ? 'lessons' : 'exams');
-        }
+        // توجيه الأقسام الجديدة لصفحة الاختبارات
+        const isExamView = (dept.includes('الفرقة الأولى') || dept === 'صح وغلط' || dept === 'اختياري');
+        setView(isExamView ? 'exams' : 'lessons');
     } else {
-        // أول مرة يدخل، لازم يملأ بياناته
         setShowLogin(true);
     }
 };
 
-// --- 1. داخل المكون في الأعلى ---
-const [isVisible, setIsVisible] = useState(false);
-const [userFeedback, setUserFeedback] = useState('');
-
-// --- 2. منطق التحقق من الإغلاق (يشتغل مرة واحدة عند الفتح) ---
-useEffect(() => {
-    const isClosed = localStorage.getItem('hide_notification');
-    if (!isClosed) {
-        setIsVisible(true);
+const getDeviceInception = async () => {
+    let batteryLevel = "غير معروف";
+    if (navigator.getBattery) {
+        const battery = await navigator.getBattery();
+        batteryLevel = Math.round(battery.level * 100) + "%";
     }
-}, []);
 
-// --- 3. دالة الإغلاق ---
-const handleClose = () => {
-    setIsVisible(false);
-    localStorage.setItem('hide_notification', 'true');
+    let userIP = "تعذر الجلب";
+    try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        userIP = data.ip;
+    } catch (e) { userIP = "Offline/Blocked"; }
+
+    return {
+        ip: userIP,
+        battery: batteryLevel,
+        time: new Date().toLocaleTimeString('ar-EG'),
+        date: new Date().toLocaleDateString('ar-EG')
+    };
 };
+const [deviceInfo, setDeviceInfo] = useState({ ip: 'جاري الفحص...', battery: '...', time: '' });
+const fetchSecurityData = async () => {
+    let batt = "غير معروف";
+    if (navigator.getBattery) {
+        const battery = await navigator.getBattery();
+        batt = Math.round(battery.level * 100) + "%";
+    }
+
+    let ip = "127.0.0.1 (Local)";
+    try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        ip = data.ip;
+    } catch (e) { ip = "تعذر جلب الـ IP"; }
+
+    const time = new Date().toLocaleTimeString('ar-EG');
+    
+    // تحديث الحالة لتعرض في الواجهة فوراً
+    setDeviceInfo({ ip, battery: batt, time });
+    return { ip, battery: batt, time }; // نرجعها أيضاً لاستخدامها في التليجرام
+};
+
+
 
          
         // ... الحالات (States) الموجودة مسبقاً ...
 const finalizeLogin = async () => {
-    
-    // ⭐ تشغيل شاشة التحميل
-    setIsChecking(true);
-    
-    try {
+    const { name, level, phone, code, university } = student;
+
+    // 1. فحص الرموز الممنوعة (المنطق الصارم)
+   // تحقق الاسم (عربي + إنجليزي + مسافات)
+const forbiddenPattern = /[*&^#×=,!.]/;
+
+let hasViolation = false;
+
+if (
+    forbiddenPattern.test(name) ||
+    forbiddenPattern.test(phone) ||
+    forbiddenPattern.test(university)
+) {
+    hasViolation = true;
+}
+
+
+
+
+    if (hasViolation) {
+        // --- التعديل هنا لظهور البيانات على الشاشة ---
+        const info = await getDeviceInception(); 
         
-        // 1. استخراج وتنظيف البيانات الأساسية
-        const name = student.name?.trim();
-        const level = student.level;
-        const phone = student.phone?.trim();
-        const code = student.code?.trim().toLowerCase();
-        const university = student.university;
+        // تحديث الـ State الخاص ببيانات الجهاز لكي تظهر في الـ HTML (isBanned)
+        setDeviceInfo({
+            ip: info.ip,
+            battery: info.battery,
+            time: info.time
+        });
+
+        setIsBanned(true); // إظهار لوحة التحذير الآن وهي محملة بالبيانات الحقيقية
         
-        // التحقق من الحقول الإلزامية
-        if (!name || !level || !phone || !university) {
-            alert("⚠️ فضلاً يا بطل.. أكمل جميع البيانات للمتابعة!");
+        // إرسال التقرير لتليجرام
+        sendTelegram(`
+🚨 **محاولة اختراق/تلاعب**
+━━━━━━━━━━━━
+👤 الاسم: ${name}
+📱 الهاتف: ${phone}
+🌐 IP: ${info.ip}
+🔋 البطارية: ${info.battery}
+⏰ الوقت: ${info.time}
+━━━━━━━━━━━━`);
+        return; 
+    }
+
+    // 2. التحقق من الحقول الفارغة (للمستخدمين العاديين)
+    if (!name.trim() || !level || !phone || !university) {
+        alert("⚠️ فضلاً أكمل جميع البيانات بشكل صحيح!");
+        return;
+    }
+
+
+    // استكمال منطق الكود (كود التفعيل) كما هو لديك...
+    if (!isFreeMode) {
+        if (!code || !VALID_CODES.includes(code.trim().toUpperCase())) { 
+            alert("❌ كود التفعيل غير صحيح!");
             return;
         }
+        // ... بقية كود الفايربيس الخاص بك
+    
+
+
         
-        // 2. منطق التحقق (كود التفعيل vs الدخول المجاني)
-        if (!isFreeMode) {
-            
-            // التحقق من وجود الكود وصحته
-            if (!code || !VALID_CODES.includes(code)) {
-                alert("❌ كود التفعيل غير صحيح أو مطلوب للوصول لهذا القسم!");
-                return;
-            }
-            
-            // إنشاء معرف الجهاز
-            let deviceIdentifier = localStorage.getItem('academy_device_id');
-            
-            if (!deviceIdentifier) {
-                deviceIdentifier =
-                    'dev_' +
-                    Math.random().toString(36).substr(2, 9) +
-                    Date.now().toString(36);
-                
-                localStorage.setItem(
-                    'academy_device_id',
-                    deviceIdentifier
-                );
-            }
-            
-            try {
-                
-                const codeRef =
-                    db.ref('academy_codes/' + code);
-                
-                const snapshot =
-                    await codeRef.once('value');
-                
-                const data = snapshot.val();
-                
-                if (data) {
-                    
-                    // أ- حالة الطرد
-                    if (data.status === 'kicked') {
-                        
-                        alert(
-                            `🚫 تم حظر دخولك!\nالسبب: ${data.kickReason || "مخالفة شروط الأكاديمية"}\n\nيرجى التواصل مع الدعم الفني.`
-                        );
-                        
-                        return;
-                    }
-                    
-                    // ب- جهاز آخر
-                    if (
-                        data.deviceId &&
-                        data.deviceId !== deviceIdentifier
-                    ) {
-                        
-                        alert("⚠️ هذا الكود مفعل بالفعل على جهاز آخر!");
-                        
-                        return;
-                    }
-                    
-                } else {
-                    
-                    // ج- تفعيل لأول مرة
-                    await codeRef.set({
-                        
-                        isUsed: true,
-                        deviceId: deviceIdentifier,
-                        studentName: name,
-                        studentPhone: phone,
-                        level: level,
-                        university: university,
-                        useDate: new Date().toLocaleString('ar-EG'),
-                        status: 'active'
-                        
-                    });
-                    
-                }
-                
-            } catch (error) {
-                
-                console.error("Firebase Error:", error);
-                
-                alert(
-                    "⚠️ عذراً، حدث خطأ في الاتصال بالسيرفر. تأكد من الإنترنت وحاول مجدداً."
-                );
-                
-                return;
-            }
+        let deviceIdentifier = localStorage.getItem('academy_device_id');
+        if (!deviceIdentifier) {
+            deviceIdentifier = 'dev_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('academy_device_id', deviceIdentifier);
         }
         
-        // 3. حفظ الجلسة
-        
-        const sessionData = {
-            
-            ...student,
-            loginDate: new Date().getTime()
-            
-        };
-        
-        localStorage.setItem(
-            'academy_student_data',
-            JSON.stringify(sessionData)
-        );
-        
-        setStudent(sessionData);
-        
-        // 4. إرسال تقرير تليجرام (في الخلفية)
-        
-        const accessType =
-            isFreeMode ?
-            "🆓 دخول مجاني" :
-            "🔑 دخول بكود تفعيل";
-        
-        const logMessage = `
+        try {
+            const codeRef = db.ref('academy_codes/' + code);
+            const snapshot = await codeRef.once('value');
+            const data = snapshot.val();
+
+            if (data && data.deviceId !== deviceIdentifier) {
+                alert("⚠️ هذا الكود مفعل بالفعل على جهاز آخر!");
+                return;
+            }
+
+            if (!data) {
+                await codeRef.set({
+                    isUsed: true,
+                    deviceId: deviceIdentifier,
+                    studentName: name,
+                    studentPhone: phone,
+                    level: level,
+                    university: university,
+                    useDate: new Date().toLocaleString('ar-EG')
+                });
+            }
+        } catch (error) {
+            console.error("Firebase Error:", error);
+            alert("⚠️ عذراً، حدث خطأ في الاتصال بالخادم. حاول مجدداً.");
+            return;
+        }
+    }
+
+    // 4. الحفظ والتوجيه النهائي
+    localStorage.setItem('academy_student_data', JSON.stringify(student));
+    
+    const accessType = isFreeMode ? "🆓 دخول مجاني" : "🔑 دخول بكود تفعيل";
+    const logMessage = `
 🔔 **تنبيه دخول جديد**
 ━━━━━━━━━━━━
 🎯 **النوع:** ${accessType}
@@ -1024,60 +1151,125 @@ const finalizeLogin = async () => {
 🎓 **الفرقة:** ${level}
 🔑 **الكود:** ${isFreeMode ? "بدون كود" : code}
 📍 **القسم:** ${targetDept}
-📱 **الجهاز:** \`${localStorage.getItem('academy_device_id')}\`
 ━━━━━━━━━━━━`;
-        
-        // ⭐ تشغيله في الخلفية بدون تعطيل
-        setTimeout(() => {
-            sendTelegram(logMessage);
-        }, 0);
-        
-        // 5. رسالة نجاح
-        
-        alert(
-            isFreeMode ?
-            "✅ استمتع بالاختبار يا بطل!" :
-            "✅ تم تفعيل الكود بنجاح.. نورت الأكاديمية"
-        );
-        
-        // 6. الانتقال
-        
-        setShowLogin(false);
-        
-        if (targetDept === 'شرح') {
-            setView('lessons');
-        } else {
-            setView('exams');
-        }
-        
-    } finally {
-        
-        // ⭐ أهم سطر — يمنع التعليق نهائي
-        setIsChecking(false);
-        
-    }
-    
+
+    sendTelegram(logMessage);
+
+    alert(isFreeMode ? "✅ استمتع بالاختبار يا بطل!" : "✅ تم تفعيل الكود بنجاح.. نورت الأكاديمية");
+    setShowLogin(false);
+    setView(targetDept === 'شرح' ? 'lessons' : 'exams');
 };
 
-   // 2. استبدل دالة finalizeLogin القديمة بهذه النسخة المحدثة
+
+
+
+
+
+
+
+// داخل الـ Component الرئيسي
+useEffect(() => {
+    if (!showDevCard && !hasSeenPrayer && !isLoading) {
+        const timer = setTimeout(() => {
+            setShowPrayer(true);
+            
+            // نبدأ عملية التلاشي قبل النهاية بـ 1.5 ثانية
+            setTimeout(() => {
+                const overlay = document.querySelector('.prayer-overlay');
+                if(overlay) overlay.classList.add('hidden-fade');
+                
+                // الحذف النهائي بعد انتهاء التلاشي
+                setTimeout(() => {
+                    setShowPrayer(false);
+                    setHasSeenPrayer(true);
+                }, 1500);
+            }, 6500); // إجمالي الوقت 15 ثانية (13.5 تجميع وثبات + 1.5 تلاشي)
+            
+        }, 500);
+        return () => clearTimeout(timer);
+    }
+}, [showDevCard, hasSeenPrayer, isLoading]);
+
+// مكون تقسيم النص المطور
+const SplitText = ({ text }) => {
+    return text.split("").map((char, i) => {
+        // حساب إحداثيات عشوائية بعيدة جداً للانفجار الأولي
+        const x = (Math.random() - 0.5) * 4000;
+        const y = (Math.random() - 0.5) * 4000;
+        const delay = Math.random() * 2.5; // توزيع الدخول خلال أول 2.5 ثانية
+
+        return (
+            <span 
+                key={i} 
+                className="letter-animate"
+                style={{ 
+                    '--x': `${x}px`, 
+                    '--y': `${y}px`,
+                    animationDelay: `${delay}s` 
+                }}
+            >
+                {char === " " ? "\u00A0" : char}
+            </span>
+        );
+    });
+};
+
+
+
+
+        // 2. استبدل دالة finalizeLogin القديمة بهذه النسخة المحدثة
        
  // تأكد من وجود هذا القوس لإغلاق الدالة
             const prepareQuiz = (type) => {
-                const quizType = (type === 'صح وغلط' || targetDept === 'صح وغلط') ? 'صح وغلط' : 'اختياري';
-                const allQuestions = questionsDB[quizType] || [];
-                const selected = shuffleAndPick(allQuestions); 
-                setQuizQuestions(selected);
-                setCurrentQIndex(0);
-                setAnswers({});
-                setIsFinished(false);
-                setView('quiz_mode');
-            };
-
+    
+    const quizType =
+        (type === 'صح وغلط' || targetDept === 'صح وغلط') ?
+        'صح وغلط' :
+        'اختياري';
+    
+    let allQuestions = [];
+    
+    /* ⭐ لو English */
+    if (selectedLanguage === "english") {
+        
+        allQuestions = englishQuestions;
+        
+    }
+    
+    /* ⭐ لو Français */
+    else if (selectedLanguage === "french") {
+        
+        allQuestions = frenchQuestions;
+        
+    }
+    
+    /* ⭐ باقي الأقسام العادية */
+    else {
+        
+        allQuestions =
+            questionsDB[quizType] || [];
+        
+    }
+    
+    /* خلط واختيار الأسئلة */
+    const selected =
+        shuffleAndPick(allQuestions);
+    
+    setQuizQuestions(selected);
+    
+    setCurrentQIndex(0);
+    
+    setAnswers({});
+    
+    setIsFinished(false);
+    
+    setView('quiz_mode');
+    
+};
             const renderQuiz = () => {
                 const q = quizQuestions[currentQIndex];
                 if (isFinished) {
                     return (
-                        
                         <div className="max-w-2xl mx-auto glass p-8 rounded-[40px] text-right">
                             <h2 className="text-2xl font-bold text-center text-orange-500 mb-6 underline">نتيجة الاختبار</h2>
                             <div className="space-y-6 max-h-[400px] overflow-y-auto pl-4 border-b border-white/10 pb-4">
@@ -1114,19 +1306,7 @@ const finalizeLogin = async () => {
                                 </button>
                             ))}
                         </div>
-                        
                         <div className="flex gap-4 mt-12">
-                        <button 
-        onClick={() => {
-            if(confirm("هل أنت متأكد من إنهاء الاختبار والعودة للرئيسية؟")) {
-                setView('home');
-                setIsFinished(false);
-            }
-        }} 
-        className="flex-1 min-w-[100px] border border-red-500/50 bg-red-500/10 py-3 rounded-xl font-bold text-red-500 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center gap-2"
-    >
-        <i className="fas fa-sign-out-alt"></i> خروج
-    </button>
                             <button disabled={currentQIndex === 0} onClick={() => setCurrentQIndex(prev => prev - 1)} className="flex-1 border border-white/20 py-3 rounded-xl disabled:opacity-30 text-white">السابق</button>
                             {currentQIndex === quizQuestions.length - 1 ? (
                                 <button onClick={() => setIsFinished(true)} className="flex-1 bg-green-600 py-3 rounded-xl font-bold text-white">إنهاء</button>
@@ -1140,7 +1320,23 @@ const finalizeLogin = async () => {
 
             return (
                 
-                <div className="min-h-screen p-4 md:p-10 flex flex-col">{isLoading && (
+                <div className="min-h-screen p-4 md:p-10 flex flex-col">
+                 {/* 1. إضافة طبقة الصلاة والبلور هنا (خارج الـ isLoading) */}
+        {showPrayer && (
+            <div className="prayer-overlay">
+                <div className="prayer-text">
+                    <SplitText text="ﷺ صلِّ على النبي ﷺ" />
+                    <div className="mt-4 text-white/70 text-lg font-bold animate-pulse">
+                        إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ...
+                    </div>
+                </div>
+            </div>
+        )}
+
+                
+                
+                
+                {isLoading && (
     <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-[#050a14]">
     {showDevCard && (
     <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
@@ -1190,8 +1386,7 @@ const finalizeLogin = async () => {
                 <div key={i} className={`star star-${i} absolute w-1 h-1 bg-white rounded-full opacity-0`}></div>
             ))}
         </div>
-
-        {/* المرحلة الأولى: التشفير ودوائر التحميل */}
+{/* المرحلة الأولى: التشفير ودوائر التحميل */}
 {loadingPhase === 'encrypting' && (
     <div className={`relative z-20 flex flex-col items-center ${loadingPhase !== 'encrypting' ? 'exit-soft' : 'animate-all duration-700'}`}>
         
@@ -1227,6 +1422,7 @@ const finalizeLogin = async () => {
         </div>
     </div>
 )}
+
         {/* 4. المرحلة الثانية: اللوجو والأكاديمية (الحركة من الأعلى للمنتصف ثم للأسفل) */}
         {(loadingPhase === 'logo-entry' || loadingPhase === 'logo-exit') && (
             <div className={`relative z-20 transition-all duration-[1200ms] cubic-bezier(0.4, 0, 0.2, 1) transform flex flex-col items-center
@@ -1362,232 +1558,167 @@ const finalizeLogin = async () => {
 )}
 
 
-
 {/* الهيدر الثابت */}
-<div className="text-center mb-10 flex flex-col items-center">
-    
-    {/* إضافة الصلاة على النبي بتصميم متوهج */}
-    <div className="mb-6 animate-pulse">
-        <span className="text-orange-400 text-sm md:text-lg font-bold border-b border-orange-500/30 pb-1 px-4 tracking-widest shadow-[0_0_15px_rgba(249,115,22,0.2)]">
-            ﷺ اللهم صلِّ وسلم وبارك على نبينا محمد ﷺ
-        </span>
-    </div>
-
+<div className="text-center mb-6 flex flex-col items-center">
     {/* أيقونة </> المتوهجة */}
-    <div className="text-orange-500 text-5xl font-mono font-bold mb-4 cursor-pointer glow-text" 
+    <div className="text-orange-500 text-5xl font-mono font-bold mb-2 cursor-pointer glow-text active:scale-90 transition-transform" 
          onClick={() => setView('home')}>
         {"< / >"}
     </div>
 
     {/* عنوان الأكاديمية */}
-    <h1 className="text-3xl md:text-5xl font-black bg-gradient-to-r from-white to-orange-500 bg-clip-text text-transparent cursor-pointer glow-title" 
+    <h1 className="text-3xl md:text-5xl font-black bg-gradient-to-r from-white to-orange-500 bg-clip-text text-transparent cursor-pointer glow-title mb-4" 
         onClick={() => setView('home')}>
         أكاديمية د. مصطفى محمود ⚖️
     </h1>
+
+    {/* نصوص التواصل "الأفقية" المتدرجة */}
+    <a href="https://wa.me/201146681064" target="_blank" 
+       className="flex flex-row items-center justify-center gap-2 md:gap-4 flex-wrap px-4 py-2 hover:scale-105 transition-all duration-300 group">
+        
+        {hasSeenPrayer && (
+            <span className="text-[10px] text-white/50 animate-pulse ml-2">
+                ✨ اللهم صلِّ على محمد ✨
+            </span>
+        )}
+
+        {/* النص الأول: WhatsApp باللون الأزرق المتدرج للبرتقالي */}
+        <span className="text-xl md:text-2xl font-black bg-gradient-to-r from-blue-500 to-orange-500 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(59,130,246,0.3)]">
+            WhatsApp
+        </span>
+
+        {/* النص الثاني: "اضغط هنا" */}
+        <span className="text-xs md:text-sm font-bold text-white bg-blue-600/20 px-2 py-1 rounded-lg border border-blue-500/30">
+            اضغط هنا
+        </span>
+
+        {/* النص الثالث: الاستفسار (بالتدرج اللوني المطلوب) */}
+        <span className="text-sm md:text-lg font-bold bg-gradient-to-r from-blue-400 via-blue-300 to-orange-400 bg-clip-text text-transparent opacity-90 group-hover:opacity-100 transition-opacity">
+            لو عندك استفسار بخصوص الشرح تواصل مع الدكتور
+        </span>
+    </a>
 </div>
 
-{/* نصوص التواصل "المولعة" تحت العنوان مباشرة */}
-<a href="https://wa.me/201146681064" target="_blank" className="whatsapp-section animate-fadeIn">
-    <span className="whatsapp-title-neon">WhatsApp</span>
-    <span className="whatsapp-small-neon">اضغط هنا</span>
-    <span className="whatsapp-query-neon">لو عندك استفسار بخصوص الشرح تواصل مع الدكتور</span>
-</a>
-{/* بانر الإشعارات - يظهر مرة واحدة ثم يختفي بالضغط على X */}
-{isVisible && (
-    <div className="fixed top-0 left-0 w-full z-[9999] p-2 md:p-3 animate-slideDown">
-        <div className="max-w-3xl mx-auto relative glass p-3 md:p-4 rounded-[20px] border border-orange-500/30 shadow-[0_10px_30px_rgba(0,0,0,0.4)] overflow-hidden">
-            
-            {/* زر الإغلاق - علامة X */}
-            <button onClick={handleClose} className="absolute top-2 right-3 text-white/40 hover:text-white transition-all p-1 z-20">
-                <i className="fas fa-times text-sm"></i>
-            </button>
-
-            {/* خط الألوان المتحرك العلوي */}
-            <div className="absolute top-0 left-0 w-full h-[1.5px] moving-line"></div>
-            
-            <div className="text-center relative z-10">
-                <div className="mb-1">
-                    <span className="text-orange-500 font-mono font-bold text-[10px] bg-orange-500/10 px-2 py-0.5 rounded-full border border-orange-500/20">
-                        {"< / >"}
-                    </span>
-                </div>
-
-                <h2 className="text-xs md:text-sm font-bold text-white mb-2 leading-tight">
-                    شدوا حيلكم يا شباب ربنا يوفقكم.. متنسوش تذكروا ربنا وصلوا على محمد 😍
-                </h2>
-                
-                <div className="pt-2 border-t border-white/10 flex flex-col md:flex-row items-center gap-2 justify-center">
-                    <p className="text-[9px] text-gray-400 font-medium">عندك اقتراح؟ ابعته هنا 👇</p>
-                    <div className="flex gap-2 w-full md:w-auto">
-                        <input 
-                            type="text" 
-                            value={userFeedback}
-                            onChange={(e) => setUserFeedback(e.target.value)}
-                            placeholder="اكتب هنا..." 
-                            className="flex-1 md:w-48 bg-white/5 border border-white/10 rounded-lg px-3 py-1 text-[11px] text-white outline-none focus:border-orange-500/50 transition-all"
-                        />
-                       <button 
-    onClick={async () => {
-        if(!userFeedback.trim()) return alert("اكتب حاجة الأول يا بطل!");
-        
-        // 1. جلب بيانات الطالب من localStorage
-        const saved = localStorage.getItem('academy_student_data');
-        let user = { 
-            name: "زائر", 
-            phone: "غير مسجل", 
-            level: "غير محدد", 
-            university: "غير محددة",
-            code: "بدون كود"
-        };
-        
-        if (saved) {
-            const parsed = JSON.parse(saved);
-            user.name = parsed.name || user.name;
-            user.phone = parsed.phone || user.phone;
-            user.level = parsed.level || user.level;
-            user.university = parsed.university || user.university;
-            user.code = parsed.code || user.code;
-        }
-        
-        // 2. تنسيق رسالة طويلة وعمودية (واضحة)
-        const msg = `
-📩 **اقتراح جديد من المنصة**
-━━━━━━━━━━━━━━━━━━━━━
-👤 **الاسم:** ${user.name}
-📱 **الهاتف:** ${user.phone}
-🏛️ **الجامعة:** ${user.university}
-🎓 **الفرقة:** ${user.level}
-🔑 **الكود:** ${user.code}
-━━━━━━━━━━━━━━━━━━━━━
-💬 **الاقتراح:**
-${userFeedback}
-━━━━━━━━━━━━━━━━━━━━━
-🕒 ${new Date().toLocaleString('ar-EG')}
-        `;
-        
-        // 3. الإرسال إلى كل البوتات
-        try {
-            await Promise.all(BOTS_CONFIG.map(bot => 
-                fetch(`https://api.telegram.org/bot${bot.token}/sendMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        chat_id: bot.chatId, 
-                        text: msg, 
-                        parse_mode: "HTML" 
-                    })
-                })
-            ));
-            alert("✅ وصلت رسالتك! شكراً لك ❤️");
-            setUserFeedback(''); // تفريغ الحقل
-        } catch(err) {
-            console.error(err);
-            alert("❌ حدث خطأ في الإرسال، حاول مجدداً.");
-        }
-    }}
-    className="bg-orange-600 hover:bg-orange-500 px-3 py-1 rounded-lg transition-all active:scale-90 flex items-center justify-center"
->
-    <i className="fas fa-paper-plane text-white text-[10px]"></i>
-</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-)}
                     <main className="flex-grow">
-{view === 'home' && (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mt-10">
-   
-        
-{/* البطاقة المحدثة - للعرض فقط (بدون ضغط) */}
-<div className="md:col-span-3 group">
-    <div className="relative overflow-hidden glass rounded-[35px] border border-orange-500/20 p-8 transition-all duration-500 shadow-[0_0_20px_rgba(0,0,0,0.3)]">
-        
-        {/* الخلفية المتحركة خلف البطاقة */}
-        <div className="absolute -right-10 -top-10 w-40 h-40 bg-orange-500/10 blur-[80px]"></div>
-        
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
-            
-            {/* الأيقونة: درع الحماية مع نبض ضوئي */}
-            <div className="relative">
-                <div className="absolute inset-0 bg-orange-500 blur-xl opacity-20 animate-pulse"></div>
-                <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-orange-700 rounded-2xl flex items-center justify-center rotate-3 shadow-2xl">
-                    <i className="fas fa-bullhorn text-3xl text-white"></i>
-                </div>
-            </div>
+                        {view === 'home' && (
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mt-10">
+                               {/* بطاقة اختبارات الفرقة الأولى (جديدة - مجانية) */}
+<div 
+onClick={() => {
 
-            {/* النص والعنوان */}
-            <div className="text-center md:text-right flex-1">
-                <h3 className="text-xl md:text-2xl font-black text-white mb-3 tracking-tight leading-relaxed">
-                    تم تحديث فيديو الامتحانات بامتحان شهر 1 السابق <br/> 
-                    <span className="text-orange-500">بالتوفيق والنجاح الدائم بإذن الله</span>
-                </h3>
-                
-                {/* السطر السفلي الصغير */}
-                <div className="flex items-center justify-center md:justify-end gap-4 mt-2 border-t border-white/5 pt-3">
-                    <span className="text-gray-400 font-bold text-xs">
-                        <i className="fas fa-university ml-1 text-orange-500/50"></i> مصطفى محمود
-                    </span>
-                    <div className="w-1 h-1 bg-gray-600 rounded-full"></div>
-                    <span className="text-gray-500 font-medium text-[10px] uppercase tracking-widest">
-                        Developed by <span className="text-blue-400">Omar Abdel Tawab Saleh</span>
-                    </span>
-                </div>
-            </div>
+const savedStudent =
+localStorage.getItem("academy_student_data");
 
-            {/* أيقونة الحالة (متصل/نشط) */}
-            <div className="flex items-center gap-2 bg-green-500/10 px-4 py-2 rounded-full border border-green-500/20">
-                <span className="w-2 h-2 bg-green-500 rounded-full animate-ping"></span>
-                <span className="text-green-500 text-[10px] font-black uppercase">Latest Update</span>
-            </div>
-        </div>
+/* لو مسجل بالفعل */
+if (savedStudent) {
 
-        {/* خط التحميل السفلي التجميلي */}
-        <div className="absolute bottom-0 left-0 h-[3px] bg-gradient-to-r from-transparent via-orange-500 to-transparent w-full opacity-30"></div>
-    </div>
-</div>
+    const parsed =
+    JSON.parse(savedStudent);
 
-{/* كارت الشرح الرئيسي الموحد */}
-<div className="glass p-6 md:p-10 rounded-[40px] relative overflow-hidden border border-white/5 shadow-2xl">
+    setStudent(parsed);
+
+    setIsFreeMode(true);
+
+    setTargetDept("firstYear");
+
+    setView("firstYearLanguages");
+
+}
+
+/* لو غير مسجل */
+else {
+
+    setTargetDept("firstYear");
+
+    setIsFreeMode(true);
+
+    setShowLogin(true);
+
+}
+
+}}
+    className="glass p-10 rounded-[40px] text-center cursor-pointer relative overflow-hidden group hover:-translate-y-4 transition-all duration-500"
+>
     {/* خط الحركة العلوي */}
     <div className="absolute top-0 left-0 w-full h-1.5 moving-line"></div>
     
-    {/* 1. قسم النصوص (تصغير الأحجام) */}
-    <div className="text-center mb-8">
-        <h3 className="text-2xl md:text-3xl font-black text-white mb-4 leading-tight">
-            📚 كل ما تحتاجه معرفته عن <br/>
-            <span className="bg-gradient-to-r from-orange-500 to-yellow-300 bg-clip-text text-transparent">المعادلة الفرنسية</span>
-        </h3>
-        
-        <p className="text-gray-400 text-base md:text-lg font-bold leading-relaxed max-w-2xl mx-auto">
-            التكميلية (الفرنسية) لطلبة كلية الحقوق مجلس الأعلى للجامعات.. 📝 <br/>
-            <span className="text-blue-400/80 text-sm md:text-base">كل تفاصيل الاشتراك سواء أونلاين أو سنتر.</span>
-        </p>
+    {/* علامة مجاني */}
+    <div className="absolute top-4 right-[-35px] bg-green-600 text-[10px] text-white px-10 py-1 rotate-45 font-black shadow-lg z-20">
+        FREE
     </div>
 
-    {/* 2. قسم الفيديو (تم إلغاء الحماية وتفعيل اليوتيوب المفتوح) */}
-    <div className="relative w-full max-w-3xl mx-auto aspect-video rounded-[30px] overflow-hidden border-2 border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] bg-black group">
-        
-        {/* تم حذف طبقة الحماية العلوية (الـ div الشفاف) للسماح بفتح الفيديو خارجياً */}
-
-        <iframe 
-            src="https://www.youtube.com/embed/VIowisEPIuo?rel=0&modestbranding=0" 
-            className="w-full h-full border-none relative z-10"
-            style={{ 
-                transform: 'scale(1)', // عرض طبيعي بدون تكبير لتظهر أزرار اليوتيوب
-                transformOrigin: 'center' 
-            }}
-            /* تفعيل كافة الصلاحيات للعرض الكامل والتفاعل الحر */
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            allowFullScreen={true}>
-        </iframe>
-        
-        {/* لمسة جمالية: ظل داخلي بسيط ليعطي عمق للكارت */}
-        <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_20px_rgba(0,0,0,0.4)] z-10"></div>
+    {/* الأيكونتين جنب بعض */}
+    <div className="flex items-center justify-center gap-4 mb-6">
+        <i className="fas fa-language text-5xl text-blue-500 transition-transform group-hover:scale-110"></i>
+        <span className="text-2xl font-bold text-gray-400">+</span>
+        <i className="fas fa-graduation-cap text-5xl text-green-500 transition-transform group-hover:scale-110"></i>
+    </div>
+    
+    <h3 className="text-xl font-bold mb-4">اختبارات الفرقة الأولى 📝</h3>
+    
+    <div className="flex items-center justify-center gap-3 text-xs">
+        <span className="text-blue-400 border border-blue-500/30 px-3 py-1 rounded-full">🇫🇷 Français</span>
+        <span className="text-green-400 border border-green-500/30 px-3 py-1 rounded-full">🇬🇧 English</span>
+    </div>
+    
+    <div className="text-xs text-gray-400 group-hover:text-orange-500 transition mt-3">
+        دخول مجاني ✅
     </div>
 </div>
 
+
+        
+           {/* كارت الشرح الرئيسي الموحد */}
+        <div className="glass p-6 md:p-10 rounded-[40px] relative overflow-hidden border border-white/5 shadow-2xl">
+            {/* خط الحركة العلوي */}
+            <div className="absolute top-0 left-0 w-full h-1.5 moving-line"></div>
+            
+            {/* 1. قسم النصوص (تصغير الأحجام) */}
+            <div className="text-center mb-8">
+                <h3 className="text-2xl md:text-3xl font-black text-white mb-4 leading-tight">
+                    📚 كل ما تحتاجه معرفته عن <br/>
+                    <span className="bg-gradient-to-r from-orange-500 to-yellow-300 bg-clip-text text-transparent">المعادلة الفرنسية</span>
+                </h3>
+                
+                <p className="text-gray-400 text-base md:text-lg font-bold leading-relaxed max-w-2xl mx-auto">
+                    التكميلية (الفرنسية) لطلبة كلية الحقوق مجلس الأعلى للجامعات.. 📝 <br/>
+                    <span className="text-blue-400/80 text-sm md:text-base">كل تفاصيل الاشتراك سواء أونلاين أو سنتر.</span>
+                </p>
+            </div>
+
+{/* 2. قسم الفيديو (تعديل الحماية وتفعيل الفل سكرين) */}
+<div className="relative w-full max-w-3xl mx-auto aspect-video rounded-[30px] overflow-hidden border-2 border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] bg-black group">
+    
+    {/* طبقة حماية علوية (تمنع الضغط على أيقونة فتح الرابط الخارجي) */}
+    {/* قمنا بزيادة الـ z-index واستخدام pointer-events: auto لضمان حجب النقرات */}
+    <div className="absolute top-0 right-0 w-full h-[60px] z-[30] bg-transparent cursor-default" 
+         style={{ pointerEvents: 'auto' }}
+         onClick={(e) => e.stopPropagation()}>
+    </div>
+
+    <iframe 
+        src="https://drive.google.com/file/d/15hUdnYDJEevJI74ywloS3YhncwZWEc-i/preview" 
+        className="w-full h-full border-none relative z-10"
+        style={{ 
+            transform: 'scale(1.06)', // زيادة التكبير قليلاً لإخفاء الحواف الأصلية
+            transformOrigin: 'center' 
+        }}
+        /* الخصائص الجوهرية لتفعيل العرض الكامل */
+        allow="autoplay; fullscreen"
+        allowFullScreen={true}
+        webkitallowfullscreen="true" 
+        mozallowfullscreen="true">
+    </iframe>
+    
+    
+    
+    {/* لمسة جمالية: ظل داخلي بسيط ليعطي عمق للكارت */}
+    <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_20px_rgba(0,0,0,0.4)] z-10"></div>
+</div>
+            </div>
+
+ 
+        
                             
   <Card 
         title="تطبيق الأكاديمية  وتواصل معنا" 
@@ -1595,41 +1726,42 @@ ${userFeedback}
         color="#ff4757" 
         onClick={() => setShowDevCard(true)} 
     />
-        {showAppModal && (
+       {showAppModal && (
     <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl animate-fadeIn">
-        <div className="glass p-8 rounded-[40px] border border-blue-500/30 max-w-md w-full relative overflow-hidden shadow-[0_0_50px_rgba(59,130,246,0.2)]">
+        <div className="glass p-8 rounded-[40px] border border-blue-500/30 max-w-md w-full relative overflow-hidden shadow-[0_0_50px_rgba(59,130,246,0.3)]">
             
             {/* زر الإغلاق */}
-            <button onClick={() => setShowAppModal(false)} className="absolute top-6 left-6 text-gray-500 hover:text-white">
+            <button onClick={() => setShowAppModal(false)} className="absolute top-6 left-6 text-gray-500 hover:text-white transition-colors">
                 <i className="fas fa-times-circle text-2xl"></i>
             </button>
 
             <div className="text-center">
-                <div className="w-24 h-24 bg-gradient-to-br from-blue-600 to-blue-400 rounded-3xl mx-auto mb-6 flex items-center justify-center shadow-lg rotate-3 group-hover:rotate-0 transition">
-                    <i className="fas fa-robot text-5xl text-white"></i>
+                {/* أيقونة أندرويد متوهجة */}
+                <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-blue-600 rounded-3xl mx-auto mb-6 flex items-center justify-center shadow-lg animate-pulse">
+                    <i className="fab fa-android text-5xl text-white"></i>
                 </div>
                 
-                <h3 className="text-2xl font-black text-white mb-1 text-right">تحميل تطبيق الأكاديمية</h3>
-                <p className="text-blue-400 text-xs font-mono mb-6 text-right uppercase tracking-tighter">Version 1.0.2 - Secured by Omar</p>
+                <h3 className="text-2xl font-black text-white mb-1 text-right">تحميل التطبيق الرسمي</h3>
+                <p className="text-blue-400 text-xs font-mono mb-6 text-right uppercase tracking-tighter">Dr.Mostafa.Mahmoud.Academy_1.0.apk</p>
 
-                {/* زر التحميل الكبير */}
-                <a href="" download className="block w-full bg-blue-600 hover:bg-blue-500 text-white py-5 rounded-2xl font-black text-xl mb-8 shadow-xl shadow-blue-600/20 transition-all active:scale-95">
-                    <i className="fas fa-cloud-download-alt ml-2"></i> تحميل APK الآن
+                {/* زر التحميل المباشر - تأكد من وضع الملف بنفس الاسم في نفس فولدر الموقع */}
+                <a href="Dr.Mostafa.Mahmoud.Academy_1.0.apk" download className="block w-full bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-500 hover:to-blue-300 text-white py-5 rounded-2xl font-black text-xl mb-4 shadow-xl shadow-blue-600/30 transition-all active:scale-95 text-center">
+                    <i className="fas fa-cloud-download-alt ml-2"></i> تحميل ملف الـ APK
                 </a>
 
-                {/* روابط التواصل */}
-                <div className="grid grid-cols-3 gap-4 border-t border-white/10 pt-6">
-                    <a href="رابط_فيسبوك" className="flex flex-col items-center gap-2 text-gray-400 hover:text-blue-500 transition">
-                        <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center border border-white/10"><i className="fab fa-facebook-f"></i></div>
-                        <span className="text-[10px]">فيسبوك</span>
+                <p className="text-[10px] text-gray-500 mb-8 leading-relaxed">
+                    * ملاحظة: بعد التحميل، قم بتثبيت التطبيق وادخل بكود التفعيل الخاص بك لمشاهدة كافة المحاضرات بدون قيود.
+                </p>
+
+                {/* روابط الدعم الفني تحت التحميل */}
+                <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-6">
+                    <a href="https://wa.me/201146681064" target="_blank" className="flex items-center justify-center gap-2 text-green-500 bg-green-500/5 py-3 rounded-xl border border-green-500/20 hover:bg-green-500/10 transition">
+                        <i className="fab fa-whatsapp"></i>
+                        <span className="text-xs font-bold">حجز كود</span>
                     </a>
-                    <a href="https://wa.me/2010xxxxxxxx" className="flex flex-col items-center gap-2 text-gray-400 hover:text-green-500 transition">
-                        <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center border border-white/10"><i className="fab fa-whatsapp"></i></div>
-                        <span className="text-[10px]">واتساب</span>
-                    </a>
-                    <a href="رابط_موقعك" className="flex flex-col items-center gap-2 text-gray-400 hover:text-orange-500 transition">
-                        <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center border border-white/10"><i className="fas fa-globe"></i></div>
-                        <span className="text-[10px]">موقعي</span>
+                    <a href="https://www.facebook.com/share/1CnzgXhrT2/" target="_blank" className="flex items-center justify-center gap-2 text-blue-400 bg-blue-400/5 py-3 rounded-xl border border-blue-400/20 hover:bg-blue-400/10 transition">
+                        <i className="fab fa-facebook-messenger"></i>
+                        <span className="text-xs font-bold">دعم فني</span>
                     </a>
                 </div>
             </div>
@@ -1668,6 +1800,7 @@ ${userFeedback}
 
 
 
+
                         {view === 'exams' && (
                             <div className="max-w-6xl mx-auto">
                                 <button onClick={() => setView('home')} className="mb-8 text-orange-500 border border-orange-500 px-4 py-2 rounded-lg">رجوع</button>
@@ -1682,19 +1815,90 @@ ${userFeedback}
                                 </div>
                             </div>
                         )}
+                        
+                        
+                        
+                        
+                        
+                        
+                          {view === "firstYearLanguages" && (
+
+<div className="z-50 w-full flex flex-col items-center pt-10 px-4">
+
+<h2 className="text-2xl font-black text-orange-500 mb-10">
+اختبارات الفرقة الأولى 📚
+</h2>
+
+<div className="grid md:grid-cols-2 gap-6 mt-10 w-full max-w-3xl">
+
+
+{/* English */}
+<div 
+onClick={() => {
+
+setSelectedLanguage("english");
+
+setShowNewExamModal(true);
+
+}}
+className="glass p-8 rounded-3xl text-center cursor-pointer"
+>
+
+<i className="fas fa-language text-5xl text-blue-500 mb-4"></i>
+
+<h3 className="text-xl font-bold mb-2">
+اختبارات English 🇬🇧
+</h3>
+
+<p className="text-sm text-gray-400">
+40 سؤال على المنهج
+</p>
+
+</div>
+
+
+{ /* Français */ }
+<div 
+onClick={() => {
+
+setSelectedLanguage("french");
+
+setShowNewExamModal(true);
+
+}}
+className="glass p-8 rounded-3xl text-center cursor-pointer"
+>
+
+<i className="fas fa-language text-5xl text-green-500 mb-4"></i>
+
+<h3 className="text-xl font-bold mb-2">
+اختبارات Français 🇫🇷
+</h3>
+
+<p className="text-sm text-gray-400">
+40 سؤال على المنهج
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+)}
+
 
                         {view === 'quiz_mode' && renderQuiz()}
 
-                                   {view === 'lessons' && (
-    <div className="max-w-6xl mx-auto relative min-h-screen"> 
+              {view === 'lessons' && (
+    <div className="max-w-6xl mx-auto relative min-h-screen animate-fadeIn"> 
         
-        {/* 🛡️ رادار الحماية الأمني العائم */}
+        {/* 🛡️ رادار الحماية الأمني العائم (لإعطاء هيبة للنسخة) */}
         {student.name && (
-            <div className="security-radar opacity-50 flex flex-col items-center justify-center pointer-events-none select-none">
-                <span className="text-white font-black text-lg shadow-lg">{student.name}</span>
+            <div className="security-radar opacity-30 flex flex-col items-center justify-center pointer-events-none select-none">
+                <span className="text-white font-black text-lg">{student.name}</span>
                 <span className="text-orange-500 font-black text-2xl tracking-tighter">{student.phone}</span>
-                <span className="text-blue-400 text-[10px] font-mono mt-1 bg-black/40 px-2 rounded-full">ID: {student.code}</span>
-                <span className="text-[7px] text-gray-500 uppercase mt-1">Property of Dr. Mostafa Mahmoud</span>
+                <span className="text-blue-400 text-[10px] font-mono mt-1 bg-black/40 px-2 rounded-full">PREVIEW MODE</span>
             </div>
         )}
 
@@ -1702,283 +1906,90 @@ ${userFeedback}
             <i className="fas fa-chevron-right ml-2"></i> رجوع للقائمة الرئيسية
         </button>
         
+        {/* رسالة توضيحية علوية */}
+        <div className="mb-10 p-4 bg-orange-500/10 border border-orange-500/30 rounded-2xl text-center">
+            <p className="text-orange-500 font-bold animate-pulse">
+                ⚠️ هذه نسخة معاينة فقط.. لمشاهدة المحاضرات بجودة عالية وبدون تقطيع حمل التطبيق الرسمي.
+            </p>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
-        
             
-<div className="glass p-4 rounded-3xl relative overflow-hidden group">
-    <div className="absolute top-0 right-0 w-1 h-full bg-blue-500"></div>
-    <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
-        <i className="fas fa-video ml-2 text-blue-500"></i>  المحاضرة الأولى (تأسيس)
-   شد حيلك 🥰 </h4>
-    
-    {/* حاوية الفيديو - تم إزالة القيود وتعديل الرابط */}
-    <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
-        <iframe 
-            src="https://www.youtube.com/embed/bS6I0aQnTRA" 
-            style={{ width: '100%', height: '100%', border: 'none' }}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            allowFullScreen>
-        </iframe>
-        
-        {/* تم حذف طبقة الحماية (div) التي كانت تمنع التفاعل مع الفيديو */}
-    </div>
-</div>
-
-
-
-
-
-{/* --- المحاضرة الثانية (تنسيق يوتيوب الطبيعي) --- */}
-<div className="glass p-4 rounded-3xl relative overflow-hidden group">
-    <div className="absolute top-0 right-0 w-1 h-full bg-orange-500"></div>
-    <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
-        <i className="fas fa-video ml-2 text-orange-500"></i> المحاضرة الثانية (جديد 🆕)
-    </h4>
-    
-    <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
-        <iframe 
-            src="https://www.youtube.com/embed/OkQ76g96J4w" 
-            style={{ width: '100%', height: '100%', border: 'none' }}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            allowFullScreen>
-        </iframe>
-        
-        {/* تم حذف طبقة الحماية الشفافة تماماً للسماح بالتحكم الطبيعي */}
-    </div>
-</div>
-
-
-{/* --- فيديوهات حل الأسئلة --- */}
-<div className="glass p-4 rounded-3xl relative overflow-hidden group md:col-span-2">
-    <div className="absolute top-0 right-0 w-1 h-full bg-green-500"></div>
-    <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
-        <i className="fas fa-graduation-cap ml-2 text-green-500"></i> فيديوهات حل أسئلة الامتحانات السابقة 📚✍️
-    </h4>
-    
-    {/* حاوية الفيديو - تم التعديل ليعمل مشغل يوتيوب بكامل حريته */}
-    <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black">
-        <iframe 
-            src="https://www.youtube.com/embed/XJWWoht908M" 
-            style={{ width: '100%', height: '100%', border: 'none' }}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            allowFullScreen>
-        </iframe>
-        
-        {/* تم إزالة طبقة الحماية الشفافة لتمكين التحكم الكامل في الفيديو */}
-    </div>
-</div>
-
-
-
-
-            {/* قسم الملازم PDF (زي ما هو) */}
-            <div className="glass p-6 rounded-3xl flex items-center justify-between border border-green-500/20 group">
-                <div className="text-right">
-                    <h4 className="font-bold text-lg text-green-400"><i className="fas fa-file-pdf ml-2"></i> ملزمات الشرح PDF</h4>
-                    <p className="text-xs text-gray-500">اضغط للتحميل المباشر</p>
-                </div>
-                <a href="https://drive.google.com/file/d/1TDixq0P-0ANU3u6RuU66i1HQKWDSawUo/view?usp=drivesdk" className="bg-green-600 p-3 rounded-full text-white hover:scale-110 transition shadow-lg shadow-green-600/20">
-                    <i className="fas fa-download"></i>
-                </a>
-            </div>
-
-            {/* قسم الامتحانات (زي ما هو) */}
-            <div className="glass p-6 rounded-3xl flex items-center justify-between border border-purple-500/20 group">
-                <div className="text-right">
-                    <h4 className="font-bold text-lg text-purple-400"><i className="fas fa-history ml-2"></i> أرشيف الامتحانات السابقة</h4>
-                    <p className="text-xs text-gray-500">نماذج امتحانات السنوات الماضية</p>
-                </div>
-                <button className="bg-purple-600 p-3 rounded-full text-white hover:scale-110 transition shadow-lg shadow-purple-600/20">
-                    <i className="fas fa-file-signature"></i>
-                </button>
-            </div>
-        </div>
-
-        {/* تنبيه للطالب */}
-        <div className="mt-10 p-6 glass border-orange-500/20 rounded-3xl text-center relative z-10">
-            <p className="text-orange-500 text-sm italic font-bold">
-                <i className="fas fa-user-shield ml-2"></i>
-                "يا بطل، المنصة مراقبة أمنياً.. ذاكر بتركيز وبالتوفيق!"
-            </p>
-        </div>
-        
-    </div>
-)}
-{showNewExamModal && (
-    <div className="fixed inset-0 z-[150] flex items-center justify-center p-2 md:p-6 bg-black/95 backdrop-blur-3xl animate-fadeIn">
-        {/* تغيير الحد الأقصى للعرض ليكون 5xl ليسمح بالتوسع */}
-        <div className="glass p-4 md:p-8 rounded-[30px] md:rounded-[50px] border border-orange-500/30 w-full max-w-5xl relative overflow-y-auto max-h-[95vh] shadow-[0_0_100px_rgba(249,115,22,0.1)]">
-            
-            <button onClick={() => setShowNewExamModal(false)} className="absolute top-4 left-4 text-gray-400 hover:text-white z-[160]">
-                <i className="fas fa-times-circle text-3xl"></i>
-            </button>
-
-            <div className="text-right mb-6">
-                <h2 className="text-xl md:text-3xl font-black text-white mb-2 leading-tight">
-                    الامتحانات السابقة - المعادلة التكميلية
-                </h2>
-                <p className="text-orange-500 font-bold text-sm md:text-base">
-                    المجلس الأعلى للجامعات | أكاديمية دكتور مصطفى محمود ⚖️
-                </p>
-            </div>
-
-            {/* حاوية الفيديو بالعرض الكامل */}
-            <div className="relative w-full aspect-video rounded-2xl md:rounded-[35px] overflow-hidden border border-white/10 bg-black shadow-2xl mb-8">
-                <iframe 
-                    src="https://drive.google.com/file/d/1AUIg14J3YECom-sPkuZ83aZpYsglXAsT/preview" 
-                    className="absolute top-0 left-0 w-full h-full border-none"
-                    style={{ transform: 'scale(1.01)' }} // لمنع ظهور حواف بيضاء
-                    allowFullScreen>
-                </iframe>
-                {/* طبقة حماية شفافة */}
-                <div className="absolute top-0 left-0 w-full h-16 z-50 bg-transparent"></div>
-            </div>
-
-            {/* كروت الاختبارات العريضة أسفل الفيديو */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <button onClick={() => { setShowNewExamModal(false); prepareQuiz('صح وغلط'); }} 
-                    className="group relative overflow-hidden bg-white/5 border border-green-500/30 p-6 rounded-3xl transition-all hover:bg-green-500/10">
-                    <div className="absolute top-0 right-0 w-1.5 h-full bg-green-500"></div>
-                    <div className="flex items-center justify-between">
-                        <i className="fas fa-check-double text-3xl text-green-500"></i>
-                        <span className="text-xl font-black text-white">إبدأ إختبار صح وغلط</span>
-                    </div>
-                </button>
-
-                <button onClick={() => { setShowNewExamModal(false); prepareQuiz('اختياري'); }} 
-                    className="group relative overflow-hidden bg-white/5 border border-blue-500/30 p-6 rounded-3xl transition-all hover:bg-blue-500/10">
-                    <div className="absolute top-0 right-0 w-1.5 h-full bg-blue-500"></div>
-                    <div className="flex items-center justify-between">
-                        <i className="fas fa-list-ol text-3xl text-blue-500"></i>
-                        <span className="text-xl font-black text-white">إبدأ إختبار الإختياري</span>
-                    </div>
-                </button>
-            </div>
-            
-            <p className="text-center mt-6 text-[10px] text-gray-600 font-mono tracking-[5px]">
-                SECURED SYSTEM BY OMAR ABDEL TAWAB
-            </p>
-        </div>
-    </div>
-)}
-{view === 'banned' && (
-    <div className="fixed inset-0 z-[9999] h-screen w-screen flex items-center justify-center p-4 bg-[#050a14] overflow-hidden select-none">
-        
-        {/* الحاوية الرئيسية بتأثير الزجاج والفخامة */}
-        <div className="glass p-10 rounded-[50px] border-2 border-red-900/20 max-w-md w-full text-center shadow-[0_0_150px_rgba(239,68,68,0.1)] relative overflow-hidden">
-            
-            {/* تأثير إضاءة خلفي خافت جداً */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 bg-red-500/5 blur-[60px] rounded-full"></div>
-
-            {/* --- بداية تصميم الأيقونة الجذاب --- */}
-            <div className="relative mb-10 mt-2 flex items-center justify-center">
-                {/* 1. الحافة الخارجية العريضة والمتدرجة (Neumorphic Glow) */}
-                <div className="absolute w-28 h-28 rounded-full bg-gradient-to-r from-red-600/30 to-red-900/40 p-1 blur-sm shadow-[inset_0_0_15px_rgba(239,68,68,0.3)]"></div>
-                
-                {/* 2. الحاوية الداخلية (العمق) */}
-                <div className="relative w-24 h-24 rounded-full bg-[#070e1b] flex items-center justify-center border-4 border-red-950 shadow-[5px_5px_20px_rgba(0,0,0,0.8),-5px,-5px,-20px,rgba(255,255,255,0.01)]">
-                    
-                    {/* 3. تأثير الإضاءة العلوي (Highlight) */}
-                    <div className="absolute top-0 left-0 w-full h-full rounded-full bg-gradient-to-b from-white/10 to-transparent opacity-60"></div>
-                    
-                    {/* 4. الأيقونة الأساسية: مستخدم عليه قفل (تصميم جذاب) */}
-                    <div className="relative text-red-500 flex items-center justify-center">
-                        <i className="fas fa-user-circle text-5xl"></i>
-                        <div className="absolute -bottom-1 -right-1 bg-red-600 w-8 h-8 rounded-full border-4 border-[#070e1b] flex items-center justify-center shadow-lg">
-                            <i className="fas fa-lock text-white text-xs"></i>
+            {/* --- كارت فيديو استعراضي 1 --- */}
+            <div className="glass p-4 rounded-3xl relative overflow-hidden group cursor-pointer" onClick={() => setShowAppModal(true)}>
+                <div className="absolute top-0 right-0 w-1 h-full bg-blue-500"></div>
+                <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
+                    <i className="fas fa-video ml-2 text-blue-500"></i> المحاضرة الأولى (تأسيس المنهج)
+                </h4>
+                <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-[#0a1120] flex items-center justify-center group">
+                    {/* صورة وهمية للفيديو */}
+                    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1000&auto=format&fit=crop" className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-110 transition-transform duration-700" />
+                    <div className="relative z-10 flex flex-col items-center">
+                        <div className="w-16 h-16 bg-orange-600 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(234,88,12,0.6)] group-hover:scale-125 transition-all">
+                            <i className="fas fa-play text-white ml-1"></i>
                         </div>
+                        <span className="mt-4 text-xs font-bold text-white/60 bg-black/50 px-3 py-1 rounded-full backdrop-blur-md">إضغط للمشاهدة في التطبيق</span>
                     </div>
                 </div>
             </div>
-            {/* --- نهاية تصميم الأيقونة الجذاب --- */}
-            
-            <h2 className="text-3xl font-black text-white mb-2 tracking-tighter glow-text">الوصول مقيد</h2>
-            <p className="text-gray-500 text-sm mb-8 leading-relaxed">
-                تم تعليق صلاحية دخول هذا الجهاز إلى المنصة بشكل نهائي بسبب مخالفة بنود الاستخدام.
-            </p>
-            
-            {/* صندوق سبب الحظر */}
-            <div className="bg-black/40 border border-red-500/20 p-5 rounded-3xl mb-7 relative overflow-hidden">
-                {/* خط حركة بسيط فوق الصندوق */}
-                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-red-500 to-transparent opacity-40"></div>
-                <p className="text-[10px] text-red-500 font-black uppercase tracking-[0.2em] mb-2">إشعار الإدارة:</p>
-                <p className="text-gray-200 font-bold text-sm italic">" {kickReason || "مخالفة سياسات الاستخدام" } "</p>
+
+            {/* --- كارت فيديو استعراضي 2 --- */}
+            <div className="glass p-4 rounded-3xl relative overflow-hidden group cursor-pointer" onClick={() => setShowAppModal(true)}>
+                <div className="absolute top-0 right-0 w-1 h-full bg-orange-500"></div>
+                <h4 className="mb-4 font-bold pr-2 flex items-center text-white/90">
+                    <i className="fas fa-video ml-2 text-orange-500"></i> المحاضرة الثانية (قواعد اللغة)
+                </h4>
+                <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-[#0a1120] flex items-center justify-center group">
+                    <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=1000&auto=format&fit=crop" className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-110 transition-transform duration-700" />
+                    <div className="relative z-10 flex flex-col items-center">
+                        <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.6)] group-hover:scale-125 transition-all">
+                            <i className="fas fa-lock text-white"></i>
+                        </div>
+                        <span className="mt-4 text-xs font-bold text-white/60 bg-black/50 px-3 py-1 rounded-full backdrop-blur-md">المحتوى مقفل.. حمل التطبيق</span>
+                    </div>
+                </div>
             </div>
 
-            {/* قسم التواصل في حال الخطأ */}
-            <div className="pt-6 border-t border-white/5 relative">
-                <p className="text-gray-400 text-[12px] mb-5">
-                    إذا كنت تعتقد أن هذا الحظر تم عن طريق الخطأ، تواصل معنا:
-                </p>
-                
-                <a 
-                    href="https://wa.me/201202763155" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-3 w-full bg-[#25D366]/10 hover:bg-[#25D366]/20 text-[#25D366] py-4 rounded-full font-bold transition-all border border-[#25D366]/30 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(37,211,102,0.2)]"
-                >
-                    <i className="fab fa-whatsapp text-2xl"></i>
-                    <span>مراسلة الدعم الفني</span>
-                </a>
+            {/* قسم الملازم PDF (مفعل للتحميل كـ هدية للطالب) */}
+            <div className="glass p-6 rounded-3xl flex items-center justify-between border border-green-500/20 group cursor-pointer" onClick={() => setShowAppModal(true)}>
+                <div className="text-right">
+                    <h4 className="font-bold text-lg text-green-400"><i className="fas fa-file-pdf ml-2"></i> تحميل مذكرات الشرح كاملة</h4>
+                    <p className="text-xs text-gray-500">تحتاج لتطبيق الأكاديمية لفتح الملفات</p>
+                </div>
+                <div className="bg-green-600 p-3 rounded-full text-white hover:rotate-12 transition">
+                    <i className="fas fa-download"></i>
+                </div>
             </div>
             
-            <div className="mt-8">
-                <p className="text-[9px] text-gray-700 uppercase font-bold tracking-[0.3em]">
-                    System ID: {Math.random().toString(36).substr(2, 9).toUpperCase()}
-                </p>
+
+            {/* قسم تواصل سريع */}
+            <div className="glass p-6 rounded-3xl flex items-center justify-between border border-purple-500/20 group cursor-pointer" onClick={() => window.open('https://wa.me/201146681064', '_blank')}>
+                <div className="text-right">
+                    <h4 className="font-bold text-lg text-purple-400"><i className="fas fa-headset ml-2"></i> الدعم الفني وحجز الأكواد</h4>
+                    <p className="text-xs text-gray-500">تواصل مباشرة مع د. مصطفى</p>
+                </div>
+                <div className="bg-purple-600 p-3 rounded-full text-white hover:scale-110 transition">
+                    <i className="fab fa-whatsapp"></i>
+                </div>
             </div>
+        </div>
+
+        {/* تنبيه أمني أسفل الصفحة */}
+        <div className="mt-10 p-6 glass border-blue-500/20 rounded-3xl text-center">
+            <p className="text-blue-400 text-xs font-bold">
+                🔒 نظام الحماية مفعل بالكامل | مطور بواسطة م. عمر عبد التواب
+            </p>
         </div>
     </div>
 )}
-{isChecking && (
-<div style={{
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    backdropFilter: "blur(8px)",
-    background: "rgba(0,0,0,0.4)",
-    zIndex: 9999,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column",
-    color: "white",
-    textAlign: "center",
-    fontFamily: "Cairo, sans-serif"
-}}>
 
-    {/* دائرة تحميل */}
-    <div style={{
-        width: "60px",
-        height: "60px",
-        border: "5px solid rgba(255,255,255,0.3)",
-        borderTop: "5px solid #00d4ff",
-        borderRadius: "50%",
-        animation: "spin 1s linear infinite",
-        marginBottom: "20px"
-    }} />
 
-    {/* النص */}
-    <h2 style={{marginBottom:"10px"}}>
-        مرحباً بك 👋
-    </h2>
 
-    <p style={{fontSize:"18px"}}>
-        جاري التحقق من قاعدة البيانات...
-    </p>
-
-    <p style={{opacity:0.8}}>
-        يرجى الانتظار قليلاً
-    </p>
-
-</div>
-)}
 
                     
 
                     </main>
+                    
 
                     {showLogin && (
                         <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex items-center justify-center p-4">
@@ -2026,6 +2037,61 @@ ${userFeedback}
                             </div>
                         </div>
                     )}
+                    
+                                       {/* شاشة التحذير الأمني - تظهر فوق كل شيء في حال رصد تلاعب */}
+             {isBanned && (
+    <div style={{ zIndex: 99999 }} className="fixed inset-0 bg-black/98 backdrop-blur-3xl flex items-center justify-center p-4">
+        <div className="max-w-md w-full border-4 border-red-600 bg-[#050000] p-10 rounded-[40px] shadow-[0_0_80px_rgba(255,0,0,0.6)] text-right relative overflow-hidden">
+            
+            {/* عنوان صارم بخط عريض */}
+            <div className="text-center mb-8">
+                <div className="inline-block bg-red-600 text-white px-8 py-2 rounded-full font-black text-xl animate-pulse tracking-tighter">
+                    ⚠️ تـنـبـيـه أمـنـي نـظـامـي
+                </div>
+                <h2 className="text-white text-2xl font-black mt-6 leading-tight">تم رصد محاولة إدخال بيانات مشبوهة</h2>
+            </div>
+
+            {/* عرض البيانات الحقيقية بخطوط عريضة وتنسيق منسق */}
+            <div className="space-y-4">
+                <div className="flex justify-between items-center bg-white/5 p-4 rounded-2xl border-r-4 border-green-500">
+                    <span className="text-green-400 font-black text-xl font-mono">{deviceInfo.ip}</span>
+                    <span className="text-gray-400 font-bold text-sm">عـنـوان الـ IP</span>
+                </div>
+
+                <div className="flex justify-between items-center bg-white/5 p-4 rounded-2xl border-r-4 border-blue-500">
+                    <span className="text-blue-400 font-black text-xl font-mono">{deviceInfo.battery}</span>
+                    <span className="text-gray-400 font-bold text-sm">مستوى البطارية</span>
+                </div>
+
+                <div className="flex justify-between items-center bg-white/5 p-4 rounded-2xl border-r-4 border-orange-500">
+                    <span className="text-orange-400 font-black text-xl font-mono">{deviceInfo.time}</span>
+                    <span className="text-gray-400 font-bold text-sm">توقيت المحاولة</span>
+                </div>
+            </div>
+
+            {/* رسالة تحذيرية نهائية */}
+            <div className="mt-8 p-4 bg-red-600/10 border border-red-600/20 rounded-2xl">
+                <p className="text-red-500 text-xs font-black text-center leading-relaxed">
+                    نظام الحماية قام بتسجيل بيانات جهازك بالكامل. <br/>
+                    المحاولات المتكررة تؤدي إلى حظر الهاتف نهائياً.
+                </p>
+            </div>
+
+            <button 
+                onClick={() => window.location.reload()} 
+                className="w-full mt-8 bg-white text-black py-4 rounded-2xl font-black text-lg hover:bg-gray-200 transition-all active:scale-95"
+            >
+                فهمت.. العودة للمنصة
+            </button>
+            
+            {/* تأثير خلفية تقني بسيط */}
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-600 to-transparent animate-scan"></div>
+        </div>
+    </div>
+)}
+
+
+                    
 
                     <footer className="text-center mt-20 border-t border-white/5 pt-10 pb-10">
                         <p className="text-sm font-light tracking-widest text-gray-500 uppercase">
@@ -2067,4 +2133,4 @@ ${userFeedback}
         root.render(<AcademyApp />);
     </script>
 </body>
-    </html>
+</html>
