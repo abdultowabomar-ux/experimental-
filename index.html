@@ -1053,18 +1053,25 @@ useEffect(() => {
                 return;
             }
             
-            if (data.status === 'pending') {
-                setView('pending');
-            }
-            
-            if (data.status === 'approved') {
-                setView('exams');
-            }
-            
-            if (data.status === 'rejected') {
-                setKickReason(data.reason || "تم الرفض");
-                setView('banned');
-            }
+if (data.status === 'pending') {
+    setView('pending');
+}
+
+// ✅ دخول فقط لو عنده صلاحية
+if (data.status === 'approved' && data.access === true) {
+    setView('exams');
+}
+
+// ❌ approved بس بدون access = مرفوض
+if (data.status === 'approved' && data.access !== true) {
+    setKickReason("تم إيقاف حسابك مؤقتًا");
+    setView('banned');
+}
+
+if (data.status === 'rejected') {
+    setKickReason(data.reason || "تم الرفض");
+    setView('banned');
+}
             
             setAuthChecked(true);
         });
@@ -1218,6 +1225,7 @@ const finalizeLogin = async () => {
             level,
             university,
             status: 'pending',
+access: false,
             date: new Date().toLocaleString('ar-EG')
         });
 
