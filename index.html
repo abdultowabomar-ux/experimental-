@@ -1010,7 +1010,11 @@ correct: 0
         function AcademyApp() {
             const [selectedLanguage, setSelectedLanguage] = useState(null);
             
-            const [view, setView] = useState('home');
+            const requestId = localStorage.getItem('request_id');
+
+const [view, setView] = useState(
+    requestId ? 'pending' : 'home'
+);const [authChecked, setAuthChecked] = useState(false);
             const [showLogin, setShowLogin] = useState(false);
             const [targetDept, setTargetDept] = useState('');
             const [showNewExamModal, setShowNewExamModal] = useState(false);
@@ -1036,66 +1040,62 @@ const [activeTest, setActiveTest] = useState(null);
 
 const [showDevCard, setShowDevCard] = useState(false);
 useEffect(() => {
+    
     const savedStudent = localStorage.getItem('academy_student_data');
     const requestId = localStorage.getItem('request_id');
-
-if (requestId) {
-    db.ref('academy_requests/' + requestId).on('value', snapshot => {
-        const data = snapshot.val();
-
-        if (data?.status === 'approved') {
-            setView('exams');
-        }
-
-        if (data?.status === 'rejected') {
-            setKickReason(data.reason || "تم الرفض");
-            setView('banned');
-        }
-    });
-}
+    
+    if (requestId) {
+        db.ref('academy_requests/' + requestId).on('value', snapshot => {
+            const data = snapshot.val();
+            
+            if (!data) {
+                setAuthChecked(true);
+                return;
+            }
+            
+            if (data.status === 'pending') {
+                setView('pending');
+            }
+            
+            if (data.status === 'approved') {
+                setView('exams');
+            }
+            
+            if (data.status === 'rejected') {
+                setKickReason(data.reason || "تم الرفض");
+                setView('banned');
+            }
+            
+            setAuthChecked(true);
+        });
+    } else {
+        setAuthChecked(true);
+    }
     
     if (savedStudent) {
         const parsedData = JSON.parse(savedStudent);
         setStudent(parsedData);
-        trackActivity("🔄 إعادة دخول للمنصة", `رجع يذاكر تاني من ${parsedData.university}`);
         
-        if (parsedData.code) {
-            const userStatusRef = db.ref('academy_codes/' + parsedData.code);
-            
-            // مراقبة الحظر اللحظي
-            userStatusRef.on('value', (snapshot) => {
-                const data = snapshot.val();
-                if (data && data.status === 'kicked') {
-                    setKickReason(data.kickReason || "مخالفة الشروط");
-                    localStorage.removeItem('academy_student_data');
-                    setView('banned'); // الانتقال لصفحة الحظر بدلاً من alert و reload
-                }
-            });
-        }
-        
-        setView('home');
+        trackActivity(
+            "🔄 إعادة دخول للمنصة",
+            `رجع يذاكر تاني من ${parsedData.university}`
+        );
     }
     
-    // ... باقي الكود (مراحل التحميل، إلخ)
-
-    // 3. مراحل التحميل (Loading Phases)
     setTimeout(() => setLoadingPhase('logo-entry'), 3000);
     setTimeout(() => setLoadingPhase('logo-exit'), 6000);
     setTimeout(() => {
         setIsLoading(false);
-        // إظهار كارت المطور فقط لو الطالب غير مسجل دخول
-        if(!savedStudent) setShowDevCard(true);
+        if (!savedStudent) setShowDevCard(true);
     }, 7500);
-
-    // تنظيف المراقبة عند إغلاق المكون (Clean up)
+    
     return () => {
-        if (savedStudent) {
-            const parsedData = JSON.parse(savedStudent);
-            if (parsedData.code) db.ref('academy_codes/' + parsedData.code).off();
+        if (requestId) {
+            db.ref('academy_requests/' + requestId).off();
         }
     };
+    
 }, []);
-
 
             const [currentQIndex, setCurrentQIndex] = useState(0);
             const [quizQuestions, setQuizQuestions] = useState([]);
@@ -1313,6 +1313,13 @@ const finalizeLogin = async () => {
     setView('quiz_mode');
     
 };
+if (!authChecked) {
+    return (
+        <div className="min-h-screen flex items-center justify-center text-white">
+            جاري التحقق...
+        </div>
+    );
+}
 if (view === 'pending') {
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-900 p-6">
