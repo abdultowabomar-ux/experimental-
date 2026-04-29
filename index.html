@@ -283,23 +283,7 @@ body {
     const { useState, useEffect } = React; // أضفنا useEffect للطوارئ
 
     // 1. إعدادات فايربيس (توضع هنا في البداية)
-    const firebaseConfig = {
-    apiKey: "AIzaSyC4n627jxgPjoQn7icO9OP9C3ImcAbLEME",
-    authDomain: "private-d338e.firebaseapp.com",
-    databaseURL: "https://private-d338e-default-rtdb.firebaseio.com",
-    projectId: "private-d338e",
-    storageBucket: "private-d338e.firebasestorage.app",
-    messagingSenderId: "514393440915",
-    appId: "1:514393440915:web:b72e886e866f45ab948366",
-    measurementId: "G-Z8RT3VY8SL"
-};
-
-    // منع إعادة التهيئة إذا كانت النسخة تعمل بالفعل
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
-    const db = firebase.database();
-
+    
    // بيانات البوتات
 const BOTS_CONFIG = [
     {
@@ -319,7 +303,215 @@ const BOTS_CONFIG = [
 
 
 
+const computerQuestions = [
+    {
+        question: "CPU معناها إيه؟",
+        options: ["وحدة المعالجة المركزية", "كارت شاشة", "رام", "هارد"],
+        correct: 0
+    },
+    {
+        question: "لغة HTML تستخدم في؟",
+        options: ["تصميم المواقع", "برمجة تطبيقات الموبايل", "ألعاب", "قواعد بيانات"],
+        correct: 0
+    },
+    {
+        question: "RAM مسؤولة عن؟",
+        options: ["التخزين المؤقت", "التخزين الدائم", "الشاشة", "الصوت"],
+        correct: 0
+    },
+    // --- الأسئلة الجديدة التي تم إضافتها ---
+    {
+        question: "الجيل الأول استخدم في تصميم أجهزة الحاسوب الصمامات المفرغة التي تمكنهم من تنفيذ العمليات المختلفة.",
+        options: ["(أ) عبارة صحيحة", "(هـ) عبارة خاطئة"],
+        correct: 0
+    },
+    {
+        question: "تعرف الفيروسات على أنها برامج صغيرة تدخل إلى أجهزة الحاسوب بدون علم المستخدم، بهدف تخريب البرامج والأجهزة.",
+        options: ["(أ) عبارة صحيحة", "(هـ) عبارة خاطئة"],
+        correct: 0
+    },
+    {
+        question: "الفيروسات الخفية (الأشباح) تصنف على أنها فيروسات مخادعة تختبئ في الذاكرة وترسل تقريراً وهمياً بأن القطاع غير مصاب.",
+        options: ["(أ) عبارة صحيحة", "(هـ) عبارة خاطئة"],
+        correct: 0
+    },
+    {
+        question: "الحواسيب الرقمية هي أجهزة إلكترونية تعالج البيانات المنفصلة وتنفذ عمليات حسابية ممثلة بشكل مباشر في شكل رقمي.",
+        options: ["(أ) عبارة صحيحة", "(هـ) عبارة خاطئة"],
+        correct: 0
+    },
+    {
+        question: "الحاسب الآلي هو آلة إلكترونية قادرة على استقبال البيانات وتخزينها ومعالجة البيانات.",
+        options: ["(أ) عبارة صحيحة", "(هـ) عبارة خاطئة"],
+        correct: 0
+    },
+    {
+        question: "لا يمكن استخدام الحاسب الآلي في المجال التعليمي أساساً.",
+        options: ["(أ) عبارة صحيحة", "(هـ) عبارة خاطئة"],
+        correct: 1 // الإجابة الصحيحة هي (هـ) خاطئة
+    },
+    {
+    question: "أقوى أجهزة الحاسب الآلي وتستخدم في المنظمات الحكومية والجامعات والشركات الكبرى.",
+    options: ["الحاسب العملاق", "الحاسب الشخصي", "الحاسب المحمول", "المساعد الرقمي"],
+    correct: 0
+},
+{
+    question: "يتم استخدامه في الشركات والمؤسسات الكبيرة حيث يتشارك العديد من المستخدمين في البيانات والبرامج.",
+    options: ["الحاسب الآلي المركزي", "الحاسب المنزلي", "الأجهزة اللوحية", "الحاسب الصغير"],
+    correct: 0
+},
+{
+    question: "الوحدة المسئولة عن التحكم والسيطرة في جميع الوحدات الأخرى (المدخلات والمخرجات) والتنسيق فيما بينها.",
+    options: ["وحدة التحكم", "وحدة الحساب والمنطق", "الذاكرة العشوائية", "وحدة الإدخال"],
+    correct: 0
+},
+{
+    question: "هي ذاكرة القراءة فقط ولا يمكن تعديلها (ذاكرة دائمة).",
+    options: ["RAM", "ROM", "Cache", "Hard Disk"],
+    correct: 1
+},
+{
+    question: "ذاكرة مؤقتة بياناتها يتم تحميلها بواسطة المستخدم ويمكن التعديل في محتوياتها في أي وقت.",
+    options: ["RAM", "ROM", "BIOS", "Firmware"],
+    correct: 0
+},
+{
+    question: "مفتاح يتم استخدامه لإظهار الأحرف الإنجليزية الكبيرة.",
+    options: ["The Caps Lock Key", "Shift Key", "Alt Key", "Ctrl Key"],
+    correct: 0
+},
+{
+    question: "مفتاح يستخدم لحذف الحروف الموجودة على يسار المؤشر.",
+    options: ["Delete", "Back Space", "Enter", "Space"],
+    correct: 1
+},
+{
+    question: "عبارة عن مجموعة من البيانات والملفات المتعلقة ببعضها البعض، منظمة ومخزنة بطريقة واضحة.",
+    options: ["قواعد البيانات", "نظام التشغيل", "المعالج", "الشبكات"],
+    correct: 0
+},
+{
+    question: "من فوائد الشبكات وأهميتها:",
+    options: ["توفير المال والجهد", "مشاركة معدات باهظة الثمن", "كل ما سبق", "لا شيء مما سبق"],
+    correct: 2
+},
+// --- تكملة أسئلة الصواب والخطأ ---
+{
+    question: "يتم استخدام الفاكس لإجراء بعض التجارب المكلفة والتي يصعب إجراؤها في المعامل، كما يستخدم أسلوب المحاكاة لتعليم الطيران.",
+    options: ["(أ) عبارة صحيحة", "(هـ) عبارة خاطئة"],
+    correct: 1
+},
+{
+    question: "المعلومات الببليوغرافية توفر بيانات وصفية وموضوعية مثل تاريخ الكتب والتأليف والطباعة وقائمة الكتب المتعلقة بالمؤلف.",
+    options: ["(أ) عبارة صحيحة", "(هـ) عبارة خاطئة"],
+    correct: 0
+},
+{
+    question: "بدأ انتشار الفيروسات في منتصف الثمانينيات من القرن السابع عشر.",
+    options: ["(أ) عبارة صحيحة", "(هـ) عبارة خاطئة"],
+    correct: 1
+},
+{
+    question: "جهاز الحاسب الآلي التناظري هي الأجهزة الإلكترونية التي تعمل بالموجات.",
+    options: ["(أ) عبارة صحيحة", "(هـ) عبارة خاطئة"],
+    correct: 0
+},
+{
+    question: "تم تقسيم أجيال تطور الحاسب الآلي إلى إحدى عشر جيلاً.",
+    options: ["(أ) عبارة صحيحة", "(هـ) عبارة خاطئة"],
+    correct: 1
+},
+{
+    question: "الألياف الضوئية هي وسائط حديثة تتألف من رقائق رفيعة جداً من الزجاج تشبه أنسجة العنكبوت.",
+    options: ["(أ) عبارة صحيحة", "(هـ) عبارة خاطئة"],
+    correct: 0
+},
+{
+    question: "تعد الآلة الكاتبة جهاز يغني الطالب عن الحاسب الآلي.",
+    options: ["(أ) عبارة صحيحة", "(هـ) عبارة خاطئة"],
+    correct: 1
+},
 
+// --- أسئلة أجيال الحاسب الآلي (اختيار من متعدد) ---
+{
+    question: "ما هي التقنية التي استخدمها الجيل الأول من أجهزة الحاسب الآلي؟",
+    options: ["الصمامات المفرغة", "الترانزستور", "الدوائر المتكاملة", "المعالج الدقيق"],
+    correct: 0
+},
+{
+    question: "بدأ الجيل الثاني من أجهزة الحاسب الآلي باختراع:",
+    options: ["الدوائر المتكاملة", "الترانزستور", "الصمامات المفرغة", "المعالج الدقيق"],
+    correct: 1
+},
+{
+    question: "الجيل الثالث من أجهزة الحاسب بدأ باستخدام:",
+    options: ["المعالج الدقيق", "الترانزستور", "الدوائر المتكاملة", "الألياف الضوئية"],
+    correct: 2
+},
+{
+    question: "ظهر الجيل الرابع بعد اختراع الدوائر الإلكترونية المتكاملة وظهور:",
+    options: ["المعالج الدقيق (Microprocessor)", "الصمامات المفرغة", "الموجات التناظرية", "الفاكس"],
+    correct: 0
+}
+,
+{
+    question: "يتكون نظام الحاسب من المكونات المادية، البرمجيات، البيانات، و..........",
+    options: ["العنصر البشري", "الطابعة", "الإنترنت", "المعالج"],
+    correct: 0
+},
+{
+    question: "ذاكرة ROM لا تحتاج إلى مصدر تيار كهربائي للاحتفاظ ببياناتها.",
+    options: ["(أ) عبارة صحيحة", "(هـ) عبارة خاطئة"],
+    correct: 0
+},
+{
+    question: "مفاتيح الوظائف (F1 إلى F12) وظيفتها ثابتة في جميع البرامج ولا تتغير.",
+    options: ["(أ) عبارة صحيحة", "(هـ) عبارة خاطئة"],
+    correct: 1
+},
+{
+    question: "المفتاح المسؤول عن تحريك المؤشر إلى بداية السطر التالي هو:",
+    options: ["Shift", "Enter", "Space", "Alt"],
+    correct: 1
+},
+{
+    question: "يعد .......... أصغر من الحاسب الكبير وأكبر من الحاسب الصغير، ويستخدم كمزود خدمة.",
+    options: ["الحاسوب المتوسط", "الحاسوب العملاق", "الحاسب المحمول", "الأجهزة اللوحية"],
+    correct: 0
+},
+{
+    question: "طابعات الليزر التي تحتوي على معالج وتتجاوز سرعتها 8 صفحات في الدقيقة تصنف كـ:",
+    options: ["الطابعات السريعة", "الطابعات البطيئة", "الطابعات النقطية", "طابعات الرسم"],
+    correct: 0
+},
+{
+    question: "الطابعات النقطية التي لا تتجاوز سرعتها 300 حرف/ثانية تصنف كـ:",
+    options: ["طابعات سريعة", "طابعات بطيئة", "طابعات خطية", "طابعات ليزر"],
+    correct: 1
+},
+{
+    question: "الطابعات الخطية التي تتجاوز سرعتها 600 خط/دقيقة تصنف كـ:",
+    options: ["الطابعات السريعة", "الطابعات البطيئة", "الطابعات القديمة", "لا شيء مما سبق"],
+    correct: 0
+},
+{
+    question: "فيروسات تنسخ نفسها كبيانات غير مشفرة ثم تتحول لأشكال أخرى بهدف الإصابة:",
+    options: ["فيروس قطاع الإقلاع", "فيروس الماكرو", "فيروس متعدد الملفات", "فيروس الشبح"],
+    correct: 2
+},
+{
+    question: "شبكة ذات مساحة واسعة تديرها وتملكها شركة عامة مثل Microsoft:",
+    options: ["شبكة محلية LAN", "شبكة منزلية", "شبكة عامة", "شبكة شخصية"],
+    correct: 2
+},
+{
+    question: "من أهم تطبيقات الإنترنت (القوائم البريدية، خرائط جوجل، ومجموعات الأخبار).",
+    options: ["(أ) عبارة صحيحة", "(هـ) عبارة خاطئة"],
+    correct: 0
+}
+
+
+];
 
 const englishQuestions = [
 
@@ -1001,6 +1193,9 @@ correct: 0
                 { id: 418, q: "Tu veux ... de fromage ?", options: ["très", "en", "un peu"], correct: "un peu" }
             ]
         };
+        // قائمة الأكواد المحلية المسموح لها بالدخول
+const VALID_LOCAL_CODES = ["xmw1", "xmw2", "xmw3", "admin100", "omar2026"]; 
+
 
         const shuffleAndPick = (array) => {
             const shuffled = [...array].sort(() => 0.5 - Math.random());
@@ -1040,69 +1235,45 @@ const [activeTest, setActiveTest] = useState(null);
 
 const [showDevCard, setShowDevCard] = useState(false);
 useEffect(() => {
-    
+    // جلب البيانات المخزنة محلياً
     const savedStudent = localStorage.getItem('academy_student_data');
-    const requestId = localStorage.getItem('request_id');
     
-    if (requestId) {
-        db.ref('academy_requests/' + requestId).on('value', snapshot => {
-            const data = snapshot.val();
-            
-            if (!data) {
-                setAuthChecked(true);
-                return;
-            }
-            
-if (data.status === 'pending') {
-    setView('pending');
-}
-
-// ✅ دخول فقط لو عنده صلاحية
-if (data.status === 'approved' && data.access === true) {
-    setView('exams');
-}
-
-// ❌ approved بس بدون access = مرفوض
-if (data.status === 'approved' && data.access !== true) {
-    setKickReason("تم إيقاف حسابك مؤقتًا");
-    setView('banned');
-}
-
-if (data.status === 'rejected') {
-    setKickReason(data.reason || "تم الرفض");
-    setView('banned');
-}
-            
-            setAuthChecked(true);
-        });
-    } else {
-        setAuthChecked(true);
-    }
-    
+    // إلغاء نظام الـ requestId وفايربيس تماماً
+    // سيتم التحقق من البيانات المحلية مباشرة
     if (savedStudent) {
         const parsedData = JSON.parse(savedStudent);
         setStudent(parsedData);
+        
+        // إذا كانت البيانات موجودة، ننتقل مباشرة لصفحة الامتحانات
+        // هذا يلغي نظام الـ pending أو الـ banned القادم من السيرفر
+        setView('home');
         
         trackActivity(
             "🔄 إعادة دخول للمنصة",
             `رجع يذاكر تاني من ${parsedData.university}`
         );
+    } else {
+        // إذا لم توجد بيانات، نفتح واجهة الدخول العادية
+        setView('login'); 
     }
-    
+
+    // انتهاء مرحلة التحقق من الهوية
+    setAuthChecked(true);
+
+    // نظام التحميل (Loading Animation) كما هو
     setTimeout(() => setLoadingPhase('logo-entry'), 3000);
     setTimeout(() => setLoadingPhase('logo-exit'), 6000);
     setTimeout(() => {
         setIsLoading(false);
+        // إظهار كارت المطور فقط إذا لم يكن المستخدم مسجلاً
         if (!savedStudent) setShowDevCard(true);
     }, 7500);
-    
-    return () => {
-        if (requestId) {
-            db.ref('academy_requests/' + requestId).off();
-        }
-    };
+
+    // تنظيف (Cleanup) - تم إزالة مراقب فايربيس فلا داعي لـ .off()
+    return () => {};
     
 }, []);
+
 
             const [currentQIndex, setCurrentQIndex] = useState(0);
             const [quizQuestions, setQuizQuestions] = useState([]);
@@ -1199,74 +1370,73 @@ const handleClose = () => {
          
         // ... الحالات (States) الموجودة مسبقاً ...
 const finalizeLogin = async () => {
-    
     setIsChecking(true);
     
     try {
-        
         const name = student.name?.trim();
         const level = student.level;
         const phone = student.phone?.trim();
         const university = student.university;
-        
-        if (!name || !level || !phone || !university) {
+        const enteredCode = student.code?.trim().toLowerCase(); // تأكد أن حقل الكود موجود في state الـ student
+
+        // التحقق من إدخال جميع البيانات بما في ذلك الكود
+        if (!name || !level || !phone || !university || !enteredCode) {
             setIsChecking(false);
-            alert("⚠️ فضلاً يا بطل.. أكمل جميع البيانات للمتابعة!");
+            alert("⚠️ فضلاً يا بطل.. أكمل جميع البيانات وأدخل كود التفعيل!");
             return;
         }
 
-        // ⭐ إنشاء ID للطلب
-        const requestId = Date.now();
+        // ⭐ قائمة الأكواد المحلية المسموح لها بالدخول فوراً
+        const VALID_LOCAL_CODES = ["xmw1", "xmw2", "xmw3", "admin100", "omar2026"]; 
 
-        // ⭐ إرسال الطلب لفايربيس بدل الأكواد
-        await db.ref('academy_requests/' + requestId).set({
-            name,
-            phone,
-            level,
-            university,
-            status: 'pending',
-access: false,
-            date: new Date().toLocaleString('ar-EG')
-        });
+        // ⭐ التحقق المحلي (بدل فايربيس)
+        if (VALID_LOCAL_CODES.includes(enteredCode)) {
+            
+            // حفظ بيانات الجلسة محلياً
+            const sessionData = {
+                ...student,
+                loginDate: new Date().getTime(),
+                status: 'active', // حالة النشاط مباشرة
+                access: true      // السماح بالوصول
+            };
 
-        // ⭐ حفظ الطلب عند المستخدم
-        localStorage.setItem('request_id', requestId);
+            localStorage.setItem(
+                'academy_student_data',
+                JSON.stringify(sessionData)
+            );
 
-        // ⭐ حفظ بياناته عادي زي ما عندك
-        const sessionData = {
-            ...student,
-            loginDate: new Date().getTime()
-        };
+            setStudent(sessionData);
 
-        localStorage.setItem(
-            'academy_student_data',
-            JSON.stringify(sessionData)
-        );
-
-        setStudent(sessionData);
-
-        // ⭐ رسالة تيليجرام (معدلة)
-        const logMessage = `
-🔔 طلب تسجيل جديد
+            // ⭐ رسالة تيليجرام للإشعار فقط (اختياري)
+            const logMessage = `
+✅ دخول مباشر (كود محلي)
 ━━━━━━━━━━━━
 👤 ${name}
 📱 ${phone}
+🔑 الكود المستخدم: ${enteredCode}
 🏛️ ${university}
 🎓 ${level}
-📍 ${targetDept}
 ━━━━━━━━━━━━`;
 
-        setTimeout(() => {
-            sendTelegram(logMessage);
-        }, 0);
+            setTimeout(() => {
+                sendTelegram(logMessage);
+            }, 0);
 
-        alert("⏳ تم إرسال طلبك.. بانتظار موافقة الدعم");
+            alert("✅ تم التحقق من الكود بنجاح! مرحباً بك.");
 
-        setShowLogin(false);
+            setShowLogin(false);
+            
+            // ⭐ الدخول مباشرة للمحتوى بدل حالة الانتظار
+            setView('home'); 
 
-        // ⭐ بدل الدخول → انتظار
-        setView('pending');
+        } else {
+            // في حال كان الكود خاطئاً
+            alert("❌ عذراً، كود التفعيل غير صحيح. يرجى التواصل مع الدعم.");
+        }
 
+    } catch (error) {
+        console.error("Login Error:", error);
+        alert("حدث خطأ أثناء تسجيل الدخول، حاول مرة أخرى.");
     } finally {
         setIsChecking(false);
     }
@@ -1275,115 +1445,63 @@ access: false,
    // 2. استبدل دالة finalizeLogin القديمة بهذه النسخة المحدثة
        
  // تأكد من وجود هذا القوس لإغلاق الدالة
-  const prepareQuiz = (type) => {
-    
-    const quizType =
-        (type === 'صح وغلط' || targetDept === 'صح وغلط') ?
-        'صح وغلط' :
-        'اختياري';
+const prepareQuiz = (type) => {
+    // 1. تحديد نوع الاختبار المطلوب
+    const requestedType = type === 'صح وغلط' ? 'صح وغلط' : 'اختياري';
     
     let allQuestions = [];
     
-    /* ⭐ لو English */
+    // 2. جلب الأسئلة بناءً على القسم المختار
     if (selectedLanguage === "english") {
-        
         allQuestions = englishQuestions;
-        
-    }
-    
-    /* ⭐ لو Français */
+    } 
     else if (selectedLanguage === "french") {
-        
         allQuestions = frenchQuestions;
-        
-    }
-    
-    /* ⭐ باقي الأقسام العادية */
+    } 
+    else if (selectedLanguage === "computer") {
+        allQuestions = computerQuestions;
+    } 
     else {
-        
-        allQuestions =
-            questionsDB[quizType] || [];
-        
+        // الأقسام العادية من قاعدة البيانات
+        allQuestions = questionsDB[requestedType] || [];
     }
+
+    // 3. ⭐ عملية التصفية (Filtering) لمنع العشوائية
+    // نتحقق من طول مصفوفة الخيارات (options) لكل سؤال
+    let filteredQuestions = [];
     
-    /* خلط واختيار الأسئلة */
-    const selected =
-        shuffleAndPick(allQuestions);
+    if (requestedType === 'صح وغلط') {
+        // نأخذ فقط الأسئلة التي لها خيارين فقط (أ و هـ)
+        filteredQuestions = allQuestions.filter(q => q.options && q.options.length === 2);
+    } else {
+        // نأخذ الأسئلة التي لها أكثر من خيارين (3 أو 4 خيارات)
+        filteredQuestions = allQuestions.filter(q => q.options && q.options.length > 2);
+    }
+
+    // 4. التأكد من وجود أسئلة بعد التصفية لتجنب الأخطاء
+    if (filteredQuestions.length === 0) {
+        alert("عذراً، لا توجد أسئلة متوفرة لهذا النوع في هذا القسم حالياً.");
+        return;
+    }
+
+    // 5. خلط واختيار الأسئلة من القائمة المصفاة فقط
+    const selected = shuffleAndPick(filteredQuestions);
     
+    // 6. تحديث الحالة (State) لبدء الاختبار
     setQuizQuestions(selected);
-    
     setCurrentQIndex(0);
-    
     setAnswers({});
-    
     setIsFinished(false);
-    
     setView('quiz_mode');
     
+    // حفظ نوع الاختبار الحالي في الـ state إذا كنت تستخدمه في واجهة الاختبار
+    setQuizType(requestedType); 
 };
+
 if (!authChecked) {
     return (
         <div className="min-h-screen flex items-center justify-center text-white">
             جاري التحقق...
-        </div>
-    );
-}
-if (view === 'pending') {
-    return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-900 p-6">
-            <div className="glass relative p-12 rounded-[50px] text-center max-w-2xl border border-white/10 shadow-2xl overflow-hidden">
-                
-                {/* تأثير الإضاءة الخلفية المتحركة */}
-                <div className="absolute -top-24 -right-24 w-48 h-48 bg-orange-500/20 blur-[80px] rounded-full animate-pulse"></div>
-                <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-blue-500/20 blur-[80px] rounded-full animate-pulse"></div>
-
-                {/* الساعة الرملية المتحركة */}
-                <div className="mb-8 flex justify-center">
-                    <div className="text-6xl animate-spin [animation-duration:3s]">
-                        ⏳
-                    </div>
-                </div>
-
-                {/* العنوان الرئيسي */}
-                <h2 className="text-4xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-200 font-black mb-6 leading-tight">
-                    بانتظار موافقة الدعم الفني
-                </h2>
-
-                {/* المحتوى والنصوص التحفيزية */}
-                <div className="space-y-6 text-lg">
-                    <p className="text-blue-300 font-medium animate-bounce">
-                        سيتم تفعيل حسابك خلال دقائق معدودة 💙
-                    </p>
-
-                    <hr className="border-white/5 w-1/2 mx-auto" />
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mt-8">
-                        <div className="p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
-                            <p className="text-gray-400 mb-1">اذكر الله</p>
-                            <p className="text-white font-bold text-lg">سبحان الله وبحمده</p>
-                        </div>
-                        <div className="p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
-                            <p className="text-gray-400 mb-1">تأمل</p>
-                            <p className="text-white font-bold text-lg">سبحان الله العظيم</p>
-                        </div>
-                    </div>
-
-                    <div className="mt-10 py-6 px-4 bg-gradient-to-r from-orange-500/10 to-transparent rounded-3xl border-r-4 border-orange-500">
-                        <p className="text-white text-xl italic font-serif">
-                            "شد حيلك، القادم أجمل بإذن الله وربنا هيوفقك في خطوتك الجديدة" 🚀
-                        </p>
-                    </div>
-
-                    <p className="text-gray-500 text-xs mt-8 uppercase tracking-widest">
-                        نحن نعمل الآن على مراجعة بياناتك لضمان أفضل تجربة لك
-                    </p>
-                </div>
-            </div>
-
-            {/* عبارة استغفار أسفل الكارت */}
-            <p className="mt-8 text-gray-600 text-sm italic">
-                أستغفر الله العظيم واتوب إليه
-            </p>
         </div>
     );
 }
@@ -1396,13 +1514,42 @@ if (view === 'pending') {
                         <div className="max-w-2xl mx-auto glass p-8 rounded-[40px] text-right">
                             <h2 className="text-2xl font-bold text-center text-orange-500 mb-6 underline">نتيجة الاختبار</h2>
                             <div className="space-y-6 max-h-[400px] overflow-y-auto pl-4 border-b border-white/10 pb-4">
-                                {quizQuestions.map((item, idx) => (
-                                    <div key={idx} className={`p-4 rounded-2xl border ${answers[idx] === item.correct ? 'border-green-500/50 bg-green-500/10' : 'border-red-500/50 bg-red-500/10'}`}>
-                                        <p className="font-bold mb-2">{idx + 1}. {item.q}</p>
-                                        <p className="text-green-400 text-sm">الصحيح: {item.correct}</p>
-                                        <p className={answers[idx] === item.correct ? "text-green-400 text-sm" : "text-red-400 text-sm"}>إجابتك: {answers[idx] || "لم تحل"}</p>
-                                    </div>
-                                ))}
+                                {quizQuestions.map((item, idx) => {
+    
+    const correctAnswer = item.options[item.correct]; // 👈 النص الصحيح
+    const userAnswer = answers[idx]; // 👈 إجابة المستخدم
+
+    const isCorrect = userAnswer === correctAnswer;
+
+    return (
+        <div key={idx} className={`p-4 rounded-2xl border ${
+            isCorrect ? 'border-green-500/50 bg-green-500/10' : 'border-red-500/50 bg-red-500/10'
+        }`}>
+            
+            <p className="font-bold mb-2">
+                {idx + 1}. {item.q || item.question}
+            </p>
+
+            {/* 👇 حالة الإجابة */}
+            <p className={`text-sm font-bold ${isCorrect ? "text-green-400" : "text-red-400"}`}>
+                {isCorrect ? "✅ إجابتك صحيحة" : "❌ إجابتك غلط"}
+            </p>
+
+            {/* 👇 إجابة المستخدم */}
+            <p className="text-sm text-gray-300">
+                إجابتك: {userAnswer || "لم تحل"}
+            </p>
+
+            {/* 👇 الإجابة الصحيحة */}
+            {!isCorrect && (
+                <p className="text-green-400 text-sm">
+                    الإجابة الصحيحة: {correctAnswer}
+                </p>
+            )}
+
+        </div>
+    );
+})}
                             </div>
                             <button onClick={() => {setView('home'); setIsFinished(false);}} className="w-full mt-8 bg-orange-600 py-4 rounded-2xl font-black">عودة للرئيسية</button>
                         </div>
@@ -1420,7 +1567,15 @@ if (view === 'pending') {
                                 {currentQIndex + 1} / {quizQuestions.length}
                             </span>
                         </div>
-                        <h3 className="text-xl font-bold text-center mb-10 leading-relaxed">{q.q}</h3>
+       <h3 className="text-xl font-bold text-center mb-6 leading-relaxed">
+    {q.q || q.question}
+</h3>
+
+{q.translation && (
+    <p className="text-center text-gray-400 mb-8">
+        {q.translation}
+    </p>
+)}
                         <div className="grid grid-cols-1 gap-4">
                             {q.options.map((opt) => (
                                 <button key={opt} onClick={() => setAnswers({...answers, [currentQIndex]: opt})} 
@@ -1858,19 +2013,27 @@ else {
         FREE
     </div>
 
-    {/* الأيكونتين جنب بعض */}
     <div className="flex items-center justify-center gap-4 mb-6">
-        <i className="fas fa-language text-5xl text-blue-500 transition-transform group-hover:scale-110"></i>
-        <span className="text-2xl font-bold text-gray-400">+</span>
-        <i className="fas fa-graduation-cap text-5xl text-green-500 transition-transform group-hover:scale-110"></i>
-    </div>
+    <i className="fas fa-language text-5xl text-blue-500 transition-transform group-hover:scale-110"></i>
+    
+    <span className="text-2xl font-bold text-gray-400">+</span>
+
+    <i className="fas fa-graduation-cap text-5xl text-green-500 transition-transform group-hover:scale-110"></i>
+
+    <span className="text-2xl font-bold text-gray-400">+</span>
+
+    <i className="fas fa-laptop-code text-5xl text-purple-500 transition-transform group-hover:scale-110"></i>
+</div>
     
     <h3 className="text-xl font-bold mb-4">اختبارات الفرقة الأولى 📝</h3>
     
     <div className="flex items-center justify-center gap-3 text-xs">
         <span className="text-blue-400 border border-blue-500/30 px-3 py-1 rounded-full">🇫🇷 Français</span>
         <span className="text-green-400 border border-green-500/30 px-3 py-1 rounded-full">🇬🇧 English</span>
+            <span className="text-purple-400 border border-purple-500/30 px-3 py-1 rounded-full">💻 Computer</span>
+
     </div>
+    
     
     <div className="text-xs text-gray-400 group-hover:text-orange-500 transition mt-3">
         دخول مجاني ✅
@@ -1950,7 +2113,7 @@ else {
         {/* تم حذف طبقة الحماية العلوية (الـ div الشفاف) للسماح بفتح الفيديو خارجياً */}
 
         <iframe 
-            src="https://www.youtube.com/embed/VIowisEPIuo?rel=0&modestbranding=0" 
+            src="https://www.youtube.com/embed/VIowisEPIuo?controls=0&rel=0"
             className="w-full h-full border-none relative z-10"
             style={{ 
                 transform: 'scale(1)', // عرض طبيعي بدون تكبير لتظهر أزرار اليوتيوب
@@ -2094,6 +2257,30 @@ className="glass p-8 rounded-3xl text-center cursor-pointer"
 </p>
 
 </div>
+{/* Computer */}
+<div 
+onClick={() => {
+
+setSelectedLanguage("computer");
+
+setShowNewExamModal(true);
+
+}}
+className="glass p-8 rounded-3xl text-center cursor-pointer"
+>
+
+<i className="fas fa-laptop-code text-5xl text-purple-500 mb-4"></i>
+
+<h3 className="text-xl font-bold mb-2">
+اختبارات Computer 💻
+</h3>
+
+<p className="text-sm text-gray-400">
+40 سؤال على أساسيات الحاسب
+</p>
+
+</div>
+
 
 
 { /* Français */ }
@@ -2248,42 +2435,67 @@ className="glass p-8 rounded-3xl text-center cursor-pointer"
     </div>
 )}
 {showNewExamModal && (
-    <div className="fixed inset-0 z-[150] flex items-center justify-center p-2 md:p-6 bg-black/95 backdrop-blur-3xl animate-fadeIn">
-        {/* تغيير الحد الأقصى للعرض ليكون 5xl ليسمح بالتوسع */}
-        <div className="glass p-4 md:p-8 rounded-[30px] md:rounded-[50px] border border-orange-500/30 w-full max-w-5xl relative overflow-y-auto max-h-[95vh] shadow-[0_0_100px_rgba(249,115,22,0.1)]">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div className="bg-[#0a0a0a] border border-white/10 w-full max-w-2xl rounded-[40px] p-8 shadow-2xl relative overflow-hidden">
             
-            <button onClick={() => setShowNewExamModal(false)} className="absolute top-4 left-4 text-gray-400 hover:text-white z-[160]">
-                <i className="fas fa-times-circle text-3xl"></i>
-            </button>
+            {/* زخرفة خلفية */}
+            <div className="absolute -top-24 -left-24 w-48 h-48 bg-orange-500/10 blur-[100px]"></div>
             
+            <h2 className="text-2xl font-black text-center mb-8 text-white">اختر نوع الاختبار</h2>
 
-        
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-6">
+                {/* كرت صح وغلط - عريض */}
                 <button onClick={() => { setShowNewExamModal(false); prepareQuiz('صح وغلط'); }} 
-                    className="group relative overflow-hidden bg-white/5 border border-green-500/30 p-6 rounded-3xl transition-all hover:bg-green-500/10">
-                    <div className="absolute top-0 right-0 w-1.5 h-full bg-green-500"></div>
-                    <div className="flex items-center justify-between">
-                        <i className="fas fa-check-double text-3xl text-green-500"></i>
-                        <span className="text-xl font-black text-white">إبدأ إختبار صح وغلط</span>
+                    className="group relative flex items-center justify-between overflow-hidden bg-gradient-to-r from-green-500/10 to-transparent border border-green-500/20 p-8 rounded-[30px] transition-all hover:scale-[1.02] hover:border-green-500 active:scale-95">
+                    
+                    <div className="flex items-center gap-6">
+                        <div className="w-16 h-16 bg-green-500/20 rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform">
+                            <i className="fas fa-file-signature text-3xl text-green-500"></i>
+                        </div>
+                        <div className="text-right">
+                            <span className="block text-xl font-black text-white">اختبار الصواب والخطأ</span>
+                            <span className="text-xs text-green-500/60 font-bold">نظام التظليل (أ) و (هـ)</span>
+                        </div>
                     </div>
+                    
+                    <i className="fas fa-chevron-left text-green-500/30 group-hover:translate-x-[-10px] transition-transform"></i>
+                    
+                    {/* خط النيون السفلي */}
+                    <div className="absolute bottom-0 left-0 w-full h-1 bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.8)]"></div>
                 </button>
 
+                {/* كرت الاختياري - عريض */}
                 <button onClick={() => { setShowNewExamModal(false); prepareQuiz('اختياري'); }} 
-                    className="group relative overflow-hidden bg-white/5 border border-blue-500/30 p-6 rounded-3xl transition-all hover:bg-blue-500/10">
-                    <div className="absolute top-0 right-0 w-1.5 h-full bg-blue-500"></div>
-                    <div className="flex items-center justify-between">
-                        <i className="fas fa-list-ol text-3xl text-blue-500"></i>
-                        <span className="text-xl font-black text-white">إبدأ إختبار الإختياري</span>
+                    className="group relative flex items-center justify-between overflow-hidden bg-gradient-to-r from-blue-500/10 to-transparent border border-blue-500/20 p-8 rounded-[30px] transition-all hover:scale-[1.02] hover:border-blue-500 active:scale-95">
+                    
+                    <div className="flex items-center gap-6">
+                        <div className="w-16 h-16 bg-blue-500/20 rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform">
+                            <i className="fas fa-layer-group text-3xl text-blue-500"></i>
+                        </div>
+                        <div className="text-right">
+                            <span className="block text-xl font-black text-white">اختبار متعدد الخيارات</span>
+                            <span className="text-xs text-blue-500/60 font-bold">أسئلة تحليلية وشاملة</span>
+                        </div>
                     </div>
+                    
+                    <i className="fas fa-chevron-left text-blue-500/30 group-hover:translate-x-[-10px] transition-transform"></i>
+                    
+                    {/* خط النيون السفلي */}
+                    <div className="absolute bottom-0 left-0 w-full h-1 bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.8)]"></div>
                 </button>
             </div>
             
-            <p className="text-center mt-6 text-[10px] text-gray-600 font-mono tracking-[5px]">
+            <button onClick={() => setShowNewExamModal(false)} className="w-full mt-8 py-3 text-gray-500 hover:text-white transition font-bold text-sm">
+                إغلاق النافذة
+            </button>
+
+            <p className="text-center mt-6 text-[8px] text-gray-600 font-mono tracking-[4px] opacity-50">
                 SECURED SYSTEM BY OMAR ABDEL TAWAB
             </p>
         </div>
     </div>
 )}
+
 {view === 'banned' && (
     <div className="fixed inset-0 z-[9999] h-screen w-screen flex items-center justify-center p-4 bg-[#050a14] overflow-hidden select-none">
         
