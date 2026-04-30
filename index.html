@@ -1238,42 +1238,29 @@ useEffect(() => {
     // جلب البيانات المخزنة محلياً
     const savedStudent = localStorage.getItem('academy_student_data');
     
-    // إلغاء نظام الـ requestId وفايربيس تماماً
-    // سيتم التحقق من البيانات المحلية مباشرة
     if (savedStudent) {
         const parsedData = JSON.parse(savedStudent);
         setStudent(parsedData);
-        
-        // إذا كانت البيانات موجودة، ننتقل مباشرة لصفحة الامتحانات
-        // هذا يلغي نظام الـ pending أو الـ banned القادم من السيرفر
-        setView('home');
-        
-        trackActivity(
-            "🔄 إعادة دخول للمنصة",
-            `رجع يذاكر تاني من ${parsedData.university}`
-        );
+        setView('home'); // المستخدم المسجل يرى الأقسام فوراً
+        trackActivity("🔄 إعادة دخول للمنصة", `مرحباً بعودتك ${parsedData.name}`);
     } else {
-        // إذا لم توجد بيانات، نفتح واجهة الدخول العادية
-        setView('login'); 
+        // ⭐ المستخدم الجديد: لا ننتظر، نعرض له شاشة الأقسام فوراً
+        // ولكن مع إظهار نموذج تسجيل الدخول كـ Modal منبثق
+        setView('home'); // الأقسام تظهر
+         // الفورم المنبثق يظهر تلقائياً
     }
-
-    // انتهاء مرحلة التحقق من الهوية
+    
     setAuthChecked(true);
-
-    // نظام التحميل (Loading Animation) كما هو
+    
+    // أنيميشن التحميل (كما هو)
     setTimeout(() => setLoadingPhase('logo-entry'), 3000);
     setTimeout(() => setLoadingPhase('logo-exit'), 6000);
     setTimeout(() => {
         setIsLoading(false);
-        // إظهار كارت المطور فقط إذا لم يكن المستخدم مسجلاً
         if (!savedStudent) setShowDevCard(true);
     }, 7500);
-
-    // تنظيف (Cleanup) - تم إزالة مراقب فايربيس فلا داعي لـ .off()
-    return () => {};
     
 }, []);
-
 
             const [currentQIndex, setCurrentQIndex] = useState(0);
             const [quizQuestions, setQuizQuestions] = useState([]);
@@ -1324,31 +1311,42 @@ const startNewPdfQuiz = (type) => {
 
 
 
-     const handleEnter = (dept) => {
+   const handleEnter = (dept) => {
     setTargetDept(dept);
     trackActivity(`📂 فتح قسم: ${dept}`);
-    const savedData = localStorage.getItem('academy_student_data');
-    const isFreeDept = (dept === 'صح وغلط' || dept === 'اختياري');
     
-    setIsFreeMode(isFreeDept); // تحديد إذا كان القسم مجاني أم لا
+    const savedData = localStorage.getItem('academy_student_data');
+    const isFreeDept = (dept === 'صح وغلط' || dept === 'اختياري' || dept === 'firstYear');
+    
+    setIsFreeMode(isFreeDept);
 
+    // ⭐ قسم الشرح: لازم تسجيل دخول
+    if (dept === 'شرح') {
+        if (savedData) {
+            const parsed = JSON.parse(savedData);
+            setStudent(parsed);
+            setView('lessons');
+        } else {
+            setShowLogin(true);  // بس هنا بس يظهر النموذج
+        }
+        return;
+    }
+    
+    // ⭐ باقي الأقسام (مجانية أو اختبارات الفرقة الأولى)
     if (savedData) {
         const parsed = JSON.parse(savedData);
         setStudent(parsed);
         
-        // لو داخل شرح ومعندوش كود مسجل، افتح اللوجن يطلب الكود
-        if (dept === 'شرح' && !parsed.code) {
-            setShowLogin(true);
+        if (dept === 'firstYear') {
+            setView('firstYearLanguages');  // رايح لصفحة اختيار اللغة
         } else {
-            // لو معاه كود أو داخل قسم مجاني، يدخل فوراً
-            setView(dept === 'شرح' ? 'lessons' : 'exams');
+            setView('exams');
         }
     } else {
-        // أول مرة يدخل، لازم يملأ بياناته
+        // مستخدم جديد - نفتح النموذج وبعدين نكمل
         setShowLogin(true);
     }
 };
-
 // --- 1. داخل المكون في الأعلى ---
 const [isVisible, setIsVisible] = useState(false);
 const [userFeedback, setUserFeedback] = useState('');
@@ -1377,63 +1375,73 @@ const finalizeLogin = async () => {
         const level = student.level;
         const phone = student.phone?.trim();
         const university = student.university;
-        const enteredCode = student.code?.trim().toLowerCase(); // تأكد أن حقل الكود موجود في state الـ student
-
-        // التحقق من إدخال جميع البيانات بما في ذلك الكود
-        if (!name || !level || !phone || !university || !enteredCode) {
-            setIsChecking(false);
-            alert("⚠️ فضلاً يا بطل.. أكمل جميع البيانات وأدخل كود التفعيل!");
+        const enteredCode = student.code?.trim().toLowerCase();
+        
+        // مصدر الدخول (أي بطاقة ضغط عليها المستخدم)
+        const sourceDept = targetDept;
+        
+        // ===== الأقسام المجانية =====
+        if (isFreeMode) {
+            if (!name || !level || !phone || !university) {
+                alert("⚠️ فضلاً أكمل جميع البيانات!");
+                return;
+            }
+            
+            const sessionData = {
+                ...student,
+                code: "",
+                loginDate: new Date().getTime(),
+                status: 'active',
+                access: true
+            };
+            
+            localStorage.setItem('academy_student_data', JSON.stringify(sessionData));
+            setStudent(sessionData);
+            
+            // إرسال إشعار (استخدم trackActivity لأنها موجودة)
+            trackActivity("✅ دخول قسم مجاني", `${sourceDept} - ${name} - ${university}`);
+            
+            alert("✅ تم الدخول بنجاح!");
+            setShowLogin(false);
+            
+            // التوجيه حسب القسم الذي ضغط عليه
+            if (sourceDept === 'firstYear') {
+                setView('firstYearLanguages'); // صفحة إنجليزي/فرنساوي/كمبيوتر
+            } else {
+                setView('exams'); // صفحة الاختبارات العادية
+            }
             return;
         }
-
-        // ⭐ قائمة الأكواد المحلية المسموح لها بالدخول فوراً
-        const VALID_LOCAL_CODES = ["xmw1", "xmw2", "xmw3", "admin100", "omar2026"]; 
-
-        // ⭐ التحقق المحلي (بدل فايربيس)
+        
+        // ===== الأقسام المدفوعة (شرح) =====
+        if (!name || !level || !phone || !university || !enteredCode) {
+            alert("⚠️ أكمل جميع البيانات وأدخل كود التفعيل!");
+            return;
+        }
+        
+        const VALID_LOCAL_CODES = ["xmw1", "xmw2", "xmw3", "admin100", "omar2026"];
+        
         if (VALID_LOCAL_CODES.includes(enteredCode)) {
-            
-            // حفظ بيانات الجلسة محلياً
             const sessionData = {
                 ...student,
                 loginDate: new Date().getTime(),
-                status: 'active', // حالة النشاط مباشرة
-                access: true      // السماح بالوصول
+                status: 'active',
+                access: true
             };
-
-            localStorage.setItem(
-                'academy_student_data',
-                JSON.stringify(sessionData)
-            );
-
-            setStudent(sessionData);
-
-            // ⭐ رسالة تيليجرام للإشعار فقط (اختياري)
-            const logMessage = `
-✅ دخول مباشر (كود محلي)
-━━━━━━━━━━━━
-👤 ${name}
-📱 ${phone}
-🔑 الكود المستخدم: ${enteredCode}
-🏛️ ${university}
-🎓 ${level}
-━━━━━━━━━━━━`;
-
-            setTimeout(() => {
-                sendTelegram(logMessage);
-            }, 0);
-
-            alert("✅ تم التحقق من الكود بنجاح! مرحباً بك.");
-
-            setShowLogin(false);
             
-            // ⭐ الدخول مباشرة للمحتوى بدل حالة الانتظار
-            setView('home'); 
-
+            localStorage.setItem('academy_student_data', JSON.stringify(sessionData));
+            setStudent(sessionData);
+            
+            trackActivity("✅ دخول قسم مدفوع (شرح)", `${name} - كود: ${enteredCode}`);
+            
+            alert("✅ تم التحقق من الكود بنجاح!");
+            setShowLogin(false);
+            setView('lessons'); // صفحة الفيديوهات والملازم
+            
         } else {
-            // في حال كان الكود خاطئاً
-            alert("❌ عذراً، كود التفعيل غير صحيح. يرجى التواصل مع الدعم.");
+            alert("❌ كود التفعيل غير صحيح!");
         }
-
+        
     } catch (error) {
         console.error("Login Error:", error);
         alert("حدث خطأ أثناء تسجيل الدخول، حاول مرة أخرى.");
@@ -1441,7 +1449,6 @@ const finalizeLogin = async () => {
         setIsChecking(false);
     }
 };
-
    // 2. استبدل دالة finalizeLogin القديمة بهذه النسخة المحدثة
        
  // تأكد من وجود هذا القوس لإغلاق الدالة
